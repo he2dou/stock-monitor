@@ -12,8 +12,7 @@ def load_watchlist(path: str) -> list[dict]:
     p = Path(path)
     if not p.exists():
         raise FileNotFoundError(f"Watchlist not found: {path}")
-    with open(p, "r", encoding="utf-8") as f:
-        data = yaml.safe_load(f)
+    data = yaml.safe_load(p.read_bytes())
     if not data or "stocks" not in data:
         raise ConfigError("watchlist.yaml missing 'stocks' key")
     stocks = data["stocks"]
@@ -29,8 +28,7 @@ def load_alerts(path: str) -> list[dict]:
     p = Path(path)
     if not p.exists():
         raise FileNotFoundError(f"Alerts file not found: {path}")
-    with open(p, "r", encoding="utf-8") as f:
-        data = yaml.safe_load(f)
+    data = yaml.safe_load(p.read_bytes())
     if not data or "rules" not in data:
         return []
     rules = data["rules"]
@@ -44,3 +42,17 @@ def load_alerts(path: str) -> list[dict]:
         if "value" not in r or "symbol" not in r:
             raise ConfigError(f"Alert rule missing symbol/value: {r}")
     return rules
+def load_notify(path: str) -> dict:
+    """Load notification-channel config (e.g. webhook_url).
+
+    Returns {} when the file is absent or empty, so callers can rely on
+    a stable default (webhook disabled).
+    """
+    p = Path(path)
+    if not p.exists():
+        return {}
+    data = yaml.safe_load(p.read_bytes())
+    if not isinstance(data, dict):
+        return {}
+    return data
+

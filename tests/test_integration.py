@@ -1,7 +1,13 @@
 """集成测试：mock数据源 → 引擎 → 通知器 全链路"""
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from src.monitor import MonitorService
+
+
+@pytest.fixture(autouse=True)
+def _market_open():
+    with patch("src.monitor.any_market_open", return_value=True):
+        yield
 from src.models import Quote, Alert, AlertRule
 
 def test_full_pipeline_alert_triggered():

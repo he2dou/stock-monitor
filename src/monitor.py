@@ -1,4 +1,5 @@
 import logging
+from src.market_hours import any_market_open
 from src.sources.base import DataSource
 from src.alerts_engine import AlertEngine
 from src.notifiers.base import Notifier
@@ -15,9 +16,17 @@ class MonitorService:
         self.engine = alert_engine
         self.notifiers = notifiers
         self.stocks = stocks
+        # Distinct markets in the watchlist, e.g. {"A股", "港股", "美股"}.
+        self._markets = sorted({s.get("market", "") for s in self.stocks})
 
     def run_once(self) -> None:
         """执行一轮监控"""
+        # Skip entirely when no watched market is in its trading session. This
+        # avoids pointless overnight/weekend requests and provider rate limits.
+        if not any_market_open(self._markets):
+            logger.info(
+                f"Skipping cycle: none of {self._markets} is in a trading session")
+            return
         logger.info(f"Fetching quotes for {len(self.stocks)} stocks...")
         quotes = self.source.fetch_quotes(self.stocks)
 

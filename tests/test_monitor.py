@@ -1,6 +1,13 @@
 import pytest
 from unittest.mock import MagicMock, patch
 from src.monitor import MonitorService
+
+
+@pytest.fixture(autouse=True)
+def _market_open():
+    """Default: treat market as open so existing tests are time-independent."""
+    with patch("src.monitor.any_market_open", return_value=True):
+        yield
 from src.models import Quote, Alert, AlertRule
 
 @pytest.fixture
@@ -40,3 +47,14 @@ def test_monitor_logs_all_quotes(monitor_setup, caplog):
                              stocks=[{"symbol": "AAPL", "name": "Apple", "market": "美股"}])
         svc.run_once()
     assert any("AAPL" in r.message for r in caplog.records)
+
+
+def test_monitor_skips_when_market_closed(monitor_setup):
+    src, engine, notifier = monitor_setup
+    with patch("src.monitor.any_market_open", return_value=False):
+        svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
+                             stocks=[{"symbol": "AAPL", "name": "Apple", "market": "美股"}])
+        svc.run_once()
+    src.fetch_quotes.assert_not_called()
+    engine.check.assert_not_called()
+    notifier.send.assert_not_called()

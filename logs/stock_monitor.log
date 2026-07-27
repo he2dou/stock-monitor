@@ -1,0 +1,281 @@
+2026-07-27 14:04:32,545 [INFO] __main__: ============================================================
+2026-07-27 14:04:32,545 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 14:04:32,546 [INFO] __main__: ============================================================
+2026-07-27 14:04:32,548 [INFO] __main__: Running initial fetch...
+2026-07-27 14:04:32,548 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 14:04:39,439 [ERROR] src.sources.akshare_source: akshare API error for A股: HTTPSConnectionPool(host='82.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A0+t%3A6%2Cm%3A0+t%3A80%2Cm%3A1+t%3A2%2Cm%3A1+t%3A23%2Cm%3A0+t%3A81+s%3A2048&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:04:39,441 [WARNING] src.sources.akshare_source: No data returned for A股
+2026-07-27 14:05:05,313 [ERROR] src.sources.akshare_source: akshare API error for 港股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=11&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A128+t%3A3%2Cm%3A128+t%3A4%2Cm%3A128+t%3A1%2Cm%3A128+t%3A2&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:05:05,313 [WARNING] src.sources.akshare_source: No data returned for 港股
+2026-07-27 14:05:11,366 [ERROR] src.sources.akshare_source: akshare API error for 美股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A105%2Cm%3A106%2Cm%3A107&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf26%2Cf22%2Cf33%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:05:11,366 [WARNING] src.sources.akshare_source: No data returned for 美股
+2026-07-27 14:05:11,366 [WARNING] src.monitor: No quotes fetched this cycle
+2026-07-27 14:05:11,372 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 14:05:11,372 [INFO] __main__: Scheduler started. Next run in 5 minutes. Press Ctrl+C to stop.
+2026-07-27 14:05:11,373 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 5 minutes" to job store "default"
+2026-07-27 14:05:11,373 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 14:10:11,374 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 5 minutes (trigger: interval[0:05:00], next run at: 2026-07-27 14:10:11 CST)" (scheduled at 2026-07-27 14:10:11.372914+08:00)
+2026-07-27 14:10:11,374 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 14:10:17,795 [ERROR] src.sources.akshare_source: akshare API error for A股: HTTPSConnectionPool(host='82.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A0+t%3A6%2Cm%3A0+t%3A80%2Cm%3A1+t%3A2%2Cm%3A1+t%3A23%2Cm%3A0+t%3A81+s%3A2048&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:10:17,796 [WARNING] src.sources.akshare_source: No data returned for A股
+2026-07-27 14:10:24,313 [ERROR] src.sources.akshare_source: akshare API error for 港股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A128+t%3A3%2Cm%3A128+t%3A4%2Cm%3A128+t%3A1%2Cm%3A128+t%3A2&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:10:24,314 [WARNING] src.sources.akshare_source: No data returned for 港股
+2026-07-27 14:10:30,957 [ERROR] src.sources.akshare_source: akshare API error for 美股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A105%2Cm%3A106%2Cm%3A107&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf26%2Cf22%2Cf33%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:10:30,958 [WARNING] src.sources.akshare_source: No data returned for 美股
+2026-07-27 14:10:30,959 [WARNING] src.monitor: No quotes fetched this cycle
+2026-07-27 14:10:30,959 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 5 minutes (trigger: interval[0:05:00], next run at: 2026-07-27 14:15:11 CST)" executed successfully
+2026-07-27 14:13:49,894 [INFO] __main__: ============================================================
+2026-07-27 14:13:49,894 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 14:13:49,894 [INFO] __main__: ============================================================
+2026-07-27 14:13:49,897 [INFO] __main__: Running initial fetch...
+2026-07-27 14:13:49,897 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 14:14:11,988 [ERROR] src.sources.akshare_source: akshare API error for A股: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:14:11,989 [WARNING] src.sources.akshare_source: No data returned for A股
+2026-07-27 14:14:18,798 [ERROR] src.sources.akshare_source: akshare API error for 港股: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:14:18,801 [WARNING] src.sources.akshare_source: No data returned for 港股
+2026-07-27 14:14:48,248 [ERROR] src.sources.akshare_source: akshare API error for 美股: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:14:48,248 [WARNING] src.sources.akshare_source: No data returned for 美股
+2026-07-27 14:14:48,249 [WARNING] src.monitor: No quotes fetched this cycle
+2026-07-27 14:14:48,254 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 14:14:48,255 [INFO] __main__: Scheduler started. Next run in 5 minutes. Press Ctrl+C to stop.
+2026-07-27 14:14:48,255 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 5 minutes" to job store "default"
+2026-07-27 14:14:48,262 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 14:15:11,384 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 5 minutes (trigger: interval[0:05:00], next run at: 2026-07-27 14:20:11 CST)" (scheduled at 2026-07-27 14:15:11.372914+08:00)
+2026-07-27 14:15:11,384 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 14:15:25,133 [ERROR] src.sources.akshare_source: akshare API error for A股: HTTPSConnectionPool(host='82.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=6&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A0+t%3A6%2Cm%3A0+t%3A80%2Cm%3A1+t%3A2%2Cm%3A1+t%3A23%2Cm%3A0+t%3A81+s%3A2048&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:15:25,133 [WARNING] src.sources.akshare_source: No data returned for A股
+2026-07-27 14:15:31,928 [ERROR] src.sources.akshare_source: akshare API error for 港股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A128+t%3A3%2Cm%3A128+t%3A4%2Cm%3A128+t%3A1%2Cm%3A128+t%3A2&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:15:31,929 [WARNING] src.sources.akshare_source: No data returned for 港股
+2026-07-27 14:15:37,449 [ERROR] src.sources.akshare_source: akshare API error for 美股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A105%2Cm%3A106%2Cm%3A107&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf26%2Cf22%2Cf33%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:15:37,449 [WARNING] src.sources.akshare_source: No data returned for 美股
+2026-07-27 14:15:37,450 [WARNING] src.monitor: No quotes fetched this cycle
+2026-07-27 14:15:37,450 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 5 minutes (trigger: interval[0:05:00], next run at: 2026-07-27 14:20:11 CST)" executed successfully
+2026-07-27 14:20:11,387 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 5 minutes (trigger: interval[0:05:00], next run at: 2026-07-27 14:25:11 CST)" (scheduled at 2026-07-27 14:20:11.372914+08:00)
+2026-07-27 14:20:11,387 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 14:20:32,233 [ERROR] src.sources.akshare_source: akshare API error for A股: HTTPSConnectionPool(host='82.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=11&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A0+t%3A6%2Cm%3A0+t%3A80%2Cm%3A1+t%3A2%2Cm%3A1+t%3A23%2Cm%3A0+t%3A81+s%3A2048&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:20:32,233 [WARNING] src.sources.akshare_source: No data returned for A股
+2026-07-27 14:20:38,878 [ERROR] src.sources.akshare_source: akshare API error for 港股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A128+t%3A3%2Cm%3A128+t%3A4%2Cm%3A128+t%3A1%2Cm%3A128+t%3A2&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:20:38,878 [WARNING] src.sources.akshare_source: No data returned for 港股
+2026-07-27 14:20:45,070 [ERROR] src.sources.akshare_source: akshare API error for 美股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A105%2Cm%3A106%2Cm%3A107&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf26%2Cf22%2Cf33%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:20:45,072 [WARNING] src.sources.akshare_source: No data returned for 美股
+2026-07-27 14:20:45,072 [WARNING] src.monitor: No quotes fetched this cycle
+2026-07-27 14:20:45,072 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 5 minutes (trigger: interval[0:05:00], next run at: 2026-07-27 14:25:11 CST)" executed successfully
+2026-07-27 14:25:11,388 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 5 minutes (trigger: interval[0:05:00], next run at: 2026-07-27 14:30:11 CST)" (scheduled at 2026-07-27 14:25:11.372914+08:00)
+2026-07-27 14:25:11,388 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 14:25:17,670 [ERROR] src.sources.akshare_source: akshare API error for A股: HTTPSConnectionPool(host='82.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A0+t%3A6%2Cm%3A0+t%3A80%2Cm%3A1+t%3A2%2Cm%3A1+t%3A23%2Cm%3A0+t%3A81+s%3A2048&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:25:17,670 [WARNING] src.sources.akshare_source: No data returned for A股
+2026-07-27 14:25:40,718 [ERROR] src.sources.akshare_source: akshare API error for 港股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=9&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A128+t%3A3%2Cm%3A128+t%3A4%2Cm%3A128+t%3A1%2Cm%3A128+t%3A2&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:25:40,718 [WARNING] src.sources.akshare_source: No data returned for 港股
+2026-07-27 14:25:47,033 [ERROR] src.sources.akshare_source: akshare API error for 美股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A105%2Cm%3A106%2Cm%3A107&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf26%2Cf22%2Cf33%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:25:47,033 [WARNING] src.sources.akshare_source: No data returned for 美股
+2026-07-27 14:25:47,033 [WARNING] src.monitor: No quotes fetched this cycle
+2026-07-27 14:25:47,033 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 5 minutes (trigger: interval[0:05:00], next run at: 2026-07-27 14:30:11 CST)" executed successfully
+2026-07-27 14:30:11,379 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 5 minutes (trigger: interval[0:05:00], next run at: 2026-07-27 14:35:11 CST)" (scheduled at 2026-07-27 14:30:11.372914+08:00)
+2026-07-27 14:30:11,379 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 14:30:43,307 [ERROR] src.sources.akshare_source: akshare API error for A股: HTTPSConnectionPool(host='82.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=10&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A0+t%3A6%2Cm%3A0+t%3A80%2Cm%3A1+t%3A2%2Cm%3A1+t%3A23%2Cm%3A0+t%3A81+s%3A2048&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:30:43,309 [WARNING] src.sources.akshare_source: No data returned for A股
+2026-07-27 14:31:22,680 [ERROR] src.sources.akshare_source: akshare API error for 港股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=15&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A128+t%3A3%2Cm%3A128+t%3A4%2Cm%3A128+t%3A1%2Cm%3A128+t%3A2&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf22%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:31:22,680 [WARNING] src.sources.akshare_source: No data returned for 港股
+2026-07-27 14:31:29,473 [ERROR] src.sources.akshare_source: akshare API error for 美股: HTTPSConnectionPool(host='72.push2.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/clist/get?pn=1&pz=100&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f12&fs=m%3A105%2Cm%3A106%2Cm%3A107&fields=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf12%2Cf13%2Cf14%2Cf15%2Cf16%2Cf17%2Cf18%2Cf20%2Cf21%2Cf23%2Cf24%2Cf25%2Cf26%2Cf22%2Cf33%2Cf11%2Cf62%2Cf128%2Cf136%2Cf115%2Cf152 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2026-07-27 14:31:29,474 [WARNING] src.sources.akshare_source: No data returned for 美股
+2026-07-27 14:31:29,474 [WARNING] src.monitor: No quotes fetched this cycle
+2026-07-27 14:31:29,474 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 5 minutes (trigger: interval[0:05:00], next run at: 2026-07-27 14:35:11 CST)" executed successfully
+2026-07-27 14:32:37,899 [INFO] __main__: ============================================================
+2026-07-27 14:32:37,900 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 14:32:37,900 [INFO] __main__: ============================================================
+2026-07-27 14:32:37,902 [INFO] __main__: Running initial fetch...
+2026-07-27 14:32:37,902 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 14:32:44,226 [ERROR] src.sources.akshare_source: akshare API error for A股: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:32:44,226 [WARNING] src.sources.akshare_source: No data returned for A股
+2026-07-27 14:33:12,404 [ERROR] src.sources.akshare_source: akshare API error for 港股: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:33:12,404 [WARNING] src.sources.akshare_source: No data returned for 港股
+2026-07-27 14:33:18,234 [ERROR] src.sources.akshare_source: akshare API error for 美股: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:33:18,234 [WARNING] src.sources.akshare_source: No data returned for 美股
+2026-07-27 14:33:18,235 [WARNING] src.monitor: No quotes fetched this cycle
+2026-07-27 14:33:18,237 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 14:33:18,238 [INFO] __main__: Scheduler started. Next run in 5 minutes. Press Ctrl+C to stop.
+2026-07-27 14:33:18,238 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 5 minutes" to job store "default"
+2026-07-27 14:33:18,238 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 14:35:41,661 [INFO] __main__: ============================================================
+2026-07-27 14:35:41,662 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 14:35:41,662 [INFO] __main__: ============================================================
+2026-07-27 14:35:41,665 [INFO] __main__: Running initial fetch...
+2026-07-27 14:35:41,665 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 14:35:42,177 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 0.159995 (attempt 1/3), retry in 15.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:35:57,640 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 0.159995 (attempt 2/3), retry in 30.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:36:28,036 [ERROR] src.sources.eastmoney_source: eastmoney error for A股 159995 (secid=0.159995): ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:36:28,037 [WARNING] src.sources.eastmoney_source: No data returned for A股 159995
+2026-07-27 14:36:29,406 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 1.562500 (attempt 1/3), retry in 15.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:36:47,344 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 105.AAPL (attempt 1/3), retry in 15.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:37:02,747 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 105.AAPL (attempt 2/3), retry in 30.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:37:33,107 [ERROR] src.sources.eastmoney_source: eastmoney error for 美股 AAPL (secid=105.AAPL): ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:37:33,479 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 106.AAPL (attempt 1/3), retry in 15.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:37:48,943 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 106.AAPL (attempt 2/3), retry in 30.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:38:19,546 [ERROR] src.sources.eastmoney_source: eastmoney error for 美股 AAPL (secid=106.AAPL): ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:38:19,547 [WARNING] src.sources.eastmoney_source: No data returned for 美股 AAPL
+2026-07-27 14:38:21,066 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 116.00700 (attempt 1/3), retry in 15.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 14:52:05,918 [INFO] __main__: ============================================================
+2026-07-27 14:52:05,918 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 14:52:05,919 [INFO] __main__: ============================================================
+2026-07-27 14:52:05,921 [INFO] __main__: Running initial fetch...
+2026-07-27 14:52:05,921 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 14:52:11,640 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2720 涨跌:+0.16% 成交量:6663004
+2026-07-27 14:52:11,643 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9450 涨跌:+2.27% 成交量:5598332
+2026-07-27 14:52:11,643 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12381612
+2026-07-27 14:52:11,643 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 14:52:11,643 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:443.8000 涨跌:+2.12% 成交量:10050307
+2026-07-27 14:52:11,643 [INFO] src.monitor: No alerts triggered
+2026-07-27 14:52:11,647 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 14:52:11,647 [INFO] __main__: Scheduler started. Next run in 10 minutes. Press Ctrl+C to stop.
+2026-07-27 14:52:11,648 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-07-27 14:52:11,648 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 15:02:11,652 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-27 15:02:11 CST)" (scheduled at 2026-07-27 15:02:11.647970+08:00)
+2026-07-27 15:02:11,652 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:02:16,203 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 105.AAPL (attempt 1/3), retry in 15.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 15:02:31,724 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 105.AAPL (attempt 2/3), retry in 30.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 15:03:02,150 [ERROR] src.sources.eastmoney_source: eastmoney error for 美股 AAPL (secid=105.AAPL): ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 15:03:02,593 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 106.AAPL (attempt 1/3), retry in 15.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 15:03:18,010 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 106.AAPL (attempt 2/3), retry in 30.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 15:03:48,466 [ERROR] src.sources.eastmoney_source: eastmoney error for 美股 AAPL (secid=106.AAPL): ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 15:03:48,466 [WARNING] src.sources.eastmoney_source: No data returned for 美股 AAPL
+2026-07-27 15:03:49,797 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 116.00700 (attempt 1/3), retry in 15.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 15:04:05,218 [WARNING] src.sources.eastmoney_source: eastmoney transient error for 116.00700 (attempt 2/3), retry in 30.0s: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 15:04:35,638 [ERROR] src.sources.eastmoney_source: eastmoney error for 港股 00700 (secid=116.00700): ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-27 15:04:35,638 [WARNING] src.sources.eastmoney_source: No data returned for 港股 00700
+2026-07-27 15:04:35,639 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:04:35,639 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:04:35,639 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:04:35,639 [INFO] src.monitor: No alerts triggered
+2026-07-27 15:04:35,640 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-27 15:12:11 CST)" executed successfully
+2026-07-27 15:08:42,228 [INFO] __main__: ============================================================
+2026-07-27 15:08:42,229 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 15:08:42,229 [INFO] __main__: ============================================================
+2026-07-27 15:08:42,232 [INFO] __main__: Running initial fetch...
+2026-07-27 15:08:42,232 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:08:42,575 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:08:42,575 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:08:42,576 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:08:42,576 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:08:42,576 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.0000 涨跌:+2.16% 成交量:10075908
+2026-07-27 15:08:42,576 [INFO] src.monitor: No alerts triggered
+2026-07-27 15:08:42,579 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 15:08:42,581 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
+2026-07-27 15:08:42,582 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
+2026-07-27 15:08:42,582 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 15:09:15,740 [INFO] __main__: ============================================================
+2026-07-27 15:09:15,740 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 15:09:15,740 [INFO] __main__: ============================================================
+2026-07-27 15:09:15,742 [INFO] __main__: Running initial fetch...
+2026-07-27 15:09:15,743 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:09:16,096 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:09:16,097 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:09:16,098 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:09:16,098 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:09:16,099 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.0000 涨跌:+2.16% 成交量:10085208
+2026-07-27 15:09:16,099 [INFO] src.monitor: No alerts triggered
+2026-07-27 15:09:16,112 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 15:09:16,112 [INFO] __main__: Scheduler started. Next run in 3 minutes. Press Ctrl+C to stop.
+2026-07-27 15:09:16,114 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 3 minutes" to job store "default"
+2026-07-27 15:09:16,115 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 15:12:16,119 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:12:16 CST)" (scheduled at 2026-07-27 15:12:16.111339+08:00)
+2026-07-27 15:12:16,121 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:12:16,448 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:12:16,448 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:12:16,448 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:12:16,448 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:12:16,448 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.0000 涨跌:+2.16% 成交量:10125603
+2026-07-27 15:12:16,448 [INFO] src.monitor: No alerts triggered
+2026-07-27 15:12:16,448 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:15:16 CST)" executed successfully
+2026-07-27 15:15:16,117 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:18:16 CST)" (scheduled at 2026-07-27 15:15:16.111339+08:00)
+2026-07-27 15:15:16,118 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:15:16,647 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:15:16,647 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:15:16,648 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:15:16,648 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:15:16,648 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.2000 涨跌:+2.21% 成交量:10200008
+2026-07-27 15:15:16,648 [INFO] src.monitor: No alerts triggered
+2026-07-27 15:15:16,648 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:18:16 CST)" executed successfully
+2026-07-27 15:18:16,120 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:21:16 CST)" (scheduled at 2026-07-27 15:18:16.111339+08:00)
+2026-07-27 15:18:16,120 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:18:16,441 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:18:16,441 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:18:16,441 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:18:16,441 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:18:16,441 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.6000 涨跌:+2.30% 成交量:10308740
+2026-07-27 15:18:16,441 [INFO] src.monitor: No alerts triggered
+2026-07-27 15:18:16,441 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:21:16 CST)" executed successfully
+2026-07-27 15:21:16,121 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:24:16 CST)" (scheduled at 2026-07-27 15:21:16.111339+08:00)
+2026-07-27 15:21:16,121 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:21:16,449 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:21:16,449 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:21:16,450 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:21:16,450 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:21:16,450 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.0000 涨跌:+2.16% 成交量:10461440
+2026-07-27 15:21:16,450 [INFO] src.monitor: No alerts triggered
+2026-07-27 15:21:16,450 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:24:16 CST)" executed successfully
+2026-07-27 15:24:16,114 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:27:16 CST)" (scheduled at 2026-07-27 15:24:16.111339+08:00)
+2026-07-27 15:24:16,114 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:24:16,452 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:24:16,452 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:24:16,452 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:24:16,453 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:24:16,453 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:443.2000 涨跌:+1.98% 成交量:10521876
+2026-07-27 15:24:16,453 [INFO] src.monitor: No alerts triggered
+2026-07-27 15:24:16,453 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:27:16 CST)" executed successfully
+2026-07-27 15:27:16,118 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:30:16 CST)" (scheduled at 2026-07-27 15:27:16.111339+08:00)
+2026-07-27 15:27:16,119 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:27:16,455 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:27:16,455 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:27:16,455 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:27:16,455 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:27:16,455 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.2000 涨跌:+2.21% 成交量:10658573
+2026-07-27 15:27:16,456 [INFO] src.monitor: No alerts triggered
+2026-07-27 15:27:16,456 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 3 minutes (trigger: interval[0:03:00], next run at: 2026-07-27 15:30:16 CST)" executed successfully
+2026-07-27 15:27:45,217 [INFO] __main__: ============================================================
+2026-07-27 15:27:45,217 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 15:27:45,217 [INFO] __main__: ============================================================
+2026-07-27 15:27:45,220 [INFO] __main__: Running initial fetch...
+2026-07-27 15:27:45,220 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:27:45,550 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:27:45,551 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:27:45,551 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:27:45,551 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:27:45,551 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:443.8000 涨跌:+2.12% 成交量:10670873
+2026-07-27 15:27:45,551 [INFO] src.alerts_engine: Alert triggered: ⚠️ 芯片ETF华夏(159995) price above 1.27 | 当前: 1.2780 | 涨跌: +0.63%
+2026-07-27 15:27:45,551 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-27 15:27:45,989 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 15:27:45,989 [INFO] __main__: Scheduler started. Next run in 10 minutes. Press Ctrl+C to stop.
+2026-07-27 15:27:45,989 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-07-27 15:27:45,989 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 15:34:14,731 [INFO] __main__: ============================================================
+2026-07-27 15:34:14,731 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 15:34:14,732 [INFO] __main__: ============================================================
+2026-07-27 15:34:14,735 [INFO] __main__: Running initial fetch...
+2026-07-27 15:34:14,736 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:34:15,074 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:34:15,074 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:34:15,074 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:34:15,074 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:34:15,074 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.0000 涨跌:+2.16% 成交量:10906718
+2026-07-27 15:34:15,074 [INFO] src.alerts_engine: Alert triggered: ⚠️ 芯片ETF华夏(159995) price above 1.27 | 当前: 1.2780 | 涨跌: +0.63%
+2026-07-27 15:34:15,074 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-27 15:34:15,898 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 15:34:15,898 [INFO] __main__: Scheduler started. Next run in 10 minutes. Press Ctrl+C to stop.
+2026-07-27 15:34:15,899 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-07-27 15:34:15,899 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 15:36:37,271 [INFO] __main__: ============================================================
+2026-07-27 15:36:37,271 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 15:36:37,271 [INFO] __main__: ============================================================
+2026-07-27 15:36:37,274 [INFO] __main__: Running initial fetch...
+2026-07-27 15:36:37,274 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:36:37,593 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:36:37,593 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:36:37,594 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:36:37,594 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:36:37,594 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.0000 涨跌:+2.16% 成交量:10988647
+2026-07-27 15:36:37,594 [INFO] src.alerts_engine: Alert triggered: ⚠️ 芯片ETF华夏(159995) price above 1.27 | 当前: 1.2780 | 涨跌: +0.63%
+2026-07-27 15:36:37,595 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-27 15:36:38,291 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 15:36:38,291 [INFO] __main__: Scheduler started. Next run in 10 minutes. Press Ctrl+C to stop.
+2026-07-27 15:36:38,292 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-07-27 15:36:38,293 [INFO] apscheduler.scheduler: Scheduler started
