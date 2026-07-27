@@ -1,0 +1,9 @@
+rules:
+  - symbol: "159995"
+    field: "price"
+    op: "above"
+    value: 1.5
+  - symbol: "AAPL"
+    field: "change_pct"
+    op: "below"
+    value: -3.0
