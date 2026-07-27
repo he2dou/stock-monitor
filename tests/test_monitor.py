@@ -1,4 +1,4 @@
-import pytest
+﻿import pytest
 from unittest.mock import MagicMock, patch
 from src.monitor import MonitorService
 
@@ -6,7 +6,7 @@ from src.monitor import MonitorService
 @pytest.fixture(autouse=True)
 def _market_open():
     """Default: treat market as open so existing tests are time-independent."""
-    with patch("src.monitor.any_market_open", return_value=True):
+    with patch("src.monitor.is_market_open", return_value=True):
         yield
 from src.models import Quote, Alert, AlertRule
 
@@ -51,10 +51,25 @@ def test_monitor_logs_all_quotes(monitor_setup, caplog):
 
 def test_monitor_skips_when_market_closed(monitor_setup):
     src, engine, notifier = monitor_setup
-    with patch("src.monitor.any_market_open", return_value=False):
+    with patch("src.monitor.is_market_open", return_value=False):
         svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
                              stocks=[{"symbol": "AAPL", "name": "Apple", "market": "美股"}])
         svc.run_once()
     src.fetch_quotes.assert_not_called()
     engine.check.assert_not_called()
     notifier.send.assert_not_called()
+
+
+def test_monitor_fetches_only_open_market_stocks(monitor_setup):
+    src, engine, notifier = monitor_setup
+    engine.check.return_value = []
+    stocks = [
+        {"symbol": "159995", "name": "芯片ETF", "market": "A股"},
+        {"symbol": "00700", "name": "腾讯控股", "market": "港股"},
+        {"symbol": "AAPL", "name": "Apple", "market": "美股"},
+    ]
+    with patch("src.monitor.is_market_open", side_effect=lambda market: market == "港股"):
+        svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
+                             stocks=stocks)
+        svc.run_once()
+    src.fetch_quotes.assert_called_once_with([stocks[1]])

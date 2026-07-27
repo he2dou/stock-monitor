@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 import sys
 import os
 from pathlib import Path
@@ -71,14 +71,14 @@ def main():
     scheduler = BlockingScheduler()
     scheduler.add_job(
         monitor.run_once,
-        IntervalTrigger(minutes=10),
+        IntervalTrigger(minutes=30),
         id="stock_monitor",
-        name="Fetch stock quotes every 10 minutes",
+        name="Fetch stock quotes every 30 minutes",
         max_instances=1,
         coalesce=True,
     )
 
-    logger.info("Scheduler started. Next run in 10 minutes. Press Ctrl+C to stop.")
+    logger.info("Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.")
     try:
         scheduler.start()
     except (KeyboardInterrupt, SystemExit):
@@ -88,3 +88,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

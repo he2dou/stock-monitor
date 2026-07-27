@@ -88,3 +88,12 @@ def test_any_market_open_all_closed():
 def test_unknown_market_is_closed():
     assert is_market_open("期货", at(2026, 7, 27, 10, 0)) is False
     assert sessions_for("期货", at(2026, 7, 27, 10, 0)) == []
+
+def test_us_friday_session_continues_into_saturday_morning_beijing():
+    # US Friday regular session continues into Saturday morning in Beijing time.
+    assert is_market_open("美股", at(2026, 7, 25, 3, 30)) is True
+
+
+def test_us_monday_early_morning_beijing_is_closed():
+    # Monday 03:30 Beijing corresponds to Sunday afternoon/evening in the US.
+    assert is_market_open("美股", at(2026, 7, 27, 3, 30)) is False

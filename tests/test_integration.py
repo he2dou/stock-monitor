@@ -1,4 +1,4 @@
-"""集成测试：mock数据源 → 引擎 → 通知器 全链路"""
+﻿"""集成测试：mock数据源 → 引擎 → 通知器 全链路"""
 import pytest
 from unittest.mock import MagicMock, patch
 from src.monitor import MonitorService
@@ -6,7 +6,7 @@ from src.monitor import MonitorService
 
 @pytest.fixture(autouse=True)
 def _market_open():
-    with patch("src.monitor.any_market_open", return_value=True):
+    with patch("src.monitor.is_market_open", return_value=True):
         yield
 from src.models import Quote, Alert, AlertRule
 
@@ -51,3 +51,4 @@ def test_full_pipeline_100_stocks():
                          notifiers=[mock_notifier], stocks=stocks_config)
     svc.run_once()
     assert len(mock_source.fetch_quotes.call_args[0][0]) == 100
+

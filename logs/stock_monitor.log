@@ -279,3 +279,28 @@
 2026-07-27 15:36:38,291 [INFO] __main__: Scheduler started. Next run in 10 minutes. Press Ctrl+C to stop.
 2026-07-27 15:36:38,292 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
 2026-07-27 15:36:38,293 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 15:44:13,158 [INFO] __main__: ============================================================
+2026-07-27 15:44:13,159 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 15:44:13,159 [INFO] __main__: ============================================================
+2026-07-27 15:44:13,161 [INFO] __main__: Running initial fetch...
+2026-07-27 15:44:13,161 [INFO] src.monitor: Fetching quotes for 5 stocks...
+2026-07-27 15:44:13,472 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2780 涨跌:+0.63% 成交量:6890467
+2026-07-27 15:44:13,473 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9460 涨跌:+2.38% 成交量:5827481
+2026-07-27 15:44:13,473 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8590 涨跌:+2.38% 成交量:12658580
+2026-07-27 15:44:13,473 [INFO] src.monitor: 美股 | 苹果(AAPL) 价格:333.0200 涨跌:+3.53% 成交量:47489415
+2026-07-27 15:44:13,473 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:443.6000 涨跌:+2.07% 成交量:11319712
+2026-07-27 15:44:13,474 [INFO] src.alerts_engine: Alert triggered: ⚠️ 芯片ETF华夏(159995) price above 1.27 | 当前: 1.2780 | 涨跌: +0.63%
+2026-07-27 15:44:13,474 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-27 15:44:14,243 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 15:44:14,244 [INFO] __main__: Scheduler started. Next run in 10 minutes. Press Ctrl+C to stop.
+2026-07-27 15:44:14,244 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-07-27 15:44:14,244 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 16:37:48,002 [INFO] __main__: ============================================================
+2026-07-27 16:37:48,003 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 16:37:48,003 [INFO] __main__: ============================================================
+2026-07-27 16:37:48,007 [INFO] __main__: Running initial fetch...
+2026-07-27 16:37:48,007 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-27 16:37:48,012 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 16:37:48,012 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
+2026-07-27 16:37:48,013 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
+2026-07-27 16:37:48,014 [INFO] apscheduler.scheduler: Scheduler started

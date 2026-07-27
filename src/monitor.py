@@ -1,5 +1,5 @@
-import logging
-from src.market_hours import any_market_open
+﻿import logging
+from src.market_hours import is_market_open
 from src.sources.base import DataSource
 from src.alerts_engine import AlertEngine
 from src.notifiers.base import Notifier
@@ -16,19 +16,23 @@ class MonitorService:
         self.engine = alert_engine
         self.notifiers = notifiers
         self.stocks = stocks
-        # Distinct markets in the watchlist, e.g. {"A股", "港股", "美股"}.
-        self._markets = sorted({s.get("market", "") for s in self.stocks})
+
 
     def run_once(self) -> None:
         """执行一轮监控"""
-        # Skip entirely when no watched market is in its trading session. This
-        # avoids pointless overnight/weekend requests and provider rate limits.
-        if not any_market_open(self._markets):
+        # Only fetch symbols whose market is currently in a trading session.
+        # This avoids overnight/weekend requests and stops a still-open market
+        # (e.g. HK) from causing closed-market symbols (e.g. A-shares) to run.
+        open_stocks = [s for s in self.stocks if is_market_open(s.get("market", ""))]
+        if not open_stocks:
+            markets = sorted({s.get("market", "") for s in self.stocks})
             logger.info(
-                f"Skipping cycle: none of {self._markets} is in a trading session")
+                f"Skipping cycle: none of {markets} is in a trading session")
             return
-        logger.info(f"Fetching quotes for {len(self.stocks)} stocks...")
-        quotes = self.source.fetch_quotes(self.stocks)
+        logger.info(
+            f"Fetching quotes for {len(open_stocks)}/{len(self.stocks)} "
+            "stocks in open markets...")
+        quotes = self.source.fetch_quotes(open_stocks)
 
         if not quotes:
             logger.warning("No quotes fetched this cycle")
@@ -50,3 +54,4 @@ class MonitorService:
             logger.info("No alerts triggered")
             for n in self.notifiers:
                 n.send([])
+
