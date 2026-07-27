@@ -1,4 +1,4 @@
-import yaml
+﻿import yaml
 from pathlib import Path
 
 VALID_MARKETS = {"A股", "港股", "美股"}
@@ -42,8 +42,8 @@ def load_alerts(path: str) -> list[dict]:
         if "value" not in r or "symbol" not in r:
             raise ConfigError(f"Alert rule missing symbol/value: {r}")
     return rules
-def load_notify(path: str) -> dict:
-    """Load notification-channel config (e.g. webhook_url).
+def load_app_config(path: str) -> dict:
+    """Load application config (webhook, runtime options, etc.).
 
     Returns {} when the file is absent or empty, so callers can rely on
     a stable default (webhook disabled).
@@ -56,3 +56,6 @@ def load_notify(path: str) -> dict:
         return {}
     return data
 
+def load_notify(path: str) -> dict:
+    """Backward-compatible alias for older notify.yaml callers."""
+    return load_app_config(path)

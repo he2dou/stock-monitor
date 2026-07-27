@@ -304,3 +304,24 @@
 2026-07-27 16:37:48,012 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
 2026-07-27 16:37:48,013 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
 2026-07-27 16:37:48,014 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 17:26:35,186 [INFO] __main__: ============================================================
+2026-07-27 17:26:35,186 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 17:26:35,186 [INFO] __main__: ============================================================
+2026-07-27 17:26:35,189 [INFO] __main__: Running initial fetch...
+2026-07-27 17:26:35,190 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-27 17:26:35,197 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 17:26:35,198 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
+2026-07-27 17:26:35,199 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
+2026-07-27 17:26:35,200 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 17:56:35,215 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 17:56:35 CST)" (scheduled at 2026-07-27 17:56:35.197909+08:00)
+2026-07-27 17:56:35,217 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-27 17:56:35,218 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 18:26:35 CST)" executed successfully
+2026-07-27 18:14:53,410 [INFO] __main__: ============================================================
+2026-07-27 18:14:53,410 [INFO] __main__: Stock Price Monitor starting...
+2026-07-27 18:14:53,410 [INFO] __main__: ============================================================
+2026-07-27 18:14:53,414 [INFO] __main__: Running initial fetch...
+2026-07-27 18:14:53,415 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-27 18:14:53,418 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-27 18:14:53,419 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
+2026-07-27 18:14:53,419 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
+2026-07-27 18:14:53,419 [INFO] apscheduler.scheduler: Scheduler started

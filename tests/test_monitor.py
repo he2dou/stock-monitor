@@ -73,3 +73,48 @@ def test_monitor_fetches_only_open_market_stocks(monitor_setup):
                              stocks=stocks)
         svc.run_once()
     src.fetch_quotes.assert_called_once_with([stocks[1]])
+
+def test_monitor_reloads_watchlist_each_cycle(monitor_setup):
+    src, engine, notifier = monitor_setup
+    engine.check.return_value = []
+    first = [{"symbol": "AAPL", "name": "Apple", "market": "美股"}]
+    second = [{"symbol": "00700", "name": "腾讯控股", "market": "港股"}]
+    stocks_loader = MagicMock(side_effect=[first, second])
+    svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
+                         stocks=first, stocks_loader=stocks_loader)
+
+    svc.run_once()
+    svc.run_once()
+
+    assert src.fetch_quotes.call_args_list[0].args[0] == first
+    assert src.fetch_quotes.call_args_list[1].args[0] == second
+
+
+def test_monitor_reloads_alert_rules_each_cycle(monitor_setup):
+    src, engine, notifier = monitor_setup
+    engine.check.return_value = []
+    rules1 = [{"symbol": "AAPL", "field": "price", "op": "above", "value": 200}]
+    rules2 = [{"symbol": "AAPL", "field": "price", "op": "below", "value": 100}]
+    rules_loader = MagicMock(side_effect=[rules1, rules2])
+    svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
+                         stocks=[{"symbol": "AAPL", "name": "Apple", "market": "美股"}],
+                         rules_loader=rules_loader)
+
+    svc.run_once()
+    svc.run_once()
+
+    assert engine.set_rules.call_args_list[0].args[0] == rules1
+    assert engine.set_rules.call_args_list[1].args[0] == rules2
+
+
+def test_monitor_keeps_previous_watchlist_when_reload_fails(monitor_setup):
+    src, engine, notifier = monitor_setup
+    engine.check.return_value = []
+    original = [{"symbol": "AAPL", "name": "Apple", "market": "美股"}]
+    stocks_loader = MagicMock(side_effect=Exception("bad yaml"))
+    svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
+                         stocks=original, stocks_loader=stocks_loader)
+
+    svc.run_once()
+
+    src.fetch_quotes.assert_called_once_with(original)

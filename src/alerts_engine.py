@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 import time
 from src.models import Quote, Alert, AlertRule
 
@@ -6,12 +6,17 @@ logger = logging.getLogger(__name__)
 
 class AlertEngine:
     def __init__(self, rules: list[dict], cooldown_seconds: int = 300):
-        self.rules: dict[str, list[AlertRule]] = {}
-        for r in rules:
-            rule = AlertRule(field=r["field"], op=r["op"], value=r["value"])
-            self.rules.setdefault(r["symbol"], []).append(rule)
         self.cooldown = cooldown_seconds
         self._last_triggered: dict[str, float] = {}
+        self.set_rules(rules)
+
+    def set_rules(self, rules: list[dict]) -> None:
+        """Replace alert rules without clearing cooldown history."""
+        parsed: dict[str, list[AlertRule]] = {}
+        for r in rules:
+            rule = AlertRule(field=r["field"], op=r["op"], value=r["value"])
+            parsed.setdefault(r["symbol"], []).append(rule)
+        self.rules = parsed
 
     def check(self, quotes: list[Quote]) -> list[Alert]:
         alerts: list[Alert] = []

@@ -45,7 +45,7 @@ def build_monitor() -> MonitorService:
     stocks = load_watchlist(str(CONFIG_DIR / "watchlist.yaml"))
     rules = load_alerts(str(CONFIG_DIR / "alerts.yaml"))
     notify = load_notify(str(CONFIG_DIR / "notify.yaml"))
-    # Environment variable takes precedence over the config file so it can
+    # Environment variable takes precedence  over the config file so it can
     # still be overridden per-deploy (containers/CI) without editing the file.
     webhook_url = os.environ.get("WEBHOOK_URL") or notify.get("webhook_url", "")
     webhook_timeout = int(notify.get("webhook_timeout", 10) or 10)

@@ -1,6 +1,6 @@
-# 📈 股票价格监控
+﻿# 📈 股票价格监控
 
-监控 A股、港股、美股实时行情，每30分钟轮询，支持100+只股票，价格预警推送。
+监控 A股、港股、美股实时行情，每30分钟轮询，支持100+只股票，价格预警推送。`config/watchlist.yaml` 和 `config/alerts.yaml` 会在每轮执行前动态重载，无需重启程序。
 
 ## 快速开始
 
@@ -41,6 +41,12 @@ python -m src.main
 ```
 
 ### 5. 启用钉钉/飞书通知（可选）
+编辑 `config/config.yaml`：
+```yaml
+webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/YOUR_TOKEN"
+webhook_timeout: 10
+```
+也可以用环境变量临时覆盖：
 ```bash
 export WEBHOOK_URL="https://oapi.dingtalk.com/robot/send?access_token=YOUR_TOKEN"
 python -m src.main
@@ -50,8 +56,9 @@ python -m src.main
 
 | 文件 | 说明 |
 |------|------|
-| `config/watchlist.yaml` | 股票池（代码、名称、市场） |
-| `config/alerts.yaml` | 预警规则（价格/涨跌幅 上/下限） |
+| `config/watchlist.yaml` | 股票池（代码、名称、市场），运行中动态重载 |
+| `config/alerts.yaml` | 预警规则（价格/涨跌幅 上/下限），运行中动态重载 |
+| `config/config.yaml` | 应用配置（Webhook URL、超时等） |
 
 ### market 取值
 - `A股` — 沪深A股
@@ -89,3 +96,4 @@ alerts.yaml ────┘                  └─→ AlertEngine ─→ Notifi
 > 说明：之前的东方财富(push2.eastmoney.com)接口在启用本地代理(Clash/V2Ray)
 > 时会被拦截重置连接，导致 `RemoteDisconnected`。本实现用 `trust_env=False`
 > 绕开系统代理，并改用不受影响的腾讯/新浪通道，保证稳定。
+

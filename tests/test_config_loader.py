@@ -1,6 +1,6 @@
-import pytest
+﻿import pytest
 import yaml
-from src.config_loader import load_watchlist, load_alerts, load_notify, ConfigError
+from src.config_loader import load_watchlist, load_alerts, load_app_config, load_notify, ConfigError
 
 def test_load_watchlist(tmp_path):
     f = tmp_path / "watchlist.yaml"
@@ -56,27 +56,31 @@ def test_load_watchlist_100_stocks(tmp_path):
     result = load_watchlist(str(f))
     assert len(result) == 100
 
-def test_load_notify_reads_webhook(tmp_path):
-    f = tmp_path / "notify.yaml"
+def test_load_app_config_reads_webhook(tmp_path):
+    f = tmp_path / "config.yaml"
     f.write_text("""
 webhook_url: "https://example.test/hook"
 webhook_timeout: 5
 """, encoding="utf-8")
-    result = load_notify(str(f))
+    result = load_app_config(str(f))
     assert result["webhook_url"] == "https://example.test/hook"
     assert result["webhook_timeout"] == 5
 
-def test_load_notify_missing_file_returns_empty():
-    assert load_notify("nonexistent.yaml") == {}
+def test_load_app_config_missing_file_returns_empty():
+    assert load_app_config("nonexistent.yaml") == {}
 
-def test_load_notify_empty_file_returns_empty(tmp_path):
-    f = tmp_path / "notify.yaml"
+def test_load_app_config_empty_file_returns_empty(tmp_path):
+    f = tmp_path / "config.yaml"
     f.write_text("", encoding="utf-8")
-    assert load_notify(str(f)) == {}
+    assert load_app_config(str(f)) == {}
 
-def test_load_notify_disabled_when_url_blank(tmp_path):
-    f = tmp_path / "notify.yaml"
+def test_load_app_config_disabled_when_url_blank(tmp_path):
+    f = tmp_path / "config.yaml"
     f.write_text('webhook_url: ""\nwebhook_timeout: 10\n', encoding="utf-8")
-    result = load_notify(str(f))
+    result = load_app_config(str(f))
     assert result["webhook_url"] == ""  # caller treats blank as disabled
 
+def test_load_notify_alias(tmp_path):
+    f = tmp_path / "notify.yaml"
+    f.write_text('webhook_url: "https://example.test/old"\n', encoding="utf-8")
+    assert load_notify(str(f))["webhook_url"] == "https://example.test/old"

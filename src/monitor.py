@@ -1,4 +1,5 @@
 ﻿import logging
+from collections.abc import Callable
 from src.market_hours import is_market_open
 from src.sources.base import DataSource
 from src.alerts_engine import AlertEngine
@@ -8,18 +9,45 @@ from src.models import Quote
 logger = logging.getLogger(__name__)
 
 class MonitorService:
-    """核心监控编排：拉数据 → 查规则 → 发通知"""
+    """核心监控编排：热加载配置 → 拉数据 → 查规则 → 发通知"""
 
     def __init__(self, source: DataSource, alert_engine: AlertEngine,
-                 notifiers: list[Notifier], stocks: list[dict]):
+                 notifiers: list[Notifier], stocks: list[dict],
+                 stocks_loader: Callable[[], list[dict]] | None = None,
+                 rules_loader: Callable[[], list[dict]] | None = None):
         self.source = source
         self.engine = alert_engine
         self.notifiers = notifiers
         self.stocks = stocks
+        self._stocks_loader = stocks_loader
+        self._rules_loader = rules_loader
 
+    def _reload_runtime_config(self) -> None:
+        """Reload watchlist/alert rules before each cycle.
+
+        A partially edited YAML file should not kill the long-running monitor.
+        If reload fails, keep the last known-good config and try again next run.
+        """
+        if self._stocks_loader is not None:
+            try:
+                stocks = self._stocks_loader()
+            except Exception as e:
+                logger.error(f"Failed to reload watchlist.yaml; keeping previous stocks: {e}")
+            else:
+                self.stocks = stocks
+
+        if self._rules_loader is not None:
+            try:
+                rules = self._rules_loader()
+            except Exception as e:
+                logger.error(f"Failed to reload alerts.yaml; keeping previous rules: {e}")
+            else:
+                self.engine.set_rules(rules)
 
     def run_once(self) -> None:
         """执行一轮监控"""
+        self._reload_runtime_config()
+
         # Only fetch symbols whose market is currently in a trading session.
         # This avoids overnight/weekend requests and stops a still-open market
         # (e.g. HK) from causing closed-market symbols (e.g. A-shares) to run.
@@ -54,4 +82,3 @@ class MonitorService:
             logger.info("No alerts triggered")
             for n in self.notifiers:
                 n.send([])
-
