@@ -1,6 +1,6 @@
 ﻿import pytest
 import yaml
-from src.config_loader import load_watchlist, load_alerts, load_app_config, load_notify, ConfigError
+from src.config_loader import load_watchlist, load_alerts, load_app_config, load_notify, load_strategies, ConfigError
 
 def test_load_watchlist(tmp_path):
     f = tmp_path / "watchlist.yaml"
@@ -84,3 +84,44 @@ def test_load_notify_alias(tmp_path):
     f = tmp_path / "notify.yaml"
     f.write_text('webhook_url: "https://example.test/old"\n', encoding="utf-8")
     assert load_notify(str(f))["webhook_url"] == "https://example.test/old"
+
+def test_load_strategies_valid(tmp_path):
+    f = tmp_path / "strategies.yaml"
+    f.write_text("""
+strategies:
+  - id: "s1"
+    enabled: true
+    symbol: "SOXL"
+    action: "buy"
+    trigger:
+      field: "change_pct"
+      op: "below"
+      value: -10
+    sizing:
+      type: "fixed_amount"
+      amount: 1000
+      currency: "USD"
+      lot_size: 1
+""", encoding="utf-8")
+    strategies = load_strategies(str(f))
+    assert len(strategies) == 1
+    assert strategies[0]["id"] == "s1"
+
+
+def test_load_strategies_invalid_action(tmp_path):
+    f = tmp_path / "strategies.yaml"
+    f.write_text("""
+strategies:
+  - id: "s1"
+    symbol: "SOXL"
+    action: "hold"
+    trigger:
+      field: "price"
+      op: "above"
+      value: 1
+    sizing:
+      type: "fixed_amount"
+      amount: 1000
+""", encoding="utf-8")
+    with pytest.raises(ConfigError, match="action"):
+        load_strategies(str(f))

@@ -9,48 +9,62 @@ from src.models import Quote
 logger = logging.getLogger(__name__)
 
 class MonitorService:
-    """核心监控编排：热加载配置 → 拉数据 → 查规则 → 发通知"""
+    """核心监控编排：热加载配置 → 拉数据 → 查规则 → 模拟交易 → 发通知"""
 
     def __init__(self, source: DataSource, alert_engine: AlertEngine,
                  notifiers: list[Notifier], stocks: list[dict],
                  stocks_loader: Callable[[], list[dict]] | None = None,
                  rules_loader: Callable[[], list[dict]] | None = None,
-                 notifiers_loader: Callable[[], list[Notifier]] | None = None):
+                 notifiers_loader: Callable[[], list[Notifier]] | None = None,
+                 trading_service=None,
+                 strategies_loader: Callable[[], list[dict]] | None = None,
+                 app_config_loader: Callable[[], dict] | None = None):
         self.source = source
         self.engine = alert_engine
         self.notifiers = notifiers
         self.stocks = stocks
+        self.trading_service = trading_service
         self._stocks_loader = stocks_loader
         self._rules_loader = rules_loader
         self._notifiers_loader = notifiers_loader
+        self._strategies_loader = strategies_loader
+        self._app_config_loader = app_config_loader
 
     def _reload_runtime_config(self) -> None:
-        """Reload watchlist/alert rules/app config before each cycle.
+        """Reload runtime configs before each cycle.
 
         A partially edited YAML file should not kill the long-running monitor.
         If reload fails, keep the last known-good config and try again next run.
         """
         if self._stocks_loader is not None:
             try:
-                stocks = self._stocks_loader()
+                self.stocks = self._stocks_loader()
             except Exception as e:
                 logger.error(f"Failed to reload watchlist.yaml; keeping previous stocks: {e}")
-            else:
-                self.stocks = stocks
 
         if self._rules_loader is not None:
             try:
-                rules = self._rules_loader()
+                self.engine.set_rules(self._rules_loader())
             except Exception as e:
                 logger.error(f"Failed to reload alerts.yaml; keeping previous rules: {e}")
-            else:
-                self.engine.set_rules(rules)
 
         if self._notifiers_loader is not None:
             try:
                 self.notifiers = self._notifiers_loader()
             except Exception as e:
                 logger.error(f"Failed to reload config.yaml; keeping previous notifiers: {e}")
+
+        if self.trading_service is not None and self._strategies_loader is not None:
+            try:
+                self.trading_service.set_strategies(self._strategies_loader())
+            except Exception as e:
+                logger.error(f"Failed to reload strategies.yaml; keeping previous strategies: {e}")
+
+        if self.trading_service is not None and self._app_config_loader is not None:
+            try:
+                self.trading_service.apply_config(self._app_config_loader())
+            except Exception as e:
+                logger.error(f"Failed to reload paper trading config; keeping previous config: {e}")
 
     def run_once(self) -> None:
         """执行一轮监控"""
@@ -90,3 +104,10 @@ class MonitorService:
             logger.info("No alerts triggered")
             for n in self.notifiers:
                 n.send([])
+
+        if self.trading_service is not None:
+            trade_messages = self.trading_service.process(quotes)
+            if trade_messages:
+                logger.info(f"{len(trade_messages)} paper trading event(s) generated")
+                for n in self.notifiers:
+                    n.send(trade_messages)

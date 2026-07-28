@@ -1,7 +1,18 @@
+﻿# 应用程序配置
+monitor:
+  interval_minutes: 30
+
 # Webhook 通知渠道配置（钉钉 / 飞书 / 企业微信 等）
 # webhook_url 留空则不启用推送。
 # 环境变量 WEBHOOK_URL 可覆盖此处的值（优先级：环境变量 > 配置文件）。
 webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/782baaad-2e8c-488a-b937-36738f420eb7"
-
-# Webhook 请求超时（秒）
 webhook_timeout: 10
+
+paper_trading:
+  enabled: true
+  db_path: "data/trading.sqlite3"
+  quote_history_enabled: true
+  accounts:
+    CNY: 100000
+    HKD: 100000
+    USD: 50000

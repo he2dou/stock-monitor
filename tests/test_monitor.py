@@ -118,3 +118,37 @@ def test_monitor_keeps_previous_watchlist_when_reload_fails(monitor_setup):
     svc.run_once()
 
     src.fetch_quotes.assert_called_once_with(original)
+
+def test_monitor_sends_trade_messages(monitor_setup):
+    src, engine, notifier = monitor_setup
+    engine.check.return_value = []
+    trade = MagicMock(message="trade filled")
+    trading_service = MagicMock()
+    trading_service.process.return_value = [trade]
+    svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
+                         stocks=[{"symbol": "AAPL", "name": "Apple", "market": "美股"}],
+                         trading_service=trading_service)
+
+    svc.run_once()
+
+    trading_service.process.assert_called_once()
+    notifier.send.assert_any_call([trade])
+
+
+def test_monitor_reloads_strategies_and_app_config(monitor_setup):
+    src, engine, notifier = monitor_setup
+    engine.check.return_value = []
+    trading_service = MagicMock()
+    trading_service.process.return_value = []
+    strategies_loader = MagicMock(return_value=[{"id": "s1"}])
+    app_config_loader = MagicMock(return_value={"paper_trading": {"enabled": True}})
+    svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
+                         stocks=[{"symbol": "AAPL", "name": "Apple", "market": "美股"}],
+                         trading_service=trading_service,
+                         strategies_loader=strategies_loader,
+                         app_config_loader=app_config_loader)
+
+    svc.run_once()
+
+    trading_service.set_strategies.assert_called_once_with([{"id": "s1"}])
+    trading_service.apply_config.assert_called_once_with({"paper_trading": {"enabled": True}})

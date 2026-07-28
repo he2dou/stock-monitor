@@ -1,0 +1,17 @@
+﻿strategies:
+  - id: "soxl_drop_buy"
+    enabled: true
+    symbol: "SOXL"
+    action: "buy"
+    trigger:
+      field: "change_pct"
+      op: "below"
+      value: -10.0
+    sizing:
+      type: "fixed_amount"
+      amount: 1000
+      currency: "USD"
+      lot_size: 1
+    constraints:
+      cooldown_minutes: 300
+      max_position_amount: 5000
