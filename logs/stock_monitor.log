@@ -699,3 +699,91 @@
 2026-07-28 13:59:40,430 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:111.9000 涨跌:+0.81% 成交量:55604560
 2026-07-28 13:59:40,472 [INFO] src.monitor: No alerts triggered
 2026-07-28 13:59:40,473 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 14:09:39 CST)" executed successfully
+2026-07-28 14:09:39,801 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 14:09:39 CST)" (scheduled at 2026-07-28 14:09:39.770846+08:00)
+2026-07-28 14:09:39,813 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 14:09:39,813 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 14:09:40,680 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.1830 涨跌:-7.43% 成交量:8064374
+2026-07-28 14:09:40,680 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9230 涨跌:-2.43% 成交量:4659174
+2026-07-28 14:09:40,681 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8410 涨跌:-2.10% 成交量:7178348
+2026-07-28 14:09:40,681 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.8000 涨跌:+0.41% 成交量:12851099
+2026-07-28 14:09:40,681 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:111.8000 涨跌:+0.72% 成交量:56303160
+2026-07-28 14:09:40,681 [INFO] src.monitor: No alerts triggered
+2026-07-28 14:09:40,681 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 14:19:39 CST)" executed successfully
+2026-07-28 14:12:09,610 [INFO] __main__: ============================================================
+2026-07-28 14:12:09,610 [INFO] __main__: Stock Price Monitor starting...
+2026-07-28 14:12:09,610 [INFO] __main__: ============================================================
+2026-07-28 14:12:09,620 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 14:12:09,620 [INFO] __main__: Running initial fetch...
+2026-07-28 14:12:09,624 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 14:12:09,629 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 14:12:10,021 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.1810 涨跌:-7.59% 成交量:8186783
+2026-07-28 14:12:10,021 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9230 涨跌:-2.43% 成交量:4677688
+2026-07-28 14:12:10,022 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8410 涨跌:-2.10% 成交量:7187217
+2026-07-28 14:12:10,022 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:444.8000 涨跌:+0.41% 成交量:12947372
+2026-07-28 14:12:10,022 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:111.6000 涨跌:+0.54% 成交量:56473560
+2026-07-28 14:12:10,022 [INFO] src.monitor: No alerts triggered
+2026-07-28 14:12:10,031 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-28 14:12:10,031 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
+2026-07-28 14:12:10,032 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
+2026-07-28 14:12:10,032 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-28 14:42:10,041 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 14:42:10 CST)" (scheduled at 2026-07-28 14:42:10.031613+08:00)
+2026-07-28 14:42:10,045 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 14:42:10,047 [ERROR] src.monitor: Failed to reload paper trading config; keeping previous config: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 19212 and this is thread id 27176.
+2026-07-28 14:42:10,048 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 14:42:10,388 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.1700 涨跌:-8.45% 成交量:9422827
+2026-07-28 14:42:10,389 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9200 涨跌:-2.75% 成交量:5648269
+2026-07-28 14:42:10,389 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8380 涨跌:-2.44% 成交量:8335831
+2026-07-28 14:42:10,389 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:445.8000 涨跌:+0.63% 成交量:13811139
+2026-07-28 14:42:10,389 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:111.5000 涨跌:+0.45% 成交量:58977085
+2026-07-28 14:42:10,389 [INFO] src.monitor: No alerts triggered
+2026-07-28 14:42:10,391 [ERROR] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 15:12:10 CST)" raised an exception
+Traceback (most recent call last):
+  File "C:\Users\Administrator\stock-monitor\src\trading_store.py", line 115, in save_quote_snapshots
+    self.conn.executemany(
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 19212 and this is thread id 27176.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\stock-monitor\src\monitor.py", line 109, in run_once
+    trade_messages = self.trading_service.process(quotes)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\stock-monitor\src\paper_trading.py", line 154, in process
+    self.store.save_quote_snapshots(quotes)
+  File "C:\Users\Administrator\stock-monitor\src\trading_store.py", line 114, in save_quote_snapshots
+    with self.conn:
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 19212 and this is thread id 27176.
+2026-07-28 15:09:17,372 [INFO] __main__: ============================================================
+2026-07-28 15:09:17,373 [INFO] __main__: Stock Price Monitor starting...
+2026-07-28 15:09:17,373 [INFO] __main__: ============================================================
+2026-07-28 15:09:17,381 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 15:09:17,381 [INFO] __main__: Running initial fetch...
+2026-07-28 15:09:17,386 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 15:09:17,389 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-28 15:09:17,933 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:446.8000 涨跌:+0.86% 成交量:14645446
+2026-07-28 15:09:17,933 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:111.7000 涨跌:+0.63% 成交量:62373293
+2026-07-28 15:09:17,933 [INFO] src.monitor: No alerts triggered
+2026-07-28 15:09:17,941 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-28 15:09:17,942 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
+2026-07-28 15:09:17,943 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
+2026-07-28 15:09:17,944 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-28 15:19:08,811 [INFO] src.main: Seeded 7 watchlist item(s) into SQLite
+2026-07-28 15:19:08,815 [INFO] src.main: Seeded 3 alert rule(s) into SQLite
+2026-07-28 15:19:08,819 [INFO] src.main: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 15:34:22,252 [INFO] __main__: ============================================================
+2026-07-28 15:34:22,252 [INFO] __main__: Stock Price Monitor starting...
+2026-07-28 15:34:22,252 [INFO] __main__: ============================================================
+2026-07-28 15:34:22,262 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 15:34:22,262 [INFO] __main__: Running initial fetch...
+2026-07-28 15:34:22,264 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 15:34:22,267 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-28 15:34:22,761 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:447.2000 涨跌:+0.95% 成交量:15285981
+2026-07-28 15:34:22,761 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:112.1000 涨跌:+0.99% 成交量:65279694
+2026-07-28 15:34:22,762 [INFO] src.monitor: No alerts triggered
+2026-07-28 15:34:22,766 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-28 15:34:22,767 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
+2026-07-28 15:34:22,767 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
+2026-07-28 15:34:22,767 [INFO] apscheduler.scheduler: Scheduler started

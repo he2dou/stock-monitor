@@ -1,6 +1,6 @@
-﻿# 📈 股票价格监控 / 模拟交易
+# 股票价格监控 / 模拟交易
 
-监控 A股、港股、美股实时行情，每30分钟轮询，支持价格预警、飞书/钉钉/企业微信通知、纸面模拟交易、SQLite 历史留存和基于历史行情快照的回测。`config/watchlist.yaml`、`config/alerts.yaml`、`config/strategies.yaml`、`config/config.yaml` 会在每轮执行前动态重载，无需重启程序。
+监控 A股、港股、美股实时行情，每30分钟轮询，支持价格预警、飞书/钉钉/企业微信通知、纸面模拟交易、SQLite 历史留存和基于历史行情快照的回测。运行时股票池和纯预警规则存放在 SQLite，程序每轮从数据库读取，修改后无需重启即可在下一轮生效。
 
 ## 快速开始
 
@@ -10,33 +10,56 @@ cd stock-monitor
 pip install -r requirements.txt
 ```
 
-### 2. 配置股票池
-编辑 `config/watchlist.yaml`：
+### 2. 应用配置和通知
+编辑 `config/config.yaml`：
 ```yaml
-stocks:
-  - symbol: "159995"
-    name: "芯片ETF"
-    market: "A股"
-  - symbol: "SOXL"
-    name: "半导体ETF"
-    market: "美股"
-  - symbol: "00700"
-    name: "腾讯控股"
-    market: "港股"
+monitor:
+  interval_minutes: 30
+
+webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/YOUR_TOKEN"
+webhook_timeout: 10
+
+paper_trading:
+  enabled: true
+  db_path: "data/trading.sqlite3"
+  quote_history_enabled: true
+  accounts:
+    CNY: 100000
+    HKD: 100000
+    USD: 50000
+```
+环境变量 `WEBHOOK_URL` 可临时覆盖配置文件里的 webhook 地址。
+
+### 3. 初始化股票池和纯预警
+`config/watchlist.yaml` 和 `config/alerts.yaml` 现在作为 SQLite 的首次种子/导入文件使用。程序启动时如果数据库对应表为空，会自动导入这两个文件；也可以手动导入：
+
+```bash
+python -m src.config_cli import-yaml
 ```
 
-### 3. 配置纯预警（可选）
-编辑 `config/alerts.yaml`：
-```yaml
-rules:
-  - symbol: "159995"
-    field: "price"
-    op: "above"
-    value: 1.5
+如果希望用 YAML 覆盖数据库中的股票池和预警规则：
+
+```bash
+python -m src.config_cli import-yaml --replace
 ```
 
-### 4. 配置模拟交易策略（可选）
-编辑 `config/strategies.yaml`：
+### 4. 运行时维护股票池和预警
+股票池和纯预警规则保存在 `paper_trading.db_path` 指向的 SQLite 数据库中。程序运行中修改数据库后，下一轮轮询自动生效，无需重启。
+
+```bash
+python -m src.config_cli list-watchlist
+python -m src.config_cli add-stock --symbol SOXL --name 半导体ETF --market 美股
+python -m src.config_cli disable-stock --symbol SOXL
+python -m src.config_cli enable-stock --symbol SOXL
+
+python -m src.config_cli list-alerts
+python -m src.config_cli add-alert --symbol SOXL --field change_pct --op below --value -10
+python -m src.config_cli disable-alert --rule-id RULE_ID
+python -m src.config_cli enable-alert --rule-id RULE_ID
+```
+
+### 5. 配置模拟交易策略（可选）
+编辑 `config/strategies.yaml`。策略文件仍然会在每轮执行前动态重载：
 ```yaml
 strategies:
   - id: "soxl_drop_buy"
@@ -56,26 +79,6 @@ strategies:
       cooldown_minutes: 300
       max_position_amount: 5000
 ```
-
-### 5. 应用配置和通知
-编辑 `config/config.yaml`：
-```yaml
-monitor:
-  interval_minutes: 30
-
-webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/YOUR_TOKEN"
-webhook_timeout: 10
-
-paper_trading:
-  enabled: true
-  db_path: "data/trading.sqlite3"
-  quote_history_enabled: true
-  accounts:
-    CNY: 100000
-    HKD: 100000
-    USD: 50000
-```
-环境变量 `WEBHOOK_URL` 可临时覆盖配置文件里的 webhook 地址。
 
 ### 6. 启动
 ```bash
@@ -100,19 +103,21 @@ python -m src.backtest --from 2026-07-01 --to 2026-07-28
 ```
 输出 JSON 摘要，包括回放行情数、订单数、成交数、已实现盈亏和期末现金。
 
-## 配置文件
+## 配置入口
 
-| 文件 | 说明 |
+| 入口 | 说明 |
 |------|------|
-| `config/watchlist.yaml` | 股票池（代码、名称、市场），运行中动态重载 |
-| `config/alerts.yaml` | 纯通知预警规则，运行中动态重载 |
+| SQLite `watchlist_items` | 运行时股票池，下一轮轮询自动生效 |
+| SQLite `alert_rules` | 运行时纯通知预警规则，下一轮轮询自动生效 |
+| `config/watchlist.yaml` | 股票池种子/导入文件，不再作为运行时直接读取来源 |
+| `config/alerts.yaml` | 纯预警种子/导入文件，不再作为运行时直接读取来源 |
 | `config/strategies.yaml` | 模拟交易策略，运行中动态重载 |
 | `config/config.yaml` | 应用配置（轮询周期、Webhook、模拟账户、数据库路径） |
 
 ### market 取值
-- `A股` — 沪深A股
-- `港股` — 香港港股
-- `美股` — 美国股票
+- `A股` - 沪深A股
+- `港股` - 香港港股
+- `美股` - 美国股票
 
 ### trigger 字段
 - `field`: `price` 或 `change_pct`

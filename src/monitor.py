@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 from collections.abc import Callable
 from src.market_hours import is_market_open
 from src.sources.base import DataSource
@@ -40,13 +40,13 @@ class MonitorService:
             try:
                 self.stocks = self._stocks_loader()
             except Exception as e:
-                logger.error(f"Failed to reload watchlist.yaml; keeping previous stocks: {e}")
+                logger.error(f"Failed to reload runtime watchlist from SQLite; keeping previous stocks: {e}")
 
         if self._rules_loader is not None:
             try:
                 self.engine.set_rules(self._rules_loader())
             except Exception as e:
-                logger.error(f"Failed to reload alerts.yaml; keeping previous rules: {e}")
+                logger.error(f"Failed to reload runtime alerts from SQLite; keeping previous rules: {e}")
 
         if self._notifiers_loader is not None:
             try:

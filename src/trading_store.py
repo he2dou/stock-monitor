@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import sqlite3
 import uuid
@@ -91,6 +91,28 @@ class TradingStore:
                 currency TEXT PRIMARY KEY,
                 cash REAL NOT NULL,
                 reserved_cash REAL NOT NULL DEFAULT 0,
+                updated_at TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS watchlist_items (
+                symbol TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                market TEXT NOT NULL,
+                enabled INTEGER NOT NULL DEFAULT 1,
+                sort_order INTEGER NOT NULL DEFAULT 0,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS alert_rules (
+                rule_id TEXT PRIMARY KEY,
+                symbol TEXT NOT NULL,
+                field TEXT NOT NULL,
+                op TEXT NOT NULL,
+                value REAL NOT NULL,
+                enabled INTEGER NOT NULL DEFAULT 1,
+                cooldown_seconds INTEGER,
+                created_at TEXT NOT NULL,
                 updated_at TEXT NOT NULL
             );
             """
@@ -253,3 +275,147 @@ class TradingStore:
     def realized_pnl(self) -> float:
         row = self.conn.execute("SELECT COALESCE(SUM(realized_pnl), 0) AS pnl FROM positions").fetchone()
         return float(row["pnl"])
+    # -- runtime config stored in SQLite ------------------------------------
+    def watchlist_count(self) -> int:
+        row = self.conn.execute("SELECT COUNT(*) AS c FROM watchlist_items").fetchone()
+        return int(row["c"])
+
+    def alert_rule_count(self) -> int:
+        row = self.conn.execute("SELECT COUNT(*) AS c FROM alert_rules").fetchone()
+        return int(row["c"])
+
+    def seed_watchlist(self, stocks: list[dict]) -> int:
+        """Insert YAML seed stocks when the DB watchlist is empty."""
+        if self.watchlist_count() > 0:
+            return 0
+        inserted = 0
+        now = utc_now()
+        with self.conn:
+            for idx, stock in enumerate(stocks):
+                self.conn.execute(
+                    """
+                    INSERT INTO watchlist_items
+                    (symbol, name, market, enabled, sort_order, created_at, updated_at)
+                    VALUES (?, ?, ?, 1, ?, ?, ?)
+                    """,
+                    (str(stock["symbol"]), stock["name"], stock["market"], idx, now, now),
+                )
+                inserted += 1
+        return inserted
+
+    def import_watchlist(self, stocks: list[dict], replace: bool = False) -> int:
+        """Import stocks into DB. With replace=True, clear existing rows first."""
+        now = utc_now()
+        with self.conn:
+            if replace:
+                self.conn.execute("DELETE FROM watchlist_items")
+            for idx, stock in enumerate(stocks):
+                self.conn.execute(
+                    """
+                    INSERT INTO watchlist_items
+                    (symbol, name, market, enabled, sort_order, created_at, updated_at)
+                    VALUES (?, ?, ?, 1, ?, ?, ?)
+                    ON CONFLICT(symbol) DO UPDATE SET
+                        name=excluded.name,
+                        market=excluded.market,
+                        enabled=1,
+                        sort_order=excluded.sort_order,
+                        updated_at=excluded.updated_at
+                    """,
+                    (str(stock["symbol"]), stock["name"], stock["market"], idx, now, now),
+                )
+        return len(stocks)
+
+    def load_watchlist(self, include_disabled: bool = False) -> list[dict]:
+        sql = "SELECT symbol, name, market, enabled FROM watchlist_items"
+        if not include_disabled:
+            sql += " WHERE enabled = 1"
+        sql += " ORDER BY sort_order ASC, symbol ASC"
+        return [dict(row) for row in self.conn.execute(sql).fetchall()]
+
+    def add_stock(self, symbol: str, name: str, market: str, enabled: bool = True) -> None:
+        now = utc_now()
+        next_order = self.watchlist_count()
+        with self.conn:
+            self.conn.execute(
+                """
+                INSERT INTO watchlist_items
+                (symbol, name, market, enabled, sort_order, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(symbol) DO UPDATE SET
+                    name=excluded.name,
+                    market=excluded.market,
+                    enabled=excluded.enabled,
+                    updated_at=excluded.updated_at
+                """,
+                (symbol, name, market, 1 if enabled else 0, next_order, now, now),
+            )
+
+    def set_stock_enabled(self, symbol: str, enabled: bool) -> None:
+        with self.conn:
+            self.conn.execute(
+                "UPDATE watchlist_items SET enabled = ?, updated_at = ? WHERE symbol = ?",
+                (1 if enabled else 0, utc_now(), symbol),
+            )
+
+    def seed_alert_rules(self, rules: list[dict]) -> int:
+        """Insert YAML seed alert rules when the DB alert table is empty."""
+        if self.alert_rule_count() > 0:
+            return 0
+        return self.import_alert_rules(rules, replace=False)
+
+    def import_alert_rules(self, rules: list[dict], replace: bool = False) -> int:
+        now = utc_now()
+        with self.conn:
+            if replace:
+                self.conn.execute("DELETE FROM alert_rules")
+            for rule in rules:
+                self.conn.execute(
+                    """
+                    INSERT INTO alert_rules
+                    (rule_id, symbol, field, op, value, enabled, cooldown_seconds, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        str(uuid.uuid4()), str(rule["symbol"]), rule["field"], rule["op"],
+                        float(rule["value"]), 1, rule.get("cooldown_seconds"), now, now,
+                    ),
+                )
+        return len(rules)
+
+    def load_alert_rules(self, include_disabled: bool = False) -> list[dict]:
+        sql = "SELECT rule_id, symbol, field, op, value, enabled, cooldown_seconds FROM alert_rules"
+        if not include_disabled:
+            sql += " WHERE enabled = 1"
+        sql += " ORDER BY created_at ASC, rule_id ASC"
+        rules: list[dict] = []
+        for row in self.conn.execute(sql).fetchall():
+            item = dict(row)
+            if item.get("cooldown_seconds") is None:
+                item.pop("cooldown_seconds", None)
+            rules.append(item)
+        return rules
+
+    def add_alert_rule(self, symbol: str, field: str, op: str, value: float,
+                       enabled: bool = True, cooldown_seconds: int | None = None) -> str:
+        rule_id = str(uuid.uuid4())
+        now = utc_now()
+        with self.conn:
+            self.conn.execute(
+                """
+                INSERT INTO alert_rules
+                (rule_id, symbol, field, op, value, enabled, cooldown_seconds, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (rule_id, symbol, field, op, float(value), 1 if enabled else 0,
+                 cooldown_seconds, now, now),
+            )
+        return rule_id
+
+    def set_alert_rule_enabled(self, rule_id: str, enabled: bool) -> None:
+        with self.conn:
+            self.conn.execute(
+                "UPDATE alert_rules SET enabled = ?, updated_at = ? WHERE rule_id = ?",
+                (1 if enabled else 0, utc_now(), rule_id),
+            )
+

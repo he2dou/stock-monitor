@@ -46,20 +46,42 @@ def _resolve_path(path_value: str) -> str:
     return str(p)
 
 
-def load_runtime_stocks() -> list[dict]:
-    return load_watchlist(str(CONFIG_DIR / "watchlist.yaml"))
+def load_runtime_app_config() -> dict:
+    return load_app_config(str(CONFIG_DIR / "config.yaml"))
 
 
-def load_runtime_rules() -> list[dict]:
-    return load_alerts(str(CONFIG_DIR / "alerts.yaml"))
+def runtime_db_path() -> str:
+    app_config = load_runtime_app_config()
+    paper = app_config.get("paper_trading", {}) or {}
+    return _resolve_path(paper.get("db_path", "data/trading.sqlite3"))
+
+
+def build_store() -> TradingStore:
+    store = TradingStore(runtime_db_path())
+    seed_runtime_config(store)
+    return store
+
+
+def seed_runtime_config(store: TradingStore) -> None:
+    """Seed DB config tables from YAML once when tables are empty."""
+    inserted_stocks = store.seed_watchlist(load_watchlist(str(CONFIG_DIR / "watchlist.yaml")))
+    if inserted_stocks:
+        logger.info(f"Seeded {inserted_stocks} watchlist item(s) into SQLite")
+    inserted_rules = store.seed_alert_rules(load_alerts(str(CONFIG_DIR / "alerts.yaml")))
+    if inserted_rules:
+        logger.info(f"Seeded {inserted_rules} alert rule(s) into SQLite")
+
+
+def load_runtime_stocks_from_store(store: TradingStore) -> list[dict]:
+    return store.load_watchlist()
+
+
+def load_runtime_rules_from_store(store: TradingStore) -> list[dict]:
+    return store.load_alert_rules()
 
 
 def load_runtime_strategies() -> list[dict]:
     return load_strategies(str(CONFIG_DIR / "strategies.yaml"))
-
-
-def load_runtime_app_config() -> dict:
-    return load_app_config(str(CONFIG_DIR / "config.yaml"))
 
 
 def load_runtime_notifiers() -> list[ConsoleNotifier | WebhookNotifier]:
@@ -75,35 +97,33 @@ def load_runtime_notifiers() -> list[ConsoleNotifier | WebhookNotifier]:
     return notifiers
 
 
-def build_trading_service() -> PaperTradingService:
+def build_trading_service(store: TradingStore) -> PaperTradingService:
     app_config = load_runtime_app_config()
     paper = app_config.get("paper_trading", {}) or {}
-    db_path = _resolve_path(paper.get("db_path", "data/trading.sqlite3"))
-    store = TradingStore(db_path)
     accounts = paper.get("accounts") or {"CNY": 100000, "HKD": 100000, "USD": 50000}
     store.ensure_accounts(accounts)
-    service = PaperTradingService(
+    return PaperTradingService(
         store=store,
         strategy_engine=StrategyEngine(load_runtime_strategies()),
         enabled=bool(paper.get("enabled", True)),
         quote_history_enabled=bool(paper.get("quote_history_enabled", True)),
     )
-    return service
 
 
 def build_monitor() -> MonitorService:
-    stocks = load_runtime_stocks()
-    rules = load_runtime_rules()
+    store = build_store()
     source = SinaTxSource()
+    stocks = load_runtime_stocks_from_store(store)
+    rules = load_runtime_rules_from_store(store)
     engine = AlertEngine(rules, cooldown_seconds=300)
-    trading_service = build_trading_service()
+    trading_service = build_trading_service(store)
     return MonitorService(
         source=source,
         alert_engine=engine,
         notifiers=load_runtime_notifiers(),
         stocks=stocks,
-        stocks_loader=load_runtime_stocks,
-        rules_loader=load_runtime_rules,
+        stocks_loader=lambda: load_runtime_stocks_from_store(store),
+        rules_loader=lambda: load_runtime_rules_from_store(store),
         notifiers_loader=load_runtime_notifiers,
         trading_service=trading_service,
         strategies_loader=load_runtime_strategies,
