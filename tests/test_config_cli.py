@@ -1,6 +1,7 @@
-﻿import json
+import json
 from pathlib import Path
 from src import config_cli
+from src.models import Quote
 
 
 def write_configs(root: Path):
@@ -82,3 +83,22 @@ def test_config_cli_add_and_disable_alert(tmp_path, monkeypatch, capsys):
     args = config_cli.build_parser().parse_args(["disable-alert", "--rule-id", rule_id])
     args.func(args)
     assert json.loads(capsys.readouterr().out)["enabled"] is False
+
+
+def test_config_cli_lists_index_snapshots(tmp_path, monkeypatch, capsys):
+    write_configs(tmp_path)
+    monkeypatch.setattr(config_cli, "BASE_DIR", tmp_path)
+    monkeypatch.setattr(config_cli, "CONFIG_DIR", tmp_path / "config")
+    store = config_cli.default_store()
+    store.save_index_snapshots(
+        [Quote("HSI", "恒生指数", "港股", 25320.0, 0.44, 1000, timestamp="2026-07-28T07:30:00Z")],
+        {"HSI": "2026-07-28"},
+    )
+    store.close()
+
+    args = config_cli.build_parser().parse_args(["list-index-snapshots", "--from", "2026-07-28", "--to", "2026-07-28"])
+    args.func(args)
+    rows = json.loads(capsys.readouterr().out)
+    assert len(rows) == 1
+    assert rows[0]["symbol"] == "HSI"
+    assert rows[0]["snapshot_date"] == "2026-07-28"

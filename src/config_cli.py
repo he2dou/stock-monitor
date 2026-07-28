@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import argparse
 import json
@@ -71,6 +71,12 @@ def cmd_list_alerts(args) -> None:
     store.close()
 
 
+def cmd_list_index_snapshots(args) -> None:
+    store = default_store()
+    print_json(store.load_index_snapshots(start=args.start, end=args.end))
+    store.close()
+
+
 def cmd_add_alert(args) -> None:
     store = default_store()
     rule_id = store.add_alert_rule(
@@ -129,6 +135,11 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("list-alerts")
     p.add_argument("--all", action="store_true", help="Include disabled alert rules")
     p.set_defaults(func=cmd_list_alerts)
+
+    p = sub.add_parser("list-index-snapshots", help="List saved daily market index snapshots")
+    p.add_argument("--from", dest="start", default=None, help="Start snapshot date, YYYY-MM-DD")
+    p.add_argument("--to", dest="end", default=None, help="End snapshot date, YYYY-MM-DD")
+    p.set_defaults(func=cmd_list_index_snapshots)
 
     p = sub.add_parser("add-alert")
     p.add_argument("--symbol", required=True)

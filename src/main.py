@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 import sys
 import os
 from pathlib import Path
@@ -15,6 +15,7 @@ from src.config_loader import load_watchlist, load_alerts, load_app_config, load
 from src.sources.sinatx_source import SinaTxSource
 from src.alerts_engine import AlertEngine
 from src.strategy_engine import StrategyEngine
+from src.index_snapshots import load_market_indices
 from src.trading_store import TradingStore
 from src.paper_trading import PaperTradingService
 from src.notifiers.console_notifier import ConsoleNotifier
@@ -84,6 +85,10 @@ def load_runtime_strategies() -> list[dict]:
     return load_strategies(str(CONFIG_DIR / "strategies.yaml"))
 
 
+def load_runtime_market_indices() -> list[dict]:
+    return load_market_indices(load_runtime_app_config())
+
+
 def load_runtime_notifiers() -> list[ConsoleNotifier | WebhookNotifier]:
     app_config = load_runtime_app_config()
     webhook_url = os.environ.get("WEBHOOK_URL") or app_config.get("webhook_url", "")
@@ -128,6 +133,9 @@ def build_monitor() -> MonitorService:
         trading_service=trading_service,
         strategies_loader=load_runtime_strategies,
         app_config_loader=load_runtime_app_config,
+        index_store=store,
+        market_indices=load_runtime_market_indices(),
+        market_indices_loader=load_runtime_market_indices,
     )
 
 

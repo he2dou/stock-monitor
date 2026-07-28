@@ -147,3 +147,15 @@ def test_provider_exception_does_not_crash_caller():
 def test_trust_env_disabled():
     src = SinaTxSource()
     assert src.session.trust_env is False
+
+
+def test_provider_symbol_overrides_default_mapping():
+    stock = {"symbol": ".DJI", "market": "美股", "tencent_symbol": "usDJI", "sina_symbol": "gb_dji"}
+    assert SinaTxSource._tencent_symbol(stock) == "usDJI"
+    assert SinaTxSource._sina_symbol(stock) == "gb_dji"
+
+
+def test_generic_provider_symbol_override_applies_to_both_sources():
+    stock = {"symbol": "000001", "market": "A股", "provider_symbol": "sh000001"}
+    assert SinaTxSource._tencent_symbol(stock) == "sh000001"
+    assert SinaTxSource._sina_symbol(stock) == "sh000001"

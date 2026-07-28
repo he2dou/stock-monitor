@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 from unittest.mock import MagicMock, patch
 from src.monitor import MonitorService
 
@@ -152,3 +152,45 @@ def test_monitor_reloads_strategies_and_app_config(monitor_setup):
 
     trading_service.set_strategies.assert_called_once_with([{"id": "s1"}])
     trading_service.apply_config.assert_called_once_with({"paper_trading": {"enabled": True}})
+
+
+def test_monitor_saves_daily_index_snapshots_before_stock_alerts(monitor_setup):
+    src, engine, notifier = monitor_setup
+    index_quote = Quote(".DJI", "道琼斯工业平均指数", "美股", 52210.0, 0.51, 1000)
+    stock_quote = Quote("AAPL", "Apple", "美股", 210, 1.0, 100)
+    src.fetch_quotes.side_effect = [[index_quote], [stock_quote]]
+    engine.check.return_value = []
+    store = MagicMock()
+    store.index_snapshot_exists.return_value = False
+    indices = [{"symbol": ".DJI", "name": "道琼斯工业平均指数", "market": "美股", "sina_symbol": "gb_dji"}]
+    stocks = [{"symbol": "AAPL", "name": "Apple", "market": "美股"}]
+
+    svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
+                         stocks=stocks, index_store=store, market_indices=indices)
+    svc.run_once()
+
+    assert src.fetch_quotes.call_args_list[0].args[0] == indices
+    assert src.fetch_quotes.call_args_list[1].args[0] == stocks
+    saved_quotes, snapshot_dates = store.save_index_snapshots.call_args.args
+    assert saved_quotes == [index_quote]
+    assert ".DJI" in snapshot_dates
+    engine.check.assert_called_once_with([stock_quote])
+
+
+def test_monitor_updates_existing_daily_index_snapshot_each_cycle(monitor_setup):
+    src, engine, notifier = monitor_setup
+    index_quote = Quote(".DJI", "道琼斯工业平均指数", "美股", 52210.0, 0.51, 1000)
+    stock_quote = Quote("AAPL", "Apple", "美股", 210, 1.0, 100)
+    src.fetch_quotes.side_effect = [[index_quote], [stock_quote]]
+    engine.check.return_value = []
+    store = MagicMock()
+    indices = [{"symbol": ".DJI", "name": "道琼斯工业平均指数", "market": "美股", "sina_symbol": "gb_dji"}]
+    stocks = [{"symbol": "AAPL", "name": "Apple", "market": "美股"}]
+
+    svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
+                         stocks=stocks, index_store=store, market_indices=indices)
+    svc.run_once()
+
+    assert src.fetch_quotes.call_args_list[0].args[0] == indices
+    assert src.fetch_quotes.call_args_list[1].args[0] == stocks
+    store.save_index_snapshots.assert_called_once()

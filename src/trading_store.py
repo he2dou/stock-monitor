@@ -37,6 +37,19 @@ class TradingStore:
                 timestamp TEXT NOT NULL
             );
 
+            CREATE TABLE IF NOT EXISTS index_snapshots (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                symbol TEXT NOT NULL,
+                name TEXT NOT NULL,
+                market TEXT NOT NULL,
+                price REAL NOT NULL,
+                change_pct REAL NOT NULL,
+                volume REAL NOT NULL,
+                snapshot_date TEXT NOT NULL,
+                timestamp TEXT NOT NULL,
+                UNIQUE(symbol, snapshot_date)
+            );
+
             CREATE TABLE IF NOT EXISTS strategy_signals (
                 signal_id TEXT PRIMARY KEY,
                 strategy_id TEXT NOT NULL,
@@ -168,6 +181,58 @@ class TradingStore:
             )
             for row in rows
         ]
+
+    def index_snapshot_exists(self, symbol: str, snapshot_date: str) -> bool:
+        row = self.conn.execute(
+            """
+            SELECT 1 FROM index_snapshots
+            WHERE symbol = ? AND snapshot_date = ?
+            LIMIT 1
+            """,
+            (symbol, snapshot_date),
+        ).fetchone()
+        return row is not None
+
+    def save_index_snapshots(self, quotes: list[Quote], snapshot_dates: dict[str, str]) -> int:
+        """Insert or update one daily row per index symbol."""
+        saved = 0
+        with self.conn:
+            for q in quotes:
+                cursor = self.conn.execute(
+                    """
+                    INSERT INTO index_snapshots
+                    (symbol, name, market, price, change_pct, volume, snapshot_date, timestamp)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT(symbol, snapshot_date) DO UPDATE SET
+                        name=excluded.name,
+                        market=excluded.market,
+                        price=excluded.price,
+                        change_pct=excluded.change_pct,
+                        volume=excluded.volume,
+                        timestamp=excluded.timestamp
+                    """,
+                    (
+                        q.symbol, q.name, q.market, q.price, q.change_pct, q.volume,
+                        snapshot_dates[q.symbol], q.timestamp,
+                    ),
+                )
+                saved += cursor.rowcount
+        return saved
+
+    def load_index_snapshots(self, start: str | None = None, end: str | None = None) -> list[dict]:
+        sql = "SELECT * FROM index_snapshots"
+        params: list[str] = []
+        clauses: list[str] = []
+        if start:
+            clauses.append("snapshot_date >= ?")
+            params.append(start)
+        if end:
+            clauses.append("snapshot_date <= ?")
+            params.append(end)
+        if clauses:
+            sql += " WHERE " + " AND ".join(clauses)
+        sql += " ORDER BY snapshot_date ASC, market ASC, symbol ASC"
+        return [dict(row) for row in self.conn.execute(sql, params).fetchall()]
 
     def get_balance(self, currency: str) -> float:
         row = self.conn.execute(

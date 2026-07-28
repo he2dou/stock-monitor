@@ -221,6 +221,9 @@ class SinaTxSource(DataSource):
     #   Tencent uses "usAAPL"  while  Sina uses "gb_aapl".
     @staticmethod
     def _tencent_symbol(stock: dict) -> str | None:
+        override = stock.get("tencent_symbol") or stock.get("provider_symbol")
+        if override:
+            return str(override).strip()
         sym = str(stock["symbol"]).strip()
         market = stock.get("market", "")
         if market == "A股":
@@ -233,6 +236,9 @@ class SinaTxSource(DataSource):
 
     @staticmethod
     def _sina_symbol(stock: dict) -> str | None:
+        override = stock.get("sina_symbol") or stock.get("provider_symbol")
+        if override:
+            return str(override).strip()
         sym = str(stock["symbol"]).strip()
         market = stock.get("market", "")
         if market == "A股":

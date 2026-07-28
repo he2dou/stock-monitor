@@ -1,4 +1,4 @@
-﻿# 应用程序配置
+# 应用程序配置
 monitor:
   interval_minutes: 30
 
@@ -7,6 +7,10 @@ monitor:
 # 环境变量 WEBHOOK_URL 可覆盖此处的值（优先级：环境变量 > 配置文件）。
 webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/782baaad-2e8c-488a-b937-36738f420eb7"
 webhook_timeout: 10
+
+# 大盘指数每日快照：A股/港股/美股各三大指数，运行中动态加载。
+market_indices:
+  enabled: true
 
 paper_trading:
   enabled: true

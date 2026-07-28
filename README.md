@@ -1,6 +1,6 @@
 # 股票价格监控 / 模拟交易
 
-监控 A股、港股、美股实时行情，每30分钟轮询，支持价格预警、飞书/钉钉/企业微信通知、纸面模拟交易、SQLite 历史留存和基于历史行情快照的回测。运行时股票池和纯预警规则存放在 SQLite，程序每轮从数据库读取，修改后无需重启即可在下一轮生效。
+监控 A股、港股、美股实时行情，每30分钟轮询，支持价格预警、飞书/钉钉/企业微信通知、纸面模拟交易、大盘指数每日快照、SQLite 历史留存和基于历史行情快照的回测。运行时股票池和纯预警规则存放在 SQLite，程序每轮从数据库读取，修改后无需重启即可在下一轮生效。
 
 ## 快速开始
 
@@ -18,6 +18,9 @@ monitor:
 
 webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/YOUR_TOKEN"
 webhook_timeout: 10
+
+market_indices:
+  enabled: true
 
 paper_trading:
   enabled: true
@@ -56,6 +59,7 @@ python -m src.config_cli list-alerts
 python -m src.config_cli add-alert --symbol SOXL --field change_pct --op below --value -10
 python -m src.config_cli disable-alert --rule-id RULE_ID
 python -m src.config_cli enable-alert --rule-id RULE_ID
+python -m src.config_cli list-index-snapshots --from 2026-07-28 --to 2026-07-28
 ```
 
 ### 5. 配置模拟交易策略（可选）
@@ -85,6 +89,25 @@ strategies:
 python -m src.main
 ```
 
+## 大盘指数每日快照
+
+程序默认在各市场交易时段内，为每个市场三大指数每天保存一条快照到 SQLite `index_snapshots` 表。同一指数同一交易日使用唯一约束只保留一行，交易时段内每轮会更新这行，日终自然保留当天最新值。
+
+默认指数：
+
+| 市场 | 指数 |
+|------|------|
+| A股 | 上证指数、深证成指、创业板指 |
+| 港股 | 恒生指数、恒生中国企业指数、恒生科技指数 |
+| 美股 | 道琼斯工业平均指数、纳斯达克综合指数、标普500指数 |
+
+可在 `config/config.yaml` 中关闭：
+
+```yaml
+market_indices:
+  enabled: false
+```
+
 ## 模拟交易说明
 
 - 只做纸面交易，不连接实盘券商。
@@ -112,7 +135,7 @@ python -m src.backtest --from 2026-07-01 --to 2026-07-28
 | `config/watchlist.yaml` | 股票池种子/导入文件，不再作为运行时直接读取来源 |
 | `config/alerts.yaml` | 纯预警种子/导入文件，不再作为运行时直接读取来源 |
 | `config/strategies.yaml` | 模拟交易策略，运行中动态重载 |
-| `config/config.yaml` | 应用配置（轮询周期、Webhook、模拟账户、数据库路径） |
+| `config/config.yaml` | 应用配置（轮询周期、Webhook、指数快照、模拟账户、数据库路径） |
 
 ### market 取值
 - `A股` - 沪深A股

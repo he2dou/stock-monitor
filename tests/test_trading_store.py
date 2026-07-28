@@ -1,4 +1,4 @@
-﻿from src.models import Quote
+from src.models import Quote
 from src.trading_store import TradingStore
 
 
@@ -71,4 +71,23 @@ def test_store_add_stock_and_alert(tmp_path):
     assert store.load_watchlist()[0]["symbol"] == "00700"
     rule_id = store.add_alert_rule("00700", "price", "above", 400)
     assert store.load_alert_rules()[0]["rule_id"] == rule_id
+    store.close()
+
+
+def test_store_upserts_one_index_snapshot_per_symbol_per_day(tmp_path):
+    store = TradingStore(str(tmp_path / "trading.sqlite3"))
+    first = Quote(".DJI", "道琼斯工业平均指数", "美股", 52210.0, 0.51, 1000, timestamp="2026-07-28T01:00:00Z")
+    latest = Quote(".DJI", "道琼斯工业平均指数", "美股", 52300.0, 0.68, 2000, timestamp="2026-07-28T02:00:00Z")
+
+    assert store.index_snapshot_exists(".DJI", "2026-07-27") is False
+    assert store.save_index_snapshots([first], {".DJI": "2026-07-27"}) == 1
+    assert store.index_snapshot_exists(".DJI", "2026-07-27") is True
+    assert store.save_index_snapshots([latest], {".DJI": "2026-07-27"}) == 1
+
+    rows = store.load_index_snapshots()
+    assert len(rows) == 1
+    assert rows[0]["symbol"] == ".DJI"
+    assert rows[0]["snapshot_date"] == "2026-07-27"
+    assert rows[0]["price"] == 52300.0
+    assert rows[0]["volume"] == 2000
     store.close()
