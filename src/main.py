@@ -6,17 +6,14 @@ from pathlib import Path
 # Bypass any HTTP/HTTPS proxy for this process. On Windows the `requests`
 # library (used by akshare) auto-reads the system proxy from the registry, so a
 # local proxy tool such as Clash/V2Ray (typically on 127.0.0.1:7890) intercepts
-# requests to our domestic data servers (eastmoney) and breaks them with
-# 'RemoteDisconnected'. All of this app's traffic (akshare -> eastmoney, plus the
-# WeChat Work/DingTalk webhook) is domestic and directly reachable, so skipping
-# the proxy is correct here. `setdefault` lets an explicit NO_PROXY in the
-# environment still take precedence.
+# requests to our domestic data servers and breaks them. All of this app's
+# traffic is domestic and directly reachable, so skipping the proxy is correct.
 os.environ.setdefault("NO_PROXY", "*")
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
-from src.config_loader import load_watchlist, load_alerts, load_notify
+from src.config_loader import load_watchlist, load_alerts, load_app_config
 from src.sources.sinatx_source import SinaTxSource
 from src.alerts_engine import AlertEngine
 from src.notifiers.console_notifier import ConsoleNotifier
@@ -41,21 +38,41 @@ BASE_DIR = Path(__file__).parent.parent
 CONFIG_DIR = BASE_DIR / "config"
 
 
-def build_monitor() -> MonitorService:
-    stocks = load_watchlist(str(CONFIG_DIR / "watchlist.yaml"))
-    rules = load_alerts(str(CONFIG_DIR / "alerts.yaml"))
-    notify = load_notify(str(CONFIG_DIR / "notify.yaml"))
-    # Environment variable takes precedence  over the config file so it can
-    # still be overridden per-deploy (containers/CI) without editing the file.
-    webhook_url = os.environ.get("WEBHOOK_URL") or notify.get("webhook_url", "")
-    webhook_timeout = int(notify.get("webhook_timeout", 10) or 10)
-    source = SinaTxSource()
-    engine = AlertEngine(rules, cooldown_seconds=300)
+def load_runtime_stocks() -> list[dict]:
+    return load_watchlist(str(CONFIG_DIR / "watchlist.yaml"))
+
+
+def load_runtime_rules() -> list[dict]:
+    return load_alerts(str(CONFIG_DIR / "alerts.yaml"))
+
+
+def load_runtime_notifiers() -> list[ConsoleNotifier | WebhookNotifier]:
+    app_config = load_app_config(str(CONFIG_DIR / "config.yaml"))
+    webhook_url = os.environ.get("WEBHOOK_URL") or app_config.get("webhook_url", "")
+    webhook_timeout = int(app_config.get("webhook_timeout", 10) or 10)
     notifiers = [ConsoleNotifier()]
     if webhook_url:
         notifiers.append(WebhookNotifier(url=webhook_url, timeout=webhook_timeout))
-    return MonitorService(source=source, alert_engine=engine,
-                          notifiers=notifiers, stocks=stocks)
+        logger.info("Webhook notifier enabled from config.yaml/WEBHOOK_URL")
+    else:
+        logger.info("Webhook notifier disabled: no webhook_url configured")
+    return notifiers
+
+
+def build_monitor() -> MonitorService:
+    stocks = load_runtime_stocks()
+    rules = load_runtime_rules()
+    source = SinaTxSource()
+    engine = AlertEngine(rules, cooldown_seconds=300)
+    return MonitorService(
+        source=source,
+        alert_engine=engine,
+        notifiers=load_runtime_notifiers(),
+        stocks=stocks,
+        stocks_loader=load_runtime_stocks,
+        rules_loader=load_runtime_rules,
+        notifiers_loader=load_runtime_notifiers,
+    )
 
 
 def main():
@@ -88,4 +105,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

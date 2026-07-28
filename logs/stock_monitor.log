@@ -325,3 +325,154 @@
 2026-07-27 18:14:53,419 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
 2026-07-27 18:14:53,419 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
 2026-07-27 18:14:53,419 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-27 18:44:53,430 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 18:44:53 CST)" (scheduled at 2026-07-27 18:44:53.418535+08:00)
+2026-07-27 18:44:53,432 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-27 18:44:53,433 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 19:14:53 CST)" executed successfully
+2026-07-27 19:14:53,425 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 19:44:53 CST)" (scheduled at 2026-07-27 19:14:53.418535+08:00)
+2026-07-27 19:14:53,425 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-27 19:14:53,425 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 19:44:53 CST)" executed successfully
+2026-07-27 19:44:53,427 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 20:14:53 CST)" (scheduled at 2026-07-27 19:44:53.418535+08:00)
+2026-07-27 19:44:53,427 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-27 19:44:53,428 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 20:14:53 CST)" executed successfully
+2026-07-27 20:14:53,430 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 20:44:53 CST)" (scheduled at 2026-07-27 20:14:53.418535+08:00)
+2026-07-27 20:14:53,431 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-27 20:14:53,432 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 20:44:53 CST)" executed successfully
+2026-07-27 20:44:53,425 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 21:14:53 CST)" (scheduled at 2026-07-27 20:44:53.418535+08:00)
+2026-07-27 20:44:53,426 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-27 20:44:53,426 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 21:14:53 CST)" executed successfully
+2026-07-27 21:14:53,429 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 21:44:53 CST)" (scheduled at 2026-07-27 21:14:53.418535+08:00)
+2026-07-27 21:14:53,430 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-27 21:14:53,431 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 21:44:53 CST)" executed successfully
+2026-07-27 21:44:53,421 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 22:14:53 CST)" (scheduled at 2026-07-27 21:44:53.418535+08:00)
+2026-07-27 21:44:53,421 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-27 21:44:53,724 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:135.2100 涨跌:-1.17% 成交量:11017462
+2026-07-27 21:44:53,724 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:65.1200 涨跌:+1.75% 成交量:11301708
+2026-07-27 21:44:53,724 [INFO] src.monitor: No alerts triggered
+2026-07-27 21:44:53,724 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 22:14:53 CST)" executed successfully
+2026-07-27 22:14:53,428 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 22:44:53 CST)" (scheduled at 2026-07-27 22:14:53.418535+08:00)
+2026-07-27 22:14:53,428 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-27 22:14:53,725 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:126.5000 涨跌:-7.54% 成交量:19890155
+2026-07-27 22:14:53,726 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:63.7600 涨跌:-0.38% 成交量:19660028
+2026-07-27 22:14:53,726 [INFO] src.monitor: No alerts triggered
+2026-07-27 22:14:53,726 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 22:44:53 CST)" executed successfully
+2026-07-27 22:44:53,424 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 23:14:53 CST)" (scheduled at 2026-07-27 22:44:53.418535+08:00)
+2026-07-27 22:44:53,424 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-27 22:44:53,694 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:116.9500 涨跌:-14.52% 成交量:32818895
+2026-07-27 22:44:53,694 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:61.8000 涨跌:-3.44% 成交量:30231426
+2026-07-27 22:44:53,694 [INFO] src.alerts_engine: Alert triggered: ⚠️ 半导体ETF三倍做多(SOXL) change_pct below -10.0 | 当前: -14.5200 | 涨跌: -14.52%
+2026-07-27 22:44:53,695 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-27 22:44:53,695 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 23:14:53 CST)" executed successfully
+2026-07-27 23:14:53,434 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 23:44:53 CST)" (scheduled at 2026-07-27 23:14:53.418535+08:00)
+2026-07-27 23:14:53,435 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-27 23:14:53,718 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:120.3000 涨跌:-12.07% 成交量:44496529
+2026-07-27 23:14:53,718 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:62.9300 涨跌:-1.67% 成交量:37905074
+2026-07-27 23:14:53,719 [INFO] src.alerts_engine: Alert triggered: ⚠️ 半导体ETF三倍做多(SOXL) change_pct below -10.0 | 当前: -12.0700 | 涨跌: -12.07%
+2026-07-27 23:14:53,719 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-27 23:14:53,719 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-27 23:44:53 CST)" executed successfully
+2026-07-27 23:44:53,426 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 00:14:53 CST)" (scheduled at 2026-07-27 23:44:53.418535+08:00)
+2026-07-27 23:44:53,426 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-27 23:44:53,710 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:117.3700 涨跌:-14.21% 成交量:51867329
+2026-07-27 23:44:53,710 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:62.2200 涨跌:-2.78% 成交量:42815391
+2026-07-27 23:44:53,710 [INFO] src.alerts_engine: Alert triggered: ⚠️ 半导体ETF三倍做多(SOXL) change_pct below -10.0 | 当前: -14.2100 | 涨跌: -14.21%
+2026-07-27 23:44:53,710 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-27 23:44:53,711 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 00:14:53 CST)" executed successfully
+2026-07-28 00:14:53,431 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 00:44:53 CST)" (scheduled at 2026-07-28 00:14:53.418535+08:00)
+2026-07-28 00:14:53,432 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-28 00:14:53,786 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:120.5500 涨跌:-11.89% 成交量:56428442
+2026-07-28 00:14:53,786 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:62.5900 涨跌:-2.20% 成交量:46560941
+2026-07-28 00:14:53,787 [INFO] src.alerts_engine: Alert triggered: ⚠️ 半导体ETF三倍做多(SOXL) change_pct below -10.0 | 当前: -11.8900 | 涨跌: -11.89%
+2026-07-28 00:14:53,787 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-28 00:14:53,787 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 00:44:53 CST)" executed successfully
+2026-07-28 00:44:53,432 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 01:14:53 CST)" (scheduled at 2026-07-28 00:44:53.418535+08:00)
+2026-07-28 00:44:53,432 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-28 00:44:53,718 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:123.1400 涨跌:-9.99% 成交量:60638319
+2026-07-28 00:44:53,718 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:62.9000 涨跌:-1.72% 成交量:50322707
+2026-07-28 00:44:53,719 [INFO] src.monitor: No alerts triggered
+2026-07-28 00:44:53,720 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 01:14:53 CST)" executed successfully
+2026-07-28 01:14:53,423 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 01:44:53 CST)" (scheduled at 2026-07-28 01:14:53.418535+08:00)
+2026-07-28 01:14:53,423 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-28 01:14:53,702 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:120.3400 涨跌:-12.04% 成交量:63449157
+2026-07-28 01:14:53,702 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:62.3000 涨跌:-2.66% 成交量:52731700
+2026-07-28 01:14:53,702 [INFO] src.alerts_engine: Alert triggered: ⚠️ 半导体ETF三倍做多(SOXL) change_pct below -10.0 | 当前: -12.0400 | 涨跌: -12.04%
+2026-07-28 01:14:53,702 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-28 01:14:53,703 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 01:44:53 CST)" executed successfully
+2026-07-28 01:44:54,621 [WARNING] apscheduler.executors.default: Run time of job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 02:14:53 CST)" was missed by 0:00:01.202754
+2026-07-28 02:14:53,432 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 02:44:53 CST)" (scheduled at 2026-07-28 02:14:53.418535+08:00)
+2026-07-28 02:14:53,432 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-28 02:14:53,718 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:122.4700 涨跌:-10.48% 成交量:67469832
+2026-07-28 02:14:53,718 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:62.8100 涨跌:-1.87% 成交量:56935105
+2026-07-28 02:14:53,718 [INFO] src.alerts_engine: Alert triggered: ⚠️ 半导体ETF三倍做多(SOXL) change_pct below -10.0 | 当前: -10.4800 | 涨跌: -10.48%
+2026-07-28 02:14:53,718 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-28 02:14:53,718 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 02:44:53 CST)" executed successfully
+2026-07-28 02:44:53,425 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 03:14:53 CST)" (scheduled at 2026-07-28 02:44:53.418535+08:00)
+2026-07-28 02:44:53,425 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-28 02:44:53,715 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:121.8600 涨跌:-10.93% 成交量:69487478
+2026-07-28 02:44:53,715 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:62.5800 涨跌:-2.22% 成交量:59099058
+2026-07-28 02:44:53,715 [INFO] src.alerts_engine: Alert triggered: ⚠️ 半导体ETF三倍做多(SOXL) change_pct below -10.0 | 当前: -10.9300 | 涨跌: -10.93%
+2026-07-28 02:44:53,715 [INFO] src.monitor: ⚠️ 1 alert(s) triggered
+2026-07-28 02:44:53,716 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 03:14:53 CST)" executed successfully
+2026-07-28 03:14:53,427 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 03:44:53 CST)" (scheduled at 2026-07-28 03:14:53.418535+08:00)
+2026-07-28 03:14:53,428 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-28 03:14:53,713 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:127.1100 涨跌:-7.09% 成交量:73887475
+2026-07-28 03:14:53,713 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:63.4100 涨跌:-0.92% 成交量:62646490
+2026-07-28 03:14:53,713 [INFO] src.monitor: No alerts triggered
+2026-07-28 03:14:53,713 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 03:44:53 CST)" executed successfully
+2026-07-28 03:44:53,431 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 04:14:53 CST)" (scheduled at 2026-07-28 03:44:53.418535+08:00)
+2026-07-28 03:44:53,432 [INFO] src.monitor: Fetching quotes for 2/7 stocks in open markets...
+2026-07-28 03:44:53,719 [INFO] src.monitor: 美股 | 半导体ETF三倍做多(SOXL) 价格:127.3700 涨跌:-6.90% 成交量:81495246
+2026-07-28 03:44:53,720 [INFO] src.monitor: 美股 | 纳斯达克100三倍做多(TQQQ) 价格:63.2800 涨跌:-1.13% 成交量:65569012
+2026-07-28 03:44:53,720 [INFO] src.monitor: No alerts triggered
+2026-07-28 03:44:53,720 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 04:14:53 CST)" executed successfully
+2026-07-28 04:14:53,420 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 04:44:53 CST)" (scheduled at 2026-07-28 04:14:53.418535+08:00)
+2026-07-28 04:14:53,420 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 04:14:53,420 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 04:44:53 CST)" executed successfully
+2026-07-28 04:44:53,428 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 05:14:53 CST)" (scheduled at 2026-07-28 04:44:53.418535+08:00)
+2026-07-28 04:44:53,428 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 04:44:53,428 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 05:14:53 CST)" executed successfully
+2026-07-28 05:14:53,431 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 05:44:53 CST)" (scheduled at 2026-07-28 05:14:53.418535+08:00)
+2026-07-28 05:14:53,431 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 05:14:53,431 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 05:44:53 CST)" executed successfully
+2026-07-28 05:44:53,429 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 06:14:53 CST)" (scheduled at 2026-07-28 05:44:53.418535+08:00)
+2026-07-28 05:44:53,429 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 05:44:53,429 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 06:14:53 CST)" executed successfully
+2026-07-28 06:14:53,421 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 06:44:53 CST)" (scheduled at 2026-07-28 06:14:53.418535+08:00)
+2026-07-28 06:14:53,421 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 06:14:53,422 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 06:44:53 CST)" executed successfully
+2026-07-28 06:44:53,432 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 07:14:53 CST)" (scheduled at 2026-07-28 06:44:53.418535+08:00)
+2026-07-28 06:44:53,432 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 06:44:53,432 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 07:14:53 CST)" executed successfully
+2026-07-28 07:14:53,432 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 07:44:53 CST)" (scheduled at 2026-07-28 07:14:53.418535+08:00)
+2026-07-28 07:14:53,432 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 07:14:53,432 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 07:44:53 CST)" executed successfully
+2026-07-28 07:44:53,432 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 08:14:53 CST)" (scheduled at 2026-07-28 07:44:53.418535+08:00)
+2026-07-28 07:44:53,433 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 07:44:53,434 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 08:14:53 CST)" executed successfully
+2026-07-28 08:14:53,423 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 08:44:53 CST)" (scheduled at 2026-07-28 08:14:53.418535+08:00)
+2026-07-28 08:14:53,423 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 08:14:53,423 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 08:44:53 CST)" executed successfully
+2026-07-28 08:44:53,422 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 09:14:53 CST)" (scheduled at 2026-07-28 08:44:53.418535+08:00)
+2026-07-28 08:44:53,422 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 08:44:53,422 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 09:14:53 CST)" executed successfully
+2026-07-28 09:14:53,433 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 09:44:53 CST)" (scheduled at 2026-07-28 09:14:53.418535+08:00)
+2026-07-28 09:14:53,433 [INFO] src.monitor: Skipping cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-28 09:14:53,433 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 30 minutes (trigger: interval[0:30:00], next run at: 2026-07-28 09:44:53 CST)" executed successfully
+2026-07-28 09:30:47,074 [INFO] src.main: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 09:34:38,705 [INFO] src.main: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 09:35:30,345 [INFO] src.main: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 09:36:14,327 [INFO] __main__: ============================================================
+2026-07-28 09:36:14,327 [INFO] __main__: Stock Price Monitor starting...
+2026-07-28 09:36:14,327 [INFO] __main__: ============================================================
+2026-07-28 09:36:14,331 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 09:36:14,331 [INFO] __main__: Running initial fetch...
+2026-07-28 09:36:14,333 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 09:36:14,333 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 09:36:15,014 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2580 涨跌:-1.56% 成交量:1107938
+2026-07-28 09:36:15,015 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9430 涨跌:-0.32% 成交量:643204
+2026-07-28 09:36:15,016 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8490 涨跌:-1.16% 成交量:1426625
+2026-07-28 09:36:15,017 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:447.8000 涨跌:+1.08% 成交量:592900
+2026-07-28 09:36:15,017 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:113.0000 涨跌:+1.80% 成交量:1546574
+2026-07-28 09:36:15,018 [INFO] src.monitor: No alerts triggered
+2026-07-28 09:36:15,030 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-28 09:36:15,031 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
+2026-07-28 09:36:15,031 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
+2026-07-28 09:36:15,031 [INFO] apscheduler.scheduler: Scheduler started

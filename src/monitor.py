@@ -14,16 +14,18 @@ class MonitorService:
     def __init__(self, source: DataSource, alert_engine: AlertEngine,
                  notifiers: list[Notifier], stocks: list[dict],
                  stocks_loader: Callable[[], list[dict]] | None = None,
-                 rules_loader: Callable[[], list[dict]] | None = None):
+                 rules_loader: Callable[[], list[dict]] | None = None,
+                 notifiers_loader: Callable[[], list[Notifier]] | None = None):
         self.source = source
         self.engine = alert_engine
         self.notifiers = notifiers
         self.stocks = stocks
         self._stocks_loader = stocks_loader
         self._rules_loader = rules_loader
+        self._notifiers_loader = notifiers_loader
 
     def _reload_runtime_config(self) -> None:
-        """Reload watchlist/alert rules before each cycle.
+        """Reload watchlist/alert rules/app config before each cycle.
 
         A partially edited YAML file should not kill the long-running monitor.
         If reload fails, keep the last known-good config and try again next run.
@@ -43,6 +45,12 @@ class MonitorService:
                 logger.error(f"Failed to reload alerts.yaml; keeping previous rules: {e}")
             else:
                 self.engine.set_rules(rules)
+
+        if self._notifiers_loader is not None:
+            try:
+                self.notifiers = self._notifiers_loader()
+            except Exception as e:
+                logger.error(f"Failed to reload config.yaml; keeping previous notifiers: {e}")
 
     def run_once(self) -> None:
         """执行一轮监控"""
