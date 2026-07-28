@@ -101,6 +101,19 @@ python -m src.main
 | 港股 | 恒生指数、恒生中国企业指数、恒生科技指数 |
 | 美股 | 道琼斯工业平均指数、纳斯达克综合指数、标普500指数 |
 
+历史区间不会凭空出现在库里；`list-index-snapshots` 只查询 SQLite 已保存的数据。需要补历史时先执行：
+
+```bash
+python -m src.config_cli backfill-index-snapshots --from 2026-07-01 --to 2026-07-28
+python -m src.config_cli list-index-snapshots --from 2026-07-01 --to 2026-07-28
+```
+
+也可以查询时顺手补齐：
+
+```bash
+python -m src.config_cli list-index-snapshots --from 2026-07-01 --to 2026-07-28 --backfill
+```
+
 可在 `config/config.yaml` 中关闭：
 
 ```yaml

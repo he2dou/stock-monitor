@@ -1,4 +1,7 @@
 import json
+from unittest.mock import patch
+
+import pandas as pd
 from pathlib import Path
 from src import config_cli
 from src.models import Quote
@@ -102,3 +105,25 @@ def test_config_cli_lists_index_snapshots(tmp_path, monkeypatch, capsys):
     assert len(rows) == 1
     assert rows[0]["symbol"] == "HSI"
     assert rows[0]["snapshot_date"] == "2026-07-28"
+
+def test_config_cli_list_index_snapshots_with_backfill(tmp_path, monkeypatch, capsys):
+    write_configs(tmp_path)
+    monkeypatch.setattr(config_cli, "BASE_DIR", tmp_path)
+    monkeypatch.setattr(config_cli, "CONFIG_DIR", tmp_path / "config")
+    df = pd.DataFrame({
+        "date": ["2026-06-30", "2026-07-01"],
+        "open": [90, 100],
+        "close": [100, 110],
+        "high": [101, 111],
+        "low": [89, 98],
+        "amount": [1000, 2000],
+    })
+    with patch("src.index_history.ak.stock_zh_index_daily_tx", return_value=df):
+        args = config_cli.build_parser().parse_args([
+            "list-index-snapshots", "--from", "2026-07-01", "--to", "2026-07-01", "--backfill"
+        ])
+        args.func(args)
+
+    rows = json.loads(capsys.readouterr().out)
+    assert len(rows) == 9
+    assert {r["snapshot_date"] for r in rows} == {"2026-07-01"}

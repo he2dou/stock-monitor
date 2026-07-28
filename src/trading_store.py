@@ -195,9 +195,25 @@ class TradingStore:
 
     def save_index_snapshots(self, quotes: list[Quote], snapshot_dates: dict[str, str]) -> int:
         """Insert or update one daily row per index symbol."""
+        rows = [
+            {
+                "symbol": q.symbol,
+                "name": q.name,
+                "market": q.market,
+                "price": q.price,
+                "change_pct": q.change_pct,
+                "volume": q.volume,
+                "snapshot_date": snapshot_dates[q.symbol],
+                "timestamp": q.timestamp,
+            }
+            for q in quotes
+        ]
+        return self.save_index_snapshot_rows(rows)
+
+    def save_index_snapshot_rows(self, rows: list[dict]) -> int:
         saved = 0
         with self.conn:
-            for q in quotes:
+            for row in rows:
                 cursor = self.conn.execute(
                     """
                     INSERT INTO index_snapshots
@@ -212,8 +228,9 @@ class TradingStore:
                         timestamp=excluded.timestamp
                     """,
                     (
-                        q.symbol, q.name, q.market, q.price, q.change_pct, q.volume,
-                        snapshot_dates[q.symbol], q.timestamp,
+                        row["symbol"], row["name"], row["market"], float(row["price"]),
+                        float(row["change_pct"]), float(row.get("volume", 0) or 0),
+                        row["snapshot_date"], row["timestamp"],
                     ),
                 )
                 saved += cursor.rowcount

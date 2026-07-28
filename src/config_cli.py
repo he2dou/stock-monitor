@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from src.config_loader import load_alerts, load_app_config, load_watchlist
+from src.index_history import backfill_index_snapshots
 from src.trading_store import TradingStore
 
 BASE_DIR = Path(__file__).parent.parent
@@ -18,8 +19,12 @@ def _resolve_path(path_value: str) -> str:
     return str(p)
 
 
+def load_default_app_config() -> dict:
+    return load_app_config(str(CONFIG_DIR / "config.yaml"))
+
+
 def default_store() -> TradingStore:
-    app_config = load_app_config(str(CONFIG_DIR / "config.yaml"))
+    app_config = load_default_app_config()
     paper = app_config.get("paper_trading", {}) or {}
     return TradingStore(_resolve_path(paper.get("db_path", "data/trading.sqlite3")))
 
@@ -73,7 +78,16 @@ def cmd_list_alerts(args) -> None:
 
 def cmd_list_index_snapshots(args) -> None:
     store = default_store()
+    if args.backfill:
+        backfill_index_snapshots(store, load_default_app_config(), args.start, args.end)
     print_json(store.load_index_snapshots(start=args.start, end=args.end))
+    store.close()
+
+
+def cmd_backfill_index_snapshots(args) -> None:
+    store = default_store()
+    result = backfill_index_snapshots(store, load_default_app_config(), args.start, args.end)
+    print_json(result)
     store.close()
 
 
@@ -139,7 +153,13 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("list-index-snapshots", help="List saved daily market index snapshots")
     p.add_argument("--from", dest="start", default=None, help="Start snapshot date, YYYY-MM-DD")
     p.add_argument("--to", dest="end", default=None, help="End snapshot date, YYYY-MM-DD")
+    p.add_argument("--backfill", action="store_true", help="Fetch missing historical index snapshots before listing")
     p.set_defaults(func=cmd_list_index_snapshots)
+
+    p = sub.add_parser("backfill-index-snapshots", help="Fetch historical daily market index snapshots into SQLite")
+    p.add_argument("--from", dest="start", required=True, help="Start snapshot date, YYYY-MM-DD")
+    p.add_argument("--to", dest="end", required=True, help="End snapshot date, YYYY-MM-DD")
+    p.set_defaults(func=cmd_backfill_index_snapshots)
 
     p = sub.add_parser("add-alert")
     p.add_argument("--symbol", required=True)
