@@ -476,3 +476,80 @@
 2026-07-28 09:36:15,031 [INFO] __main__: Scheduler started. Next run in 30 minutes. Press Ctrl+C to stop.
 2026-07-28 09:36:15,031 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 30 minutes" to job store "default"
 2026-07-28 09:36:15,031 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-28 09:49:39,265 [INFO] __main__: ============================================================
+2026-07-28 09:49:39,265 [INFO] __main__: Stock Price Monitor starting...
+2026-07-28 09:49:39,265 [INFO] __main__: ============================================================
+2026-07-28 09:49:39,268 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 09:49:39,268 [INFO] __main__: Running initial fetch...
+2026-07-28 09:49:39,271 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 09:49:39,272 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 09:49:39,767 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2360 涨跌:-3.29% 成交量:2174539
+2026-07-28 09:49:39,767 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9400 涨跌:-0.63% 成交量:1108389
+2026-07-28 09:49:39,767 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8460 涨跌:-1.51% 成交量:2760220
+2026-07-28 09:49:39,767 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:445.4000 涨跌:+0.54% 成交量:1350034
+2026-07-28 09:49:39,768 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:112.7000 涨跌:+1.53% 成交量:6646198
+2026-07-28 09:49:39,768 [INFO] src.monitor: No alerts triggered
+2026-07-28 09:49:39,770 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-28 09:49:39,770 [INFO] __main__: Scheduler started. Next run in 10 minutes. Press Ctrl+C to stop.
+2026-07-28 09:49:39,774 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-07-28 09:49:39,774 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-28 09:59:39,783 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 09:59:39 CST)" (scheduled at 2026-07-28 09:59:39.770846+08:00)
+2026-07-28 09:59:39,793 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 09:59:39,793 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 09:59:40,087 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2280 涨跌:-3.91% 成交量:2887505
+2026-07-28 09:59:40,088 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9430 涨跌:-0.32% 成交量:1467232
+2026-07-28 09:59:40,088 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8460 涨跌:-1.51% 成交量:3502821
+2026-07-28 09:59:40,088 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:448.0000 涨跌:+1.13% 成交量:2292983
+2026-07-28 09:59:40,088 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:111.9000 涨跌:+0.81% 成交量:10719780
+2026-07-28 09:59:40,088 [INFO] src.monitor: No alerts triggered
+2026-07-28 09:59:40,088 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:09:39 CST)" executed successfully
+2026-07-28 10:09:39,773 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:19:39 CST)" (scheduled at 2026-07-28 10:09:39.770846+08:00)
+2026-07-28 10:09:39,777 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 10:09:39,777 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 10:09:40,152 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2340 涨跌:-3.44% 成交量:3165226
+2026-07-28 10:09:40,152 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9400 涨跌:-0.63% 成交量:1751233
+2026-07-28 10:09:40,153 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8430 涨跌:-1.86% 成交量:3982148
+2026-07-28 10:09:40,153 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:449.8000 涨跌:+1.53% 成交量:2990812
+2026-07-28 10:09:40,153 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:111.8000 涨跌:+0.72% 成交量:14710401
+2026-07-28 10:09:40,153 [INFO] src.monitor: No alerts triggered
+2026-07-28 10:09:40,153 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:19:39 CST)" executed successfully
+2026-07-28 10:19:39,783 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:29:39 CST)" (scheduled at 2026-07-28 10:19:39.770846+08:00)
+2026-07-28 10:19:39,786 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 10:19:39,786 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 10:19:40,094 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2340 涨跌:-3.44% 成交量:3593962
+2026-07-28 10:19:40,095 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9370 涨跌:-0.95% 成交量:1984942
+2026-07-28 10:19:40,095 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8460 涨跌:-1.51% 成交量:4373587
+2026-07-28 10:19:40,096 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:450.0000 涨跌:+1.58% 成交量:3854279
+2026-07-28 10:19:40,097 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:112.0000 涨跌:+0.90% 成交量:17191406
+2026-07-28 10:19:40,097 [INFO] src.monitor: No alerts triggered
+2026-07-28 10:19:40,098 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:29:39 CST)" executed successfully
+2026-07-28 10:29:39,782 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:39:39 CST)" (scheduled at 2026-07-28 10:29:39.770846+08:00)
+2026-07-28 10:29:39,785 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 10:29:39,785 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 10:29:40,129 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2230 涨跌:-4.30% 成交量:3991817
+2026-07-28 10:29:40,129 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9350 涨跌:-1.16% 成交量:2229038
+2026-07-28 10:29:40,129 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8440 涨跌:-1.75% 成交量:4729933
+2026-07-28 10:29:40,129 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:450.6000 涨跌:+1.72% 成交量:4510068
+2026-07-28 10:29:40,129 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:113.7000 涨跌:+2.43% 成交量:24113041
+2026-07-28 10:29:40,129 [INFO] src.monitor: No alerts triggered
+2026-07-28 10:29:40,130 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:39:39 CST)" executed successfully
+2026-07-28 10:39:39,781 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:49:39 CST)" (scheduled at 2026-07-28 10:39:39.770846+08:00)
+2026-07-28 10:39:39,786 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 10:39:39,786 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 10:39:40,145 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2130 涨跌:-5.09% 成交量:4398606
+2026-07-28 10:39:40,146 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9320 涨跌:-1.48% 成交量:2399688
+2026-07-28 10:39:40,146 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8410 涨跌:-2.10% 成交量:5146936
+2026-07-28 10:39:40,146 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:450.6000 涨跌:+1.72% 成交量:5034004
+2026-07-28 10:39:40,146 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:113.3000 涨跌:+2.07% 成交量:27125565
+2026-07-28 10:39:40,146 [INFO] src.monitor: No alerts triggered
+2026-07-28 10:39:40,147 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:49:39 CST)" executed successfully
+2026-07-28 10:49:39,793 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:59:39 CST)" (scheduled at 2026-07-28 10:49:39.770846+08:00)
+2026-07-28 10:49:39,796 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-28 10:49:39,796 [INFO] src.monitor: Fetching quotes for 5/7 stocks in open markets...
+2026-07-28 10:49:40,171 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) 价格:1.2080 涨跌:-5.48% 成交量:4881380
+2026-07-28 10:49:40,171 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) 价格:0.9300 涨跌:-1.69% 成交量:2624586
+2026-07-28 10:49:40,171 [INFO] src.monitor: A股 | 创新药ETF银华(159992) 价格:0.8400 涨跌:-2.21% 成交量:5608138
+2026-07-28 10:49:40,171 [INFO] src.monitor: 港股 | 腾讯控股(00700) 价格:447.2000 涨跌:+0.95% 成交量:5642797
+2026-07-28 10:49:40,171 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) 价格:112.8000 涨跌:+1.62% 成交量:30334369
+2026-07-28 10:49:40,171 [INFO] src.monitor: No alerts triggered
+2026-07-28 10:49:40,171 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-28 10:59:39 CST)" executed successfully
