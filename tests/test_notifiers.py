@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 from unittest.mock import patch, MagicMock
 from src.notifiers.console_notifier import ConsoleNotifier
 from src.notifiers.webhook_notifier import WebhookNotifier
@@ -7,10 +7,18 @@ from src.models import Alert, AlertRule
 
 @pytest.fixture
 def sample_alert():
-    return Alert(symbol="AAPL", name="Apple",
-                 rule=AlertRule("price", "above", 200),
-                 current_value=210,
-                 message="⚠️ Apple(AAPL) price above 200 | 当前: 210.0")
+    return Alert(
+        symbol="AAPL",
+        name="Apple",
+        rule=AlertRule("price", "above", 200),
+        current_value=210,
+        message="\n".join([
+            "**PRICE ALERT**",
+            "- 股票: Apple(AAPL)",
+            "- 条件: `price above 200`",
+            "- 当前: 210.0000",
+        ]),
+    )
 
 
 def _ok(body=None):
@@ -25,6 +33,7 @@ def test_console_notifier(sample_alert, capsys):
     ConsoleNotifier().send([sample_alert])
     captured = capsys.readouterr()
     assert "AAPL" in captured.out
+    assert "**PRICE ALERT**" in captured.out
 
 
 def test_webhook_no_url_skips(sample_alert):
@@ -46,7 +55,9 @@ def test_webhook_dingtalk_payload_shape(sample_alert):
         WebhookNotifier(url="https://oapi.dingtalk.com/robot/send?access_token=x").send([sample_alert])
     assert mock_post.called
     payload = mock_post.call_args.kwargs["json"]
-    assert payload == {"msgtype": "text", "text": {"content": "【股票预警】\n" + sample_alert.message}}
+    assert payload["msgtype"] == "markdown"
+    assert payload["markdown"]["title"] == "股票通知"
+    assert "**PRICE ALERT**\n- 股票: Apple(AAPL)" in payload["markdown"]["text"]
 
 
 def test_webhook_feishu_payload_shape(sample_alert):
@@ -54,7 +65,10 @@ def test_webhook_feishu_payload_shape(sample_alert):
         mock_post.return_value = _ok({"StatusCode": 0, "msg": "success"})
         WebhookNotifier(url="https://open.feishu.cn/open-apis/bot/v2/hook/abc").send([sample_alert])
     payload = mock_post.call_args.kwargs["json"]
-    assert payload == {"msg_type": "text", "content": {"text": "【股票预警】\n" + sample_alert.message}}
+    assert payload["msg_type"] == "interactive"
+    assert payload["card"]["header"]["title"]["content"] == "股票通知"
+    assert payload["card"]["elements"][0]["tag"] == "markdown"
+    assert "**PRICE ALERT**\n- 股票: Apple(AAPL)" in payload["card"]["elements"][0]["content"]
 
 
 def test_webhook_wecom_payload_shape(sample_alert):
@@ -62,14 +76,27 @@ def test_webhook_wecom_payload_shape(sample_alert):
         mock_post.return_value = _ok({"errcode": 0})
         WebhookNotifier(url="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=k").send([sample_alert])
     payload = mock_post.call_args.kwargs["json"]
-    assert "content" in str(payload)
+    assert payload["msgtype"] == "markdown"
+    assert "**PRICE ALERT**" in payload["markdown"]["content"]
 
 
-def test_webhook_unknown_url_defaults_to_text(sample_alert):
+def test_webhook_unknown_url_defaults_to_markdown(sample_alert):
     with _patch_post() as mock_post:
         mock_post.return_value = _ok({"errcode": 0})
         WebhookNotifier(url="https://example.com/hook").send([sample_alert])
-    assert mock_post.call_args.kwargs["json"]["msgtype"] == "text"
+    payload = mock_post.call_args.kwargs["json"]
+    assert payload["msgtype"] == "markdown"
+
+
+def test_webhook_joins_multiple_messages_with_markdown_rule(sample_alert):
+    other = Alert("MSFT", "Microsoft", AlertRule("price", "below", 100), 90, "**PRICE ALERT**\n- 股票: Microsoft(MSFT)")
+    with _patch_post() as mock_post:
+        mock_post.return_value = _ok({"errcode": 0})
+        WebhookNotifier(url="https://oapi.dingtalk.com/robot/send?access_token=x").send([sample_alert, other])
+    text = mock_post.call_args.kwargs["json"]["markdown"]["text"]
+    assert "Apple(AAPL)" in text
+    assert "\n\n---\n\n" in text
+    assert "Microsoft(MSFT)" in text
 
 
 def test_webhook_detects_body_error_as_failure(sample_alert, caplog):
@@ -90,4 +117,3 @@ def test_webhook_handles_network_exception(sample_alert, caplog):
 def test_webhook_trust_env_disabled(sample_alert):
     n = WebhookNotifier(url="https://oapi.dingtalk.com/robot/send?access_token=x")
     assert n.session.trust_env is False
-

@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from src.models import Quote
 from src.trading_store import TradingStore
 
@@ -90,4 +91,22 @@ def test_store_upserts_one_index_snapshot_per_symbol_per_day(tmp_path):
     assert rows[0]["snapshot_date"] == "2026-07-27"
     assert rows[0]["price"] == 52300.0
     assert rows[0]["volume"] == 2000
+    store.close()
+
+def test_store_can_be_used_from_scheduler_worker_thread(tmp_path):
+    store = TradingStore(str(tmp_path / "trading.sqlite3"))
+    store.add_stock("AAPL", "Apple", "美股")
+
+    def worker():
+        loaded = store.load_watchlist()
+        quote = Quote(".DJI", "道琼斯工业平均指数", "美股", 52210.0, 0.51, 1000)
+        saved = store.save_index_snapshots([quote], {".DJI": "2026-07-29"})
+        return loaded[0]["symbol"], saved
+
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        symbol, saved = executor.submit(worker).result(timeout=5)
+
+    assert symbol == "AAPL"
+    assert saved == 1
+    assert store.load_index_snapshots()[0]["symbol"] == ".DJI"
     store.close()

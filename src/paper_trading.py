@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import math
 from src.models import Quote
@@ -168,14 +168,22 @@ class PaperTradingService:
             f"{signal.trigger_field} {signal.strategy.trigger.op} {signal.trigger_value} "
             f"(当前 {signal.current_value:.4f})"
         )
-        base = (
-            f"策略 {execution.strategy_id} | {execution.side.upper()} {signal.name}({signal.symbol}) | "
-            f"触发: {trigger} | 状态: {execution.status}"
-        )
+        lines = [
+            "**PAPER TRADE**",
+            f"- 策略: `{execution.strategy_id}`",
+            f"- 方向: {execution.side.upper()}",
+            f"- 股票: {signal.name}({signal.symbol})",
+            f"- 触发: `{trigger}`",
+            f"- 状态: **{execution.status}**",
+        ]
         if execution.status == "FILLED":
-            cash = "" if execution.remaining_cash is None else f" | 剩余现金: {execution.remaining_cash:.2f} {execution.currency}"
-            return (
-                f"{base} | 成交价: {execution.price:.4f} | 数量: {execution.quantity} | "
-                f"金额: {execution.amount:.2f} {execution.currency}{cash}"
-            )
-        return f"{base} | 拒单原因: {execution.reason}"
+            lines.extend([
+                f"- 成交价: {execution.price:.4f}",
+                f"- 数量: {execution.quantity}",
+                f"- 金额: {execution.amount:.2f} {execution.currency}",
+            ])
+            if execution.remaining_cash is not None:
+                lines.append(f"- 剩余现金: {execution.remaining_cash:.2f} {execution.currency}")
+        else:
+            lines.append(f"- 拒单原因: {execution.reason}")
+        return "\n".join(lines)

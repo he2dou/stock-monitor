@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 import time
 from src.models import Quote, Alert, AlertRule
 
@@ -34,8 +34,13 @@ class AlertEngine:
                 if now - last < self.cooldown:
                     continue
                 self._last_triggered[dedup_key] = now
-                msg = (f"⚠️ {q.name}({q.symbol}) {rule.field} {rule.op} "
-                       f"{rule.value} | 当前: {current:.4f} | 涨跌: {q.change_pct:+.2f}%")
+                msg = "\n".join([
+                    "**PRICE ALERT**",
+                    f"- 股票: {q.name}({q.symbol})",
+                    f"- 条件: `{rule.field} {rule.op} {rule.value}`",
+                    f"- 当前: {current:.4f}",
+                    f"- 涨跌: {q.change_pct:+.2f}%",
+                ])
                 alerts.append(Alert(
                     symbol=q.symbol, name=q.name, rule=rule,
                     current_value=current, message=msg,

@@ -30,7 +30,7 @@ class WebhookNotifier(Notifier):
     def send(self, alerts: list[Alert]) -> None:
         if not self.url or not alerts:
             return
-        text = "\n".join(a.message for a in alerts)
+        text = "\n---\n".join(a.message for a in alerts)
         payload = self._build_payload(text)
         try:
             resp = self.session.post(self.url, json=payload, timeout=self.timeout)
@@ -42,15 +42,30 @@ class WebhookNotifier(Notifier):
 
     # -- payload shaping ----------------------------------------------------
     def _build_payload(self, text: str) -> dict:
-        title = "【股票预警】"
+        title = "股票通知"
+        markdown = self._format_markdown(text)
         if "open.feishu.cn" in self.url:
-            return {"msg_type": "text", "content": {"text": f"{title}\n{text}"}}
+            return {
+                "msg_type": "interactive",
+                "card": {
+                    "config": {"wide_screen_mode": True},
+                    "header": {"title": {"tag": "plain_text", "content": title}},
+                    "elements": [{"tag": "markdown", "content": markdown}],
+                },
+            }
         if "oapi.dingtalk.com" in self.url:
-            return {"msgtype": "text", "text": {"content": f"{title}\n{text}"}}
+            return {"msgtype": "markdown", "markdown": {"title": title, "text": markdown}}
         if "qyapi.weixin.qq.com" in self.url:
-            return {"msgtype": "text", "text": {"content": f"{title}\n{text}"}}
-        # Unknown platform: default to the DingTalk shape, the most widely shared.
-        return {"msgtype": "text", "text": {"content": f"{title}\n{text}"}}
+            return {"msgtype": "markdown", "markdown": {"content": markdown}}
+        # Unknown platform: default to the DingTalk-compatible markdown shape.
+        return {"msgtype": "markdown", "markdown": {"title": title, "text": markdown}}
+
+    @staticmethod
+    def _format_markdown(text: str) -> str:
+        messages = [part.strip() for part in text.split("\n---\n") if part.strip()]
+        if not messages:
+            return ""
+        return "\n\n---\n\n".join(messages)
 
     @staticmethod
     def _is_success(resp) -> bool:

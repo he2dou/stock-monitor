@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sqlite3
+import threading
 import uuid
 from pathlib import Path
 from datetime import datetime, timezone
@@ -11,13 +12,59 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+class LockedConnection:
+    """Serialize access to a SQLite connection shared with APScheduler threads."""
+
+    def __init__(self, conn: sqlite3.Connection, lock: threading.RLock):
+        self._conn = conn
+        self._lock = lock
+
+    def __getattr__(self, name):
+        return getattr(self._conn, name)
+
+    def execute(self, *args, **kwargs):
+        with self._lock:
+            return self._conn.execute(*args, **kwargs)
+
+    def executemany(self, *args, **kwargs):
+        with self._lock:
+            return self._conn.executemany(*args, **kwargs)
+
+    def executescript(self, *args, **kwargs):
+        with self._lock:
+            return self._conn.executescript(*args, **kwargs)
+
+    def commit(self) -> None:
+        with self._lock:
+            self._conn.commit()
+
+    def close(self) -> None:
+        with self._lock:
+            self._conn.close()
+
+    def __enter__(self):
+        self._lock.acquire()
+        return self._conn.__enter__()
+
+    def __exit__(self, exc_type, exc, tb):
+        try:
+            return self._conn.__exit__(exc_type, exc, tb)
+        finally:
+            self._lock.release()
+
+
 class TradingStore:
     def __init__(self, db_path: str):
         self.db_path = db_path
         if db_path != ":memory:":
             Path(db_path).parent.mkdir(parents=True, exist_ok=True)
-        self.conn = sqlite3.connect(db_path)
-        self.conn.row_factory = sqlite3.Row
+        self._lock = threading.RLock()
+        raw_conn = sqlite3.connect(db_path, check_same_thread=False, timeout=30)
+        raw_conn.row_factory = sqlite3.Row
+        raw_conn.execute("PRAGMA busy_timeout = 30000")
+        if db_path != ":memory:":
+            raw_conn.execute("PRAGMA journal_mode = WAL")
+        self.conn = LockedConnection(raw_conn, self._lock)
         self.initialize_schema()
 
     def close(self) -> None:
