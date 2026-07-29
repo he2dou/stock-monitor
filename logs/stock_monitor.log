@@ -3285,3 +3285,65 @@ sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in
 2026-07-29 16:16:22,841 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
 2026-07-29 16:16:22,844 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
 2026-07-29 16:16:22,844 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 16:26:22 CST)" executed successfully
+2026-07-29 16:21:49,445 [INFO] __main__: ============================================================
+2026-07-29 16:21:49,445 [INFO] __main__: Stock Price Monitor starting...
+2026-07-29 16:21:49,445 [INFO] __main__: ============================================================
+2026-07-29 16:21:49,457 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 16:21:49,459 [INFO] __main__: Running initial fetch...
+2026-07-29 16:21:49,462 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 16:21:49,465 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 16:21:49,469 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-29 16:21:49,469 [INFO] __main__: Scheduler started. Next run in 10 minutes. Press Ctrl+C to stop.
+2026-07-29 16:21:49,470 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-07-29 16:21:49,470 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-29 16:31:49,479 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 16:31:49 CST)" (scheduled at 2026-07-29 16:31:49.469860+08:00)
+2026-07-29 16:31:49,486 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 16:31:49,491 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 16:31:49,491 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 16:41:49 CST)" executed successfully
+2026-07-29 16:32:23,938 [INFO] __main__: ============================================================
+2026-07-29 16:32:23,938 [INFO] __main__: Stock Price Monitor starting...
+2026-07-29 16:32:23,938 [INFO] __main__: ============================================================
+2026-07-29 16:32:23,951 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 16:32:23,955 [INFO] __main__: Running initial fetch...
+2026-07-29 16:32:23,957 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 16:32:23,960 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 16:32:23,963 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-07-29 16:32:23,963 [INFO] __main__: Scheduler started. Next run in 10 minutes. Press Ctrl+C to stop.
+2026-07-29 16:32:23,963 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-07-29 16:32:23,963 [INFO] apscheduler.scheduler: Scheduler started
+2026-07-29 16:41:49,475 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 16:51:49 CST)" (scheduled at 2026-07-29 16:41:49.469860+08:00)
+2026-07-29 16:41:49,493 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 16:41:49,504 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 16:41:49,504 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 16:51:49 CST)" executed successfully
+2026-07-29 16:51:49,480 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:01:49 CST)" (scheduled at 2026-07-29 16:51:49.469860+08:00)
+2026-07-29 16:51:49,486 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 16:51:49,490 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 16:51:49,490 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:01:49 CST)" executed successfully
+2026-07-29 17:01:49,481 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:11:49 CST)" (scheduled at 2026-07-29 17:01:49.469860+08:00)
+2026-07-29 17:01:49,483 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 17:01:49,487 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 17:01:49,487 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:11:49 CST)" executed successfully
+2026-07-29 17:11:49,480 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:21:49 CST)" (scheduled at 2026-07-29 17:11:49.469860+08:00)
+2026-07-29 17:11:49,484 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 17:11:49,487 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 17:11:49,488 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:21:49 CST)" executed successfully
+2026-07-29 17:21:49,475 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:31:49 CST)" (scheduled at 2026-07-29 17:21:49.469860+08:00)
+2026-07-29 17:21:49,478 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 17:21:49,482 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 17:21:49,482 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:31:49 CST)" executed successfully
+2026-07-29 17:31:49,471 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:41:49 CST)" (scheduled at 2026-07-29 17:31:49.469860+08:00)
+2026-07-29 17:31:49,474 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 17:31:49,477 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 17:31:49,477 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:41:49 CST)" executed successfully
+2026-07-29 17:41:49,619 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:41:49 CST)" (scheduled at 2026-07-29 17:41:49.469860+08:00)
+2026-07-29 17:41:49,664 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 17:41:49,667 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 17:41:49,667 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 17:51:49 CST)" executed successfully
+2026-07-29 17:51:49,496 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 18:01:49 CST)" (scheduled at 2026-07-29 17:51:49.469860+08:00)
+2026-07-29 17:51:49,526 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 17:51:49,530 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 17:51:49,530 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 18:01:49 CST)" executed successfully
+2026-07-29 18:01:49,535 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 18:01:49 CST)" (scheduled at 2026-07-29 18:01:49.469860+08:00)
+2026-07-29 18:01:49,538 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-07-29 18:01:49,545 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-07-29 18:01:49,546 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-07-29 18:11:49 CST)" executed successfully

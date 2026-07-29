@@ -7,6 +7,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 from src.models import Quote
 from src.index_snapshots import market_snapshot_date
+from src.strategy_engine import parse_strategy
 
 
 def utc_now() -> str:
@@ -185,6 +186,24 @@ class TradingStore:
                 value REAL NOT NULL,
                 enabled INTEGER NOT NULL DEFAULT 1,
                 cooldown_seconds INTEGER,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS strategy_configs (
+                strategy_id TEXT PRIMARY KEY,
+                enabled INTEGER NOT NULL DEFAULT 1,
+                symbol TEXT NOT NULL,
+                action TEXT NOT NULL,
+                trigger_field TEXT NOT NULL,
+                trigger_op TEXT NOT NULL,
+                trigger_value REAL NOT NULL,
+                sizing_type TEXT NOT NULL DEFAULT 'fixed_amount',
+                amount REAL NOT NULL,
+                currency TEXT,
+                lot_size INTEGER,
+                cooldown_minutes INTEGER NOT NULL DEFAULT 0,
+                max_position_amount REAL,
                 created_at TEXT NOT NULL,
                 updated_at TEXT NOT NULL
             );
@@ -590,6 +609,14 @@ class TradingStore:
                 (1 if enabled else 0, utc_now(), symbol),
             )
 
+    def delete_stock(self, symbol: str) -> int:
+        with self.conn:
+            cursor = self.conn.execute(
+                "DELETE FROM watchlist_items WHERE symbol = ?",
+                (symbol,),
+            )
+            return int(cursor.rowcount)
+
     def seed_alert_rules(self, rules: list[dict]) -> int:
         """Insert YAML seed alert rules when the DB alert table is empty."""
         if self.alert_rule_count() > 0:
@@ -650,4 +677,113 @@ class TradingStore:
                 "UPDATE alert_rules SET enabled = ?, updated_at = ? WHERE rule_id = ?",
                 (1 if enabled else 0, utc_now(), rule_id),
             )
+
+    def delete_alert_rule(self, rule_id: str) -> int:
+        with self.conn:
+            cursor = self.conn.execute(
+                "DELETE FROM alert_rules WHERE rule_id = ?",
+                (rule_id,),
+            )
+            return int(cursor.rowcount)
+
+    def strategy_count(self) -> int:
+        row = self.conn.execute("SELECT COUNT(*) AS c FROM strategy_configs").fetchone()
+        return int(row["c"])
+
+    def seed_strategies(self, strategies: list[dict]) -> int:
+        """Insert YAML seed strategies when the DB strategy table is empty."""
+        if self.strategy_count() > 0:
+            return 0
+        return self.import_strategies(strategies, replace=False)
+
+    def import_strategies(self, strategies: list[dict], replace: bool = False) -> int:
+        with self.conn:
+            if replace:
+                self.conn.execute("DELETE FROM strategy_configs")
+            for strategy in strategies:
+                self._upsert_strategy(strategy)
+        return len(strategies)
+
+    def load_strategies(self, include_disabled: bool = False) -> list[dict]:
+        sql = "SELECT * FROM strategy_configs"
+        if not include_disabled:
+            sql += " WHERE enabled = 1"
+        sql += " ORDER BY created_at ASC, strategy_id ASC"
+        return [self._strategy_row_to_dict(row) for row in self.conn.execute(sql).fetchall()]
+
+    def add_strategy(self, strategy: dict) -> str:
+        parsed = parse_strategy(strategy)
+        with self.conn:
+            self._upsert_strategy(strategy)
+        return parsed.id
+
+    def delete_strategy(self, strategy_id: str) -> int:
+        with self.conn:
+            cursor = self.conn.execute(
+                "DELETE FROM strategy_configs WHERE strategy_id = ?",
+                (strategy_id,),
+            )
+            return int(cursor.rowcount)
+
+    def _upsert_strategy(self, raw_strategy: dict) -> None:
+        strategy = parse_strategy(raw_strategy)
+        now = utc_now()
+        self.conn.execute(
+            """
+            INSERT INTO strategy_configs
+            (strategy_id, enabled, symbol, action, trigger_field, trigger_op,
+             trigger_value, sizing_type, amount, currency, lot_size,
+             cooldown_minutes, max_position_amount, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(strategy_id) DO UPDATE SET
+                enabled=excluded.enabled,
+                symbol=excluded.symbol,
+                action=excluded.action,
+                trigger_field=excluded.trigger_field,
+                trigger_op=excluded.trigger_op,
+                trigger_value=excluded.trigger_value,
+                sizing_type=excluded.sizing_type,
+                amount=excluded.amount,
+                currency=excluded.currency,
+                lot_size=excluded.lot_size,
+                cooldown_minutes=excluded.cooldown_minutes,
+                max_position_amount=excluded.max_position_amount,
+                updated_at=excluded.updated_at
+            """,
+            (
+                strategy.id, 1 if strategy.enabled else 0, strategy.symbol, strategy.action,
+                strategy.trigger.field, strategy.trigger.op, strategy.trigger.value,
+                strategy.sizing.type, strategy.sizing.amount, strategy.sizing.currency,
+                strategy.sizing.lot_size, strategy.constraints.cooldown_minutes,
+                strategy.constraints.max_position_amount, now, now,
+            ),
+        )
+
+    @staticmethod
+    def _strategy_row_to_dict(row) -> dict:
+        strategy = {
+            "id": row["strategy_id"],
+            "enabled": bool(row["enabled"]),
+            "symbol": row["symbol"],
+            "action": row["action"],
+            "trigger": {
+                "field": row["trigger_field"],
+                "op": row["trigger_op"],
+                "value": row["trigger_value"],
+            },
+            "sizing": {
+                "type": row["sizing_type"],
+                "amount": row["amount"],
+            },
+            "constraints": {
+                "cooldown_minutes": row["cooldown_minutes"],
+            },
+        }
+        if row["currency"] is not None:
+            strategy["sizing"]["currency"] = row["currency"]
+        if row["lot_size"] is not None:
+            strategy["sizing"]["lot_size"] = row["lot_size"]
+        if row["max_position_amount"] is not None:
+            strategy["constraints"]["max_position_amount"] = row["max_position_amount"]
+        return strategy
 

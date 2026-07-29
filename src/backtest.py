@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import argparse
 import json
@@ -63,7 +63,10 @@ def main() -> None:
     paper = app_config.get("paper_trading", {}) or {}
     db_path = _resolve_path(args.db_path or paper.get("db_path", "data/trading.sqlite3"))
     accounts = paper.get("accounts") or {"CNY": 100000, "HKD": 100000, "USD": 50000}
-    strategies = load_strategies(str(CONFIG_DIR / "strategies.yaml"))
+    strategy_store = TradingStore(db_path)
+    strategy_store.seed_strategies(load_strategies(str(CONFIG_DIR / "strategies.yaml")))
+    strategies = strategy_store.load_strategies()
+    strategy_store.close()
     summary = run_backtest(db_path, strategies, accounts, args.from_date, args.to_date)
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 

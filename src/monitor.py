@@ -73,7 +73,7 @@ class MonitorService:
             try:
                 self.trading_service.set_strategies(self._strategies_loader())
             except Exception as e:
-                logger.error(f"Failed to reload strategies.yaml; keeping previous strategies: {e}")
+                logger.error(f"Failed to reload runtime strategies from SQLite; keeping previous strategies: {e}")
 
         if self.trading_service is not None and self._app_config_loader is not None:
             try:

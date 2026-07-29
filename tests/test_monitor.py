@@ -194,3 +194,26 @@ def test_monitor_updates_existing_daily_index_snapshot_each_cycle(monitor_setup)
     assert src.fetch_quotes.call_args_list[0].args[0] == indices
     assert src.fetch_quotes.call_args_list[1].args[0] == stocks
     store.save_index_snapshots.assert_called_once()
+
+def test_monitor_updates_market_indices_on_each_run_once_cycle(monitor_setup):
+    src, engine, notifier = monitor_setup
+    first_index = Quote("HSI", "恒生指数", "港股", 25300.0, 0.4, 1000)
+    first_stock = Quote("00700", "腾讯控股", "港股", 450.0, 1.0, 100)
+    second_index = Quote("HSI", "恒生指数", "港股", 25350.0, 0.6, 2000)
+    second_stock = Quote("00700", "腾讯控股", "港股", 451.0, 1.1, 200)
+    src.fetch_quotes.side_effect = [[first_index], [first_stock], [second_index], [second_stock]]
+    engine.check.return_value = []
+    store = MagicMock()
+    indices = [{"symbol": "HSI", "name": "恒生指数", "market": "港股", "sina_symbol": "hkHSI"}]
+    stocks = [{"symbol": "00700", "name": "腾讯控股", "market": "港股"}]
+
+    svc = MonitorService(source=src, alert_engine=engine, notifiers=[notifier],
+                         stocks=stocks, index_store=store, market_indices=indices)
+    svc.run_once()
+    svc.run_once()
+
+    assert src.fetch_quotes.call_args_list[0].args[0] == indices
+    assert src.fetch_quotes.call_args_list[1].args[0] == stocks
+    assert src.fetch_quotes.call_args_list[2].args[0] == indices
+    assert src.fetch_quotes.call_args_list[3].args[0] == stocks
+    assert store.save_index_snapshots.call_count == 2

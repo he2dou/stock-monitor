@@ -37,29 +37,49 @@ paper_trading:
 `config/watchlist.yaml` 和 `config/alerts.yaml` 现在作为 SQLite 的首次种子/导入文件使用。程序启动时如果数据库对应表为空，会自动导入这两个文件；也可以手动导入：
 
 ```bash
-python -m src.config_cli import-yaml
+python -m src.cli import-yaml
 ```
 
 如果希望用 YAML 覆盖数据库中的股票池和预警规则：
 
 ```bash
-python -m src.config_cli import-yaml --replace
+python -m src.cli import-yaml --replace
 ```
 
 ### 4. 运行时维护股票池和预警
 股票池和纯预警规则保存在 `paper_trading.db_path` 指向的 SQLite 数据库中。程序运行中修改数据库后，下一轮轮询自动生效，无需重启。
 
 ```bash
-python -m src.config_cli list-watchlist
-python -m src.config_cli add-stock --symbol SOXL --name 半导体ETF --market 美股
-python -m src.config_cli disable-stock --symbol SOXL
-python -m src.config_cli enable-stock --symbol SOXL
+python -m src.cli list-watchlist
+python -m src.cli add-stock --symbol SOXL --name 半导体ETF --market 美股
+python -m src.cli disable-stock --symbol SOXL
+python -m src.cli enable-stock --symbol SOXL
 
-python -m src.config_cli list-alerts
-python -m src.config_cli add-alert --symbol SOXL --field change_pct --op below --value -10
-python -m src.config_cli disable-alert --rule-id RULE_ID
-python -m src.config_cli enable-alert --rule-id RULE_ID
-python -m src.config_cli list-index-snapshots --from 2026-07-28 --to 2026-07-28
+python -m src.cli list-alerts
+python -m src.cli add-alert --symbol SOXL --field change_pct --op below --value -10
+python -m src.cli disable-alert --rule-id RULE_ID
+python -m src.cli enable-alert --rule-id RULE_ID
+python -m src.cli list-index-snapshots --from 2026-07-28 --to 2026-07-28
+```
+
+手动更新实时快照：
+
+```bash
+# 更新当前交易时段内的观察列表股票
+python -m src.cli update-snapshots --target stock
+
+# 只更新指定股票
+python -m src.cli update-snapshots --target stock --symbol SOXL
+
+# 更新当前交易时段内的大盘指数
+python -m src.cli update-snapshots --target index
+
+# 只更新指定市场或指定指数
+python -m src.cli update-snapshots --target index --market 港股
+python -m src.cli update-snapshots --target index --symbol HSI
+
+# 明确忽略交易时段过滤，强制请求行情源
+python -m src.cli update-snapshots --target index --ignore-hours
 ```
 
 ### 5. 配置模拟交易策略（可选）
@@ -89,9 +109,161 @@ strategies:
 python -m src.main
 ```
 
+## 命令行操作手册
+
+所有命令默认读取 `config/config.yaml`，并使用 `paper_trading.db_path` 指向的 SQLite 数据库。`watchlist.yaml` 和 `alerts.yaml` 只作为种子/导入文件；运行时股票池和纯预警规则以 SQLite 为准。
+
+### 查看帮助
+```bash
+python -m src.cli --help
+python -m src.cli <command> --help
+python -m src.backtest --help
+```
+
+### 启动监控服务
+```bash
+python -m src.main
+```
+
+启动后程序按 `monitor.interval_minutes` 周期运行。美股、港股、A股只在各自交易时段内拉取；大盘指数跟随同一轮询周期更新。
+
+### 导入 YAML 种子数据
+```bash
+# 只导入 YAML 中的数据，已有数据不会被清空
+python -m src.cli import-yaml
+
+# 清空数据库中的股票池和预警规则后，再用 YAML 覆盖导入
+python -m src.cli import-yaml --replace
+```
+
+### 股票池管理
+```bash
+# 查看启用中的股票池
+python -m src.cli list-watchlist
+
+# 查看全部股票池，包括已禁用项
+python -m src.cli list-watchlist --all
+
+# 添加启用股票
+cc
+
+# 添加时先禁用
+python -m src.cli add-stock --symbol 00700 --name 腾讯控股 --market 港股 --disabled
+
+# 禁用/启用股票
+python -m src.cli disable-stock --symbol SOXL
+python -m src.cli enable-stock --symbol SOXL
+
+# 删除股票
+python -m src.cli del-stock --symbol SOXL
+
+```
+
+### 策略管理
+```bash
+# 添加策略
+python -m src.cli add-strategy --id soxl_drop_buy --symbol SOXL --action buy --trigger-field change_pct --trigger-op below --trigger-value -10 --amount 1000 --currency USD --lot-size 1 --cooldown-minutes 300 --max-position-amount 5000
+
+# 删除策略
+python -m src.cli del-strategy --id soxl_drop_buy
+
+
+```
+
+`--market` 取值为 `A股`、`港股`、`美股`。
+
+### 纯通知预警管理
+```bash
+# 查看启用中的预警规则
+python -m src.cli list-alerts
+
+# 查看全部预警规则，包括已禁用项
+python -m src.cli list-alerts --all
+
+# 添加涨跌幅预警
+python -m src.cli add-alert --symbol SOXL --field change_pct --op below --value -10
+
+# 添加价格预警并设置冷却时间
+python -m src.cli add-alert --symbol 00700 --field price --op above --value 400 --cooldown-seconds 600
+
+# 添加时先禁用
+python -m src.cli add-alert --symbol SOXL --field price --op above --value 100 --disabled
+
+# 禁用/启用预警规则
+python -m src.cli disable-alert --rule-id RULE_ID
+python -m src.cli enable-alert --rule-id RULE_ID
+
+# 删除规则
+python -m src.cli del-alert --rule-id RULE_ID
+
+```
+
+`--field` 取值为 `price`、`change_pct`；`--op` 取值为 `above`、`below`。
+
+### 手动更新实时快照
+```bash
+# 更新当前交易时段内的观察列表股票，写入 quote_snapshots
+python -m src.cli update-snapshots --target stock
+
+# 更新指定股票；多个 symbol 可用逗号分隔，也可重复传参
+python -m src.cli update-snapshots --target stock --symbol SOXL
+python -m src.cli update-snapshots --target stock --symbol SOXL,TQQQ
+python -m src.cli update-snapshots --target stock --symbol SOXL --symbol TQQQ
+
+# 按市场更新股票
+python -m src.cli update-snapshots --target stock --market 美股
+
+# 股票更新时包含已禁用股票
+python -m src.cli update-snapshots --target stock --include-disabled
+
+# 更新当前交易时段内的大盘指数，写入 index_snapshots
+python -m src.cli update-snapshots --target index
+
+# 按市场或指数代码更新指数
+python -m src.cli update-snapshots --target index --market 港股
+python -m src.cli update-snapshots --target index --symbol HSI
+
+# 忽略交易时段过滤，强制请求行情源
+python -m src.cli update-snapshots --target stock --ignore-hours
+python -m src.cli update-snapshots --target index --ignore-hours
+```
+
+默认情况下，`update-snapshots` 和定时任务一样遵守交易时段；只有传入 `--ignore-hours` 才会在非交易时间强制拉取。`quote_snapshots` 和 `index_snapshots` 都按同一天同一代码做唯一约束，重复更新会覆盖当天最新数据，不会插入重复行。
+
+### 大盘指数快照查询和补历史
+```bash
+# 只查询 SQLite 已保存的指数快照
+python -m src.cli list-index-snapshots --from 2026-07-01 --to 2026-07-28
+
+# 先补齐指定区间历史指数快照，再查询
+python -m src.cli list-index-snapshots --from 2026-07-01 --to 2026-07-28 --backfill
+
+# 单独补历史指数快照
+python -m src.cli backfill-index-snapshots --from 2026-07-01 --to 2026-07-28
+```
+
+`list-index-snapshots` 不会凭空生成历史数据；不带 `--backfill` 时它只读取数据库里已经存在的记录。
+
+### 回测
+```bash
+# 使用默认 SQLite 数据库回测
+python -m src.backtest --from 2026-07-01 --to 2026-07-28
+
+# 指定 SQLite 数据库回测
+python -m src.backtest --from 2026-07-01 --to 2026-07-28 --db data/trading.sqlite3
+```
+
+回测基于 `quote_snapshots` 中已保存的行情快照，不会额外请求外部历史行情 API。
+
+### 运行测试
+```bash
+python -m pytest tests/ -v
+python -m pytest tests/ -q
+```
+
 ## 大盘指数每日快照
 
-程序默认在各市场交易时段内，为每个市场三大指数每天保存一条快照到 SQLite `index_snapshots` 表。同一指数同一交易日使用唯一约束只保留一行，交易时段内每轮会更新这行，日终自然保留当天最新值。
+程序默认跟随观察列表股票的同一个 `monitor.interval_minutes` 轮询周期，在各市场交易时段内更新每个市场三大指数到 SQLite `index_snapshots` 表，没有单独的指数定时器。同一指数同一交易日使用唯一约束只保留一行，交易时段内每轮会更新这行，日终自然保留当天最新值。
 
 默认指数：
 
@@ -104,14 +276,14 @@ python -m src.main
 历史区间不会凭空出现在库里；`list-index-snapshots` 只查询 SQLite 已保存的数据。需要补历史时先执行：
 
 ```bash
-python -m src.config_cli backfill-index-snapshots --from 2026-07-01 --to 2026-07-28
-python -m src.config_cli list-index-snapshots --from 2026-07-01 --to 2026-07-28
+python -m src.cli backfill-index-snapshots --from 2026-07-01 --to 2026-07-28
+python -m src.cli list-index-snapshots --from 2026-07-01 --to 2026-07-28
 ```
 
 也可以查询时顺手补齐：
 
 ```bash
-python -m src.config_cli list-index-snapshots --from 2026-07-01 --to 2026-07-28 --backfill
+python -m src.cli list-index-snapshots --from 2026-07-01 --to 2026-07-28 --backfill
 ```
 
 可在 `config/config.yaml` 中关闭：
