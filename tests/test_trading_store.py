@@ -17,6 +17,33 @@ def test_store_initializes_accounts_and_quotes(tmp_path):
     store.close()
 
 
+def test_store_upserts_one_quote_snapshot_per_symbol_per_day(tmp_path):
+    store = TradingStore(str(tmp_path / "trading.sqlite3"))
+    first = Quote("159995", "芯片ETF", "A股", 1.20, -11.0, 1000, timestamp="2026-07-29T10:00:00+08:00")
+    latest = Quote("159995", "芯片ETF", "A股", 1.25, -8.0, 2000, timestamp="2026-07-29T14:00:00+08:00")
+
+    store.save_quote_snapshots([first])
+    store.save_quote_snapshots([latest])
+
+    loaded = store.load_quote_snapshots()
+    assert len(loaded) == 1
+    assert loaded[0].symbol == "159995"
+    assert loaded[0].price == 1.25
+    assert loaded[0].volume == 2000
+    rows = store.conn.execute("SELECT symbol, snapshot_date FROM quote_snapshots").fetchall()
+    assert dict(rows[0]) == {"symbol": "159995", "snapshot_date": "2026-07-29"}
+    store.close()
+
+
+def test_store_creates_daily_snapshot_unique_indexes(tmp_path):
+    store = TradingStore(str(tmp_path / "trading.sqlite3"))
+    quote_indexes = {row["name"] for row in store.conn.execute("PRAGMA index_list(quote_snapshots)").fetchall()}
+    index_indexes = {row["name"] for row in store.conn.execute("PRAGMA index_list(index_snapshots)").fetchall()}
+    assert "idx_quote_snapshots_symbol_day" in quote_indexes
+    assert "idx_index_snapshots_symbol_day" in index_indexes
+    store.close()
+
+
 def test_store_records_order_fill_and_position(tmp_path):
     store = TradingStore(str(tmp_path / "trading.sqlite3"))
     order_id = store.record_order("sig", "s1", "SOXL", "美股", "buy", 10, 100, "USD", "FILLED")

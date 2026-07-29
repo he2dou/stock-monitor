@@ -6,10 +6,22 @@ import uuid
 from pathlib import Path
 from datetime import datetime, timezone
 from src.models import Quote
+from src.index_snapshots import market_snapshot_date
 
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def snapshot_date_for(market: str, timestamp: str) -> str:
+    try:
+        normalized = (timestamp or "").replace("Z", "+00:00")
+        when = datetime.fromisoformat(normalized)
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=timezone.utc)
+    except ValueError:
+        when = datetime.now(timezone.utc)
+    return market_snapshot_date(market, when)
 
 
 class LockedConnection:
@@ -81,6 +93,7 @@ class TradingStore:
                 price REAL NOT NULL,
                 change_pct REAL NOT NULL,
                 volume REAL NOT NULL,
+                snapshot_date TEXT NOT NULL,
                 timestamp TEXT NOT NULL
             );
 
@@ -177,7 +190,75 @@ class TradingStore:
             );
             """
         )
+        self._migrate_schema()
         self.conn.commit()
+
+    def _migrate_schema(self) -> None:
+        quote_columns = {
+            row["name"] for row in self.conn.execute("PRAGMA table_info(quote_snapshots)").fetchall()
+        }
+        if "snapshot_date" not in quote_columns:
+            self.conn.execute("ALTER TABLE quote_snapshots ADD COLUMN snapshot_date TEXT")
+        self._populate_quote_snapshot_dates()
+        self._dedupe_daily_snapshots("quote_snapshots")
+        self.conn.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_quote_snapshots_symbol_day
+            ON quote_snapshots(symbol, snapshot_date)
+            """
+        )
+        self._dedupe_daily_snapshots("index_snapshots")
+        self.conn.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_index_snapshots_symbol_day
+            ON index_snapshots(symbol, snapshot_date)
+            """
+        )
+
+        order_columns = {
+            row["name"] for row in self.conn.execute("PRAGMA table_info(orders)").fetchall()
+        }
+        if "trading_day" not in order_columns:
+            self.conn.execute("ALTER TABLE orders ADD COLUMN trading_day TEXT")
+        self.conn.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_orders_daily_signal
+            ON orders(strategy_id, symbol, side, trading_day)
+            """
+        )
+
+    def _populate_quote_snapshot_dates(self) -> None:
+        rows = self.conn.execute(
+            """
+            SELECT id, market, timestamp FROM quote_snapshots
+            WHERE snapshot_date IS NULL OR snapshot_date = ''
+            """
+        ).fetchall()
+        for row in rows:
+            self.conn.execute(
+                "UPDATE quote_snapshots SET snapshot_date = ? WHERE id = ?",
+                (snapshot_date_for(row["market"], row["timestamp"]), row["id"]),
+            )
+
+    def _dedupe_daily_snapshots(self, table_name: str) -> None:
+        if table_name not in {"quote_snapshots", "index_snapshots"}:
+            raise ValueError(f"Unsupported snapshot table: {table_name}")
+        self.conn.execute(
+            f"""
+            DELETE FROM {table_name}
+            WHERE id NOT IN (
+                SELECT id FROM (
+                    SELECT id,
+                           ROW_NUMBER() OVER (
+                               PARTITION BY symbol, snapshot_date
+                               ORDER BY timestamp DESC, id DESC
+                           ) AS rn
+                    FROM {table_name}
+                )
+                WHERE rn = 1
+            )
+            """
+        )
 
     def ensure_accounts(self, accounts: dict[str, float]) -> None:
         now = utc_now()
@@ -197,11 +278,21 @@ class TradingStore:
             self.conn.executemany(
                 """
                 INSERT INTO quote_snapshots
-                (symbol, name, market, price, change_pct, volume, timestamp)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                (symbol, name, market, price, change_pct, volume, snapshot_date, timestamp)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(symbol, snapshot_date) DO UPDATE SET
+                    name=excluded.name,
+                    market=excluded.market,
+                    price=excluded.price,
+                    change_pct=excluded.change_pct,
+                    volume=excluded.volume,
+                    timestamp=excluded.timestamp
                 """,
                 [
-                    (q.symbol, q.name, q.market, q.price, q.change_pct, q.volume, q.timestamp)
+                    (
+                        q.symbol, q.name, q.market, q.price, q.change_pct, q.volume,
+                        snapshot_date_for(q.market, q.timestamp), q.timestamp,
+                    )
                     for q in quotes
                 ],
             )
@@ -367,20 +458,32 @@ class TradingStore:
 
     def record_order(self, signal_id: str, strategy_id: str, symbol: str, market: str,
                      side: str, quantity: int, price: float, currency: str,
-                     status: str, reason: str = "") -> str:
+                     status: str, reason: str = "", trading_day: str | None = None) -> str:
         order_id = str(uuid.uuid4())
         with self.conn:
             self.conn.execute(
                 """
                 INSERT INTO orders
                 (order_id, signal_id, strategy_id, symbol, market, side, quantity,
-                 price, currency, status, reason, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 price, currency, status, reason, trading_day, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (order_id, signal_id, strategy_id, symbol, market, side, int(quantity),
-                 float(price), currency, status, reason, utc_now()),
+                 float(price), currency, status, reason, trading_day, utc_now()),
             )
         return order_id
+
+    def has_order_for_signal_on_day(self, strategy_id: str, symbol: str, side: str,
+                                    trading_day: str) -> bool:
+        row = self.conn.execute(
+            """
+            SELECT 1 FROM orders
+            WHERE strategy_id = ? AND symbol = ? AND side = ? AND trading_day = ?
+            LIMIT 1
+            """,
+            (strategy_id, symbol, side, trading_day),
+        ).fetchone()
+        return row is not None
 
     def record_fill(self, order_id: str, price: float, quantity: int, fee: float = 0.0) -> str:
         fill_id = str(uuid.uuid4())

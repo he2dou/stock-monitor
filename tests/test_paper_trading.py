@@ -1,4 +1,4 @@
-﻿from src.models import Quote
+from src.models import Quote
 from src.paper_trading import PaperTradingService
 from src.strategy_engine import StrategyEngine
 from src.trading_store import TradingStore
@@ -91,12 +91,40 @@ def test_sell_rejects_when_position_insufficient(tmp_path):
     assert store.fill_count() == 0
 
 
-def test_cooldown_generates_rejected_order(tmp_path):
+def test_cooldown_generates_rejected_order_on_next_trading_day(tmp_path):
     store = make_store(tmp_path)
     service = PaperTradingService(store, StrategyEngine([buy_strategy()]))
-    quote = Quote("SOXL", "半导体ETF", "美股", 100, -11, 1000)
-    service.process([quote])
-    messages = service.process([quote])
+    first = Quote("SOXL", "半导体ETF", "美股", 100, -11, 1000, timestamp="2026-07-29T14:00:00+08:00")
+    next_day = Quote("SOXL", "半导体ETF", "美股", 100, -11, 1000, timestamp="2026-07-30T14:00:00+08:00")
+    service.process([first])
+    messages = service.process([next_day])
     assert "strategy cooldown" in messages[0].message
     assert store.order_count() == 2
 
+
+def test_same_signal_only_creates_one_order_per_trading_day(tmp_path):
+    store = make_store(tmp_path)
+    service = PaperTradingService(store, StrategyEngine([buy_strategy(constraints={"cooldown_minutes": 0})]))
+    quote = Quote("SOXL", "半导体ETF", "美股", 100, -11, 1000, timestamp="2026-07-29T14:00:00+08:00")
+
+    first = service.process([quote])
+    duplicate = service.process([quote])
+
+    assert "FILLED" in first[0].message
+    assert "daily signal already ordered" in duplicate[0].message
+    assert store.order_count() == 1
+    assert store.fill_count() == 1
+    assert store.get_position("美股", "SOXL")["quantity"] == 10
+
+
+def test_us_signal_after_midnight_beijing_uses_previous_trading_day(tmp_path):
+    store = make_store(tmp_path)
+    service = PaperTradingService(store, StrategyEngine([buy_strategy(constraints={"cooldown_minutes": 0})]))
+    evening = Quote("SOXL", "半导体ETF", "美股", 100, -11, 1000, timestamp="2026-07-29T22:00:00+08:00")
+    after_midnight = Quote("SOXL", "半导体ETF", "美股", 101, -12, 1000, timestamp="2026-07-30T02:00:00+08:00")
+
+    service.process([evening])
+    duplicate = service.process([after_midnight])
+
+    assert "daily signal already ordered for 2026-07-29" in duplicate[0].message
+    assert store.order_count() == 1

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import math
+from datetime import datetime, timezone
+
+from src.index_snapshots import market_snapshot_date
 from src.models import Quote
 from src.strategy_engine import StrategyEngine
 from src.trading_models import OrderExecution, StrategySignal, TradeMessage, TradingStrategy
@@ -16,15 +19,21 @@ class PaperBroker:
 
     def execute(self, signal: StrategySignal) -> OrderExecution:
         strategy = signal.strategy
-        signal_id = self.store.record_signal(signal)
+        trading_day = signal_trading_day(signal)
         currency = strategy.sizing.currency or MARKET_CURRENCY.get(signal.market, "CNY")
         lot_size = strategy.sizing.lot_size or DEFAULT_LOT_SIZE.get(signal.market, 1)
+
+        if self.store.has_order_for_signal_on_day(strategy.id, signal.symbol, signal.action, trading_day):
+            reason = f"daily signal already ordered for {trading_day}"
+            return self._result(signal, "REJECTED", 0, 0.0, currency, reason)
+
+        signal_id = self.store.record_signal(signal)
 
         if signal.cooldown_remaining_seconds > 0:
             reason = f"strategy cooldown: {int(signal.cooldown_remaining_seconds)}s remaining"
             self.store.record_order(
                 signal_id, strategy.id, signal.symbol, signal.market, signal.action,
-                0, signal.quote_price, currency, "REJECTED", reason,
+                0, signal.quote_price, currency, "REJECTED", reason, trading_day,
             )
             return self._result(signal, "REJECTED", 0, 0.0, currency, reason)
 
@@ -33,13 +42,13 @@ class PaperBroker:
             reason = "quantity below minimum lot size"
             self.store.record_order(
                 signal_id, strategy.id, signal.symbol, signal.market, signal.action,
-                0, signal.quote_price, currency, "REJECTED", reason,
+                0, signal.quote_price, currency, "REJECTED", reason, trading_day,
             )
             return self._result(signal, "REJECTED", 0, 0.0, currency, reason)
 
         if signal.action == "buy":
-            return self._buy(signal_id, signal, quantity, currency)
-        return self._sell(signal_id, signal, quantity, currency)
+            return self._buy(signal_id, signal, quantity, currency, trading_day)
+        return self._sell(signal_id, signal, quantity, currency, trading_day)
 
     @staticmethod
     def _quantity_from_fixed_amount(strategy: TradingStrategy, price: float, lot_size: int) -> int:
@@ -48,7 +57,8 @@ class PaperBroker:
         raw_quantity = int(strategy.sizing.amount // price)
         return int(math.floor(raw_quantity / lot_size) * lot_size)
 
-    def _buy(self, signal_id: str, signal: StrategySignal, quantity: int, currency: str) -> OrderExecution:
+    def _buy(self, signal_id: str, signal: StrategySignal, quantity: int,
+             currency: str, trading_day: str) -> OrderExecution:
         strategy = signal.strategy
         amount = quantity * signal.quote_price
         cash = self.store.get_balance(currency)
@@ -57,17 +67,23 @@ class PaperBroker:
         max_amount = strategy.constraints.max_position_amount
         if max_amount is not None and current_position_value + amount > max_amount:
             reason = "max position amount exceeded"
-            self.store.record_order(signal_id, strategy.id, signal.symbol, signal.market, "buy",
-                                    quantity, signal.quote_price, currency, "REJECTED", reason)
+            self.store.record_order(
+                signal_id, strategy.id, signal.symbol, signal.market, "buy",
+                quantity, signal.quote_price, currency, "REJECTED", reason, trading_day,
+            )
             return self._result(signal, "REJECTED", quantity, amount, currency, reason, cash)
         if cash < amount:
             reason = "insufficient cash"
-            self.store.record_order(signal_id, strategy.id, signal.symbol, signal.market, "buy",
-                                    quantity, signal.quote_price, currency, "REJECTED", reason)
+            self.store.record_order(
+                signal_id, strategy.id, signal.symbol, signal.market, "buy",
+                quantity, signal.quote_price, currency, "REJECTED", reason, trading_day,
+            )
             return self._result(signal, "REJECTED", quantity, amount, currency, reason, cash)
 
-        order_id = self.store.record_order(signal_id, strategy.id, signal.symbol, signal.market, "buy",
-                                           quantity, signal.quote_price, currency, "FILLED")
+        order_id = self.store.record_order(
+            signal_id, strategy.id, signal.symbol, signal.market, "buy",
+            quantity, signal.quote_price, currency, "FILLED", "", trading_day,
+        )
         self.store.record_fill(order_id, signal.quote_price, quantity)
         new_cash = cash - amount
         self.store.update_balance(currency, new_cash)
@@ -82,7 +98,8 @@ class PaperBroker:
         )
         return self._result(signal, "FILLED", quantity, amount, currency, "", new_cash)
 
-    def _sell(self, signal_id: str, signal: StrategySignal, quantity: int, currency: str) -> OrderExecution:
+    def _sell(self, signal_id: str, signal: StrategySignal, quantity: int,
+              currency: str, trading_day: str) -> OrderExecution:
         strategy = signal.strategy
         amount = quantity * signal.quote_price
         position = self.store.get_position(signal.market, signal.symbol)
@@ -90,12 +107,16 @@ class PaperBroker:
         cash = self.store.get_balance(currency)
         if held_qty < quantity:
             reason = "insufficient position quantity"
-            self.store.record_order(signal_id, strategy.id, signal.symbol, signal.market, "sell",
-                                    quantity, signal.quote_price, currency, "REJECTED", reason)
+            self.store.record_order(
+                signal_id, strategy.id, signal.symbol, signal.market, "sell",
+                quantity, signal.quote_price, currency, "REJECTED", reason, trading_day,
+            )
             return self._result(signal, "REJECTED", quantity, amount, currency, reason, cash)
 
-        order_id = self.store.record_order(signal_id, strategy.id, signal.symbol, signal.market, "sell",
-                                           quantity, signal.quote_price, currency, "FILLED")
+        order_id = self.store.record_order(
+            signal_id, strategy.id, signal.symbol, signal.market, "sell",
+            quantity, signal.quote_price, currency, "FILLED", "", trading_day,
+        )
         self.store.record_fill(order_id, signal.quote_price, quantity)
         new_cash = cash + amount
         self.store.update_balance(currency, new_cash)
@@ -125,6 +146,18 @@ class PaperBroker:
             reason=reason,
             remaining_cash=remaining_cash,
         )
+
+
+def signal_trading_day(signal: StrategySignal) -> str:
+    raw = signal.quote_timestamp or ""
+    try:
+        normalized = raw.replace("Z", "+00:00")
+        when = datetime.fromisoformat(normalized)
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=timezone.utc)
+    except ValueError:
+        when = datetime.now(timezone.utc)
+    return market_snapshot_date(signal.market, when)
 
 
 class PaperTradingService:
