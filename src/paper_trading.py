@@ -198,7 +198,7 @@ class PaperTradingService:
     @staticmethod
     def _format_message(signal: StrategySignal, execution: OrderExecution) -> str:
         trigger = (
-            f"{signal.trigger_field} {signal.strategy.trigger.op} {signal.trigger_value} "
+            f"{signal.trigger_field} {signal.trigger_op} {signal.trigger_value} "
             f"(当前 {signal.current_value:.4f})"
         )
         lines = [

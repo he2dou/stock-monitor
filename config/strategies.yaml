@@ -1,4 +1,4 @@
-﻿strategies:
+strategies:
   - id: "soxl_drop_buy"
     enabled: true
     symbol: "SOXL"
@@ -28,6 +28,28 @@
       amount: 1000
       currency: "CNY"
       lot_size: 100
+    constraints:
+      cooldown_minutes: 300
+      max_position_amount: 5000
+  # 突破回踩策略模板：长期下跌后，突破压力位，回踩确认支撑有效后买入。
+  # 使用前必须按标的实际形态修改 resistance，并将 enabled 改为 true。
+  - id: "soxl_breakout_pullback"
+    type: "breakout_pullback"
+    enabled: false
+    symbol: "SOXL"
+    action: "buy"
+    breakout_pullback:
+      resistance: 100.0
+      breakout_buffer_pct: 1.0       # 价格高于压力位 1% 视为有效突破
+      pullback_tolerance_pct: 1.0    # 回踩到压力位上下 1% 区间视为触及支撑
+      confirmation_pct: 0.3          # 回踩后重新站上压力位 0.3% 触发买入
+      max_pullback_bars: 8           # 突破后最多等待 8 个轮询周期回踩
+      invalidation_pct: 2.0          # 跌破压力位下方 2% 视为支撑失败，重置等待
+    sizing:
+      type: "fixed_amount"
+      amount: 1000
+      currency: "USD"
+      lot_size: 1
     constraints:
       cooldown_minutes: 300
       max_position_amount: 5000

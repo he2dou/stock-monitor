@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 import yaml
 from src.config_loader import load_watchlist, load_alerts, load_app_config, load_notify, load_strategies, ConfigError
 
@@ -107,6 +107,31 @@ strategies:
     assert len(strategies) == 1
     assert strategies[0]["id"] == "s1"
 
+
+def test_load_breakout_pullback_strategy_valid(tmp_path):
+    f = tmp_path / "strategies.yaml"
+    f.write_text("""
+strategies:
+  - id: "soxl_breakout_pullback"
+    type: "breakout_pullback"
+    enabled: true
+    symbol: "SOXL"
+    action: "buy"
+    breakout_pullback:
+      resistance: 100
+      breakout_buffer_pct: 1
+      pullback_tolerance_pct: 1
+      confirmation_pct: 0.3
+      max_pullback_bars: 4
+      invalidation_pct: 2
+    sizing:
+      type: "fixed_amount"
+      amount: 1000
+      currency: "USD"
+      lot_size: 1
+""", encoding="utf-8")
+    strategies = load_strategies(str(f))
+    assert strategies[0]["type"] == "breakout_pullback"
 
 def test_load_strategies_invalid_action(tmp_path):
     f = tmp_path / "strategies.yaml"

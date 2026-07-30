@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from src.config_loader import load_alerts, load_app_config, load_strategies, load_watchlist
+from src.config_loader import load_alerts, load_app_config, load_watchlist
 from src.index_history import backfill_index_snapshots
 from src.index_snapshots import load_market_indices
 from src.market_hours import is_market_open
@@ -71,15 +71,9 @@ def cmd_import_yaml(args) -> None:
     store = default_store()
     stocks = load_watchlist(str(CONFIG_DIR / "watchlist.yaml"))
     rules = load_alerts(str(CONFIG_DIR / "alerts.yaml"))
-    strategies = load_strategies(str(CONFIG_DIR / "strategies.yaml"))
     stock_count = store.import_watchlist(stocks, replace=args.replace)
     rule_count = store.import_alert_rules(rules, replace=args.replace)
-    strategy_count = store.import_strategies(strategies, replace=args.replace)
-    print_json({
-        "watchlist_imported": stock_count,
-        "alert_rules_imported": rule_count,
-        "strategies_imported": strategy_count,
-    })
+    print_json({"watchlist_imported": stock_count, "alert_rules_imported": rule_count})
     store.close()
 
 
@@ -207,53 +201,11 @@ def cmd_del_alert(args) -> None:
     store.close()
 
 
-def _strategy_from_args(args) -> dict:
-    strategy = {
-        "id": args.strategy_id,
-        "enabled": not args.disabled,
-        "symbol": args.symbol,
-        "action": args.action,
-        "trigger": {
-            "field": args.trigger_field,
-            "op": args.trigger_op,
-            "value": args.trigger_value,
-        },
-        "sizing": {
-            "type": "fixed_amount",
-            "amount": args.amount,
-        },
-        "constraints": {
-            "cooldown_minutes": args.cooldown_minutes,
-        },
-    }
-    if args.currency:
-        strategy["sizing"]["currency"] = args.currency
-    if args.lot_size is not None:
-        strategy["sizing"]["lot_size"] = args.lot_size
-    if args.max_position_amount is not None:
-        strategy["constraints"]["max_position_amount"] = args.max_position_amount
-    return strategy
-
-
-def cmd_add_strategy(args) -> None:
-    store = default_store()
-    strategy_id = store.add_strategy(_strategy_from_args(args))
-    print_json({"ok": True, "strategy_id": strategy_id})
-    store.close()
-
-
-def cmd_del_strategy(args) -> None:
-    store = default_store()
-    deleted = store.delete_strategy(args.strategy_id)
-    print_json({"ok": deleted > 0, "strategy_id": args.strategy_id, "deleted": deleted})
-    store.close()
-
-
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Manage stock monitor runtime config stored in SQLite")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p = sub.add_parser("import-yaml", help="Import config/watchlist.yaml, config/alerts.yaml, and config/strategies.yaml into SQLite")
+    p = sub.add_parser("import-yaml", help="Import config/watchlist.yaml and config/alerts.yaml into SQLite")
     p.add_argument("--replace", action="store_true", help="Clear DB config rows before importing")
     p.set_defaults(func=cmd_import_yaml)
 
@@ -324,24 +276,6 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--rule-id", required=True)
     p.set_defaults(func=cmd_del_alert)
 
-    p = sub.add_parser("add-strategy")
-    p.add_argument("--id", "--strategy-id", dest="strategy_id", required=True)
-    p.add_argument("--symbol", required=True)
-    p.add_argument("--action", required=True, choices=["buy", "sell"])
-    p.add_argument("--trigger-field", required=True, choices=["price", "change_pct"])
-    p.add_argument("--trigger-op", required=True, choices=["above", "below"])
-    p.add_argument("--trigger-value", required=True, type=float)
-    p.add_argument("--amount", required=True, type=float)
-    p.add_argument("--currency", default=None)
-    p.add_argument("--lot-size", type=int, default=None)
-    p.add_argument("--cooldown-minutes", type=int, default=0)
-    p.add_argument("--max-position-amount", type=float, default=None)
-    p.add_argument("--disabled", action="store_true")
-    p.set_defaults(func=cmd_add_strategy)
-
-    p = sub.add_parser("del-strategy")
-    p.add_argument("--id", "--strategy-id", dest="strategy_id", required=True)
-    p.set_defaults(func=cmd_del_strategy)
 
     return parser
 

@@ -1,4 +1,4 @@
-﻿from dataclasses import dataclass
+from dataclasses import dataclass
 from typing import Literal
 
 
@@ -22,6 +22,16 @@ class StrategyTrigger:
 
 
 @dataclass
+class BreakoutPullbackSetup:
+    resistance: float
+    breakout_buffer_pct: float = 0.0
+    pullback_tolerance_pct: float = 1.0
+    confirmation_pct: float = 0.0
+    max_pullback_bars: int = 8
+    invalidation_pct: float = 2.0
+
+
+@dataclass
 class StrategySizing:
     type: Literal["fixed_amount"]
     amount: float
@@ -41,9 +51,11 @@ class TradingStrategy:
     enabled: bool
     symbol: str
     action: Literal["buy", "sell"]
-    trigger: StrategyTrigger
+    trigger: StrategyTrigger | None
     sizing: StrategySizing
     constraints: StrategyConstraints
+    type: Literal["threshold", "breakout_pullback"] = "threshold"
+    breakout_pullback: BreakoutPullbackSetup | None = None
 
 
 @dataclass
@@ -54,6 +66,7 @@ class StrategySignal:
     name: str
     action: Literal["buy", "sell"]
     trigger_field: str
+    trigger_op: str
     trigger_value: float
     current_value: float
     quote_price: float

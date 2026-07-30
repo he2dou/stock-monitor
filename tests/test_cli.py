@@ -1,4 +1,5 @@
 import json
+import pytest
 from unittest.mock import patch
 
 import pandas as pd
@@ -58,7 +59,6 @@ def test_cli_import_and_list(tmp_path, monkeypatch, capsys):
     imported = json.loads(capsys.readouterr().out)
     assert imported["watchlist_imported"] == 1
     assert imported["alert_rules_imported"] == 1
-    assert imported["strategies_imported"] == 1
 
     args = cli.build_parser().parse_args(["list-watchlist"])
     args.func(args)
@@ -118,44 +118,6 @@ def test_cli_add_and_disable_alert(tmp_path, monkeypatch, capsys):
     args = cli.build_parser().parse_args(["del-alert", "--rule-id", rule_id])
     args.func(args)
     assert json.loads(capsys.readouterr().out)["deleted"] == 1
-
-
-def test_cli_add_and_delete_strategy(tmp_path, monkeypatch, capsys):
-    write_configs(tmp_path)
-    monkeypatch.setattr(cli, "BASE_DIR", tmp_path)
-    monkeypatch.setattr(cli, "CONFIG_DIR", tmp_path / "config")
-
-    args = cli.build_parser().parse_args([
-        "add-strategy",
-        "--id", "soxl_drop_buy",
-        "--symbol", "SOXL",
-        "--action", "buy",
-        "--trigger-field", "change_pct",
-        "--trigger-op", "below",
-        "--trigger-value", "-10",
-        "--amount", "1000",
-        "--currency", "USD",
-        "--lot-size", "1",
-        "--cooldown-minutes", "300",
-        "--max-position-amount", "5000",
-    ])
-    args.func(args)
-    assert json.loads(capsys.readouterr().out)["strategy_id"] == "soxl_drop_buy"
-
-    store = cli.default_store()
-    strategies = store.load_strategies()
-    store.close()
-    assert strategies[0]["id"] == "soxl_drop_buy"
-    assert strategies[0]["sizing"]["currency"] == "USD"
-    assert strategies[0]["constraints"]["max_position_amount"] == 5000
-
-    args = cli.build_parser().parse_args(["del-strategy", "--id", "soxl_drop_buy"])
-    args.func(args)
-    assert json.loads(capsys.readouterr().out)["deleted"] == 1
-
-    store = cli.default_store()
-    assert store.load_strategies(include_disabled=True) == []
-    store.close()
 
 
 def test_cli_lists_index_snapshots(tmp_path, monkeypatch, capsys):

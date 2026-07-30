@@ -137,37 +137,3 @@ def test_store_can_be_used_from_scheduler_worker_thread(tmp_path):
     assert saved == 1
     assert store.load_index_snapshots()[0]["symbol"] == ".DJI"
     store.close()
-
-def test_store_seeds_loads_and_deletes_strategies(tmp_path):
-    store = TradingStore(str(tmp_path / "trading.sqlite3"))
-    strategies = [
-        {
-            "id": "soxl_drop_buy",
-            "enabled": True,
-            "symbol": "SOXL",
-            "action": "buy",
-            "trigger": {"field": "change_pct", "op": "below", "value": -10},
-            "sizing": {
-                "type": "fixed_amount",
-                "amount": 1000,
-                "currency": "USD",
-                "lot_size": 1,
-            },
-            "constraints": {
-                "cooldown_minutes": 300,
-                "max_position_amount": 5000,
-            },
-        }
-    ]
-
-    assert store.seed_strategies(strategies) == 1
-    assert store.seed_strategies(strategies) == 0
-    loaded = store.load_strategies()
-    assert loaded[0]["id"] == "soxl_drop_buy"
-    assert loaded[0]["trigger"]["field"] == "change_pct"
-    assert loaded[0]["sizing"]["currency"] == "USD"
-    assert loaded[0]["constraints"]["max_position_amount"] == 5000
-
-    assert store.delete_strategy("soxl_drop_buy") == 1
-    assert store.load_strategies(include_disabled=True) == []
-    store.close()

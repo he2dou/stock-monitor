@@ -83,10 +83,13 @@ python -m src.cli update-snapshots --target index --ignore-hours
 ```
 
 ### 5. 配置模拟交易策略（可选）
-编辑 `config/strategies.yaml`。策略文件仍然会在每轮执行前动态重载：
+编辑 `config/strategies.yaml`。策略文件仍然会在每轮执行前动态重载，不需要重启程序。
+
+单点阈值策略：
 ```yaml
 strategies:
   - id: "soxl_drop_buy"
+    type: "threshold"
     enabled: true
     symbol: "SOXL"
     action: "buy"
@@ -103,6 +106,33 @@ strategies:
       cooldown_minutes: 300
       max_position_amount: 5000
 ```
+
+突破回踩策略：
+```yaml
+strategies:
+  - id: "soxl_breakout_pullback"
+    type: "breakout_pullback"
+    enabled: true
+    symbol: "SOXL"
+    action: "buy"
+    breakout_pullback:
+      resistance: 100.0
+      breakout_buffer_pct: 1.0
+      pullback_tolerance_pct: 1.0
+      confirmation_pct: 0.3
+      max_pullback_bars: 8
+      invalidation_pct: 2.0
+    sizing:
+      type: "fixed_amount"
+      amount: 1000
+      currency: "USD"
+      lot_size: 1
+    constraints:
+      cooldown_minutes: 300
+      max_position_amount: 5000
+```
+
+突破回踩流程：价格先站上 `resistance * (1 + breakout_buffer_pct/100)`，再回踩到压力位上下 `pullback_tolerance_pct` 区间，随后重新站上 `resistance * (1 + confirmation_pct/100)` 时触发买入。如果回踩跌破 `resistance * (1 - invalidation_pct/100)`，或超过 `max_pullback_bars` 个轮询周期没有完成回踩，则重置等待下一次突破。
 
 ### 6. 启动
 ```bash
@@ -158,47 +188,6 @@ python -m src.cli enable-stock --symbol SOXL
 python -m src.cli del-stock --symbol SOXL
 
 ```
-
-### 策略管理
-```bash
-# 添加策略
-python -m src.cli add-strategy --id soxl_drop_buy --symbol SOXL --action buy --trigger-field change_pct --trigger-op below --trigger-value -10 --amount 1000 --currency USD --lot-size 1 --cooldown-minutes 300 --max-position-amount 5000
-
-# 删除策略
-python -m src.cli del-strategy --id soxl_drop_buy
-
-
-```
-
-`--market` 取值为 `A股`、`港股`、`美股`。
-
-### 纯通知预警管理
-```bash
-# 查看启用中的预警规则
-python -m src.cli list-alerts
-
-# 查看全部预警规则，包括已禁用项
-python -m src.cli list-alerts --all
-
-# 添加涨跌幅预警
-python -m src.cli add-alert --symbol SOXL --field change_pct --op below --value -10
-
-# 添加价格预警并设置冷却时间
-python -m src.cli add-alert --symbol 00700 --field price --op above --value 400 --cooldown-seconds 600
-
-# 添加时先禁用
-python -m src.cli add-alert --symbol SOXL --field price --op above --value 100 --disabled
-
-# 禁用/启用预警规则
-python -m src.cli disable-alert --rule-id RULE_ID
-python -m src.cli enable-alert --rule-id RULE_ID
-
-# 删除规则
-python -m src.cli del-alert --rule-id RULE_ID
-
-```
-
-`--field` 取值为 `price`、`change_pct`；`--op` 取值为 `above`、`below`。
 
 ### 手动更新实时快照
 ```bash
@@ -328,9 +317,16 @@ python -m src.backtest --from 2026-07-01 --to 2026-07-28
 - `美股` - 美国股票
 
 ### trigger 字段
-- `field`: `price` 或 `change_pct`
-- `op`: `above` 或 `below`
-- `value`: 阈值
+- `type`: 可省略，默认 `threshold`；也可设置为 `breakout_pullback`
+- `field`: `price` 或 `change_pct`，仅 `threshold` 使用
+- `op`: `above` 或 `below`，仅 `threshold` 使用
+- `value`: 阈值，仅 `threshold` 使用
+- `breakout_pullback.resistance`: 压力位，突破后会转为回踩支撑位
+- `breakout_pullback.breakout_buffer_pct`: 有效突破缓冲百分比
+- `breakout_pullback.pullback_tolerance_pct`: 回踩支撑容忍百分比
+- `breakout_pullback.confirmation_pct`: 支撑有效后的确认百分比
+- `breakout_pullback.max_pullback_bars`: 突破后等待回踩的最大轮询次数
+- `breakout_pullback.invalidation_pct`: 支撑失败重置百分比
 
 ## 运行测试
 ```bash

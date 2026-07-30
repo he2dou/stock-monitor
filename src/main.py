@@ -71,9 +71,7 @@ def seed_runtime_config(store: TradingStore) -> None:
     inserted_rules = store.seed_alert_rules(load_alerts(str(CONFIG_DIR / "alerts.yaml")))
     if inserted_rules:
         logger.info(f"Seeded {inserted_rules} alert rule(s) into SQLite")
-    inserted_strategies = store.seed_strategies(load_strategies(str(CONFIG_DIR / "strategies.yaml")))
-    if inserted_strategies:
-        logger.info(f"Seeded {inserted_strategies} strategy config(s) into SQLite")
+
 
 
 def load_runtime_stocks_from_store(store: TradingStore) -> list[dict]:
@@ -84,8 +82,8 @@ def load_runtime_rules_from_store(store: TradingStore) -> list[dict]:
     return store.load_alert_rules()
 
 
-def load_runtime_strategies_from_store(store: TradingStore) -> list[dict]:
-    return store.load_strategies()
+def load_runtime_strategies() -> list[dict]:
+    return load_strategies(str(CONFIG_DIR / "strategies.yaml"))
 
 
 def load_runtime_market_indices() -> list[dict]:
@@ -112,7 +110,7 @@ def build_trading_service(store: TradingStore) -> PaperTradingService:
     store.ensure_accounts(accounts)
     return PaperTradingService(
         store=store,
-        strategy_engine=StrategyEngine(load_runtime_strategies_from_store(store)),
+        strategy_engine=StrategyEngine(load_runtime_strategies()),
         enabled=bool(paper.get("enabled", True)),
         quote_history_enabled=bool(paper.get("quote_history_enabled", True)),
     )
@@ -134,7 +132,7 @@ def build_monitor() -> MonitorService:
         rules_loader=lambda: load_runtime_rules_from_store(store),
         notifiers_loader=load_runtime_notifiers,
         trading_service=trading_service,
-        strategies_loader=lambda: load_runtime_strategies_from_store(store),
+        strategies_loader=load_runtime_strategies,
         app_config_loader=load_runtime_app_config,
         index_store=store,
         market_indices=load_runtime_market_indices(),
