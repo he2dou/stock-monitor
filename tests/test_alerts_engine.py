@@ -26,9 +26,12 @@ def test_alert_not_triggered():
 def test_alert_change_pct_below():
     rules = [{"symbol": "159995", "field": "change_pct", "op": "below", "value": -3.0}]
     engine = AlertEngine(rules)
-    quotes = [Quote("159995", "芯片ETF", "A股", 1.0, -5.0, 100)]
+    quotes = [Quote("159995", "芯片ETF", "A股", 1.2345, -5.0, 100)]
     alerts = engine.check(quotes)
     assert len(alerts) == 1
+    assert "- 当前: 1.2345" in alerts[0].message
+    assert "- 涨跌: -5.00%" in alerts[0].message
+    assert alerts[0].current_value == -5.0
 
 def test_dedup_no_repeat_within_cooldown():
     rules = [{"symbol": "AAPL", "field": "price", "op": "above", "value": 200}]

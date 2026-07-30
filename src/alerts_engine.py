@@ -38,7 +38,7 @@ class AlertEngine:
                     "**PRICE ALERT**",
                     f"- 股票: {q.name}({q.symbol})",
                     f"- 条件: `{rule.field} {rule.op} {rule.value}`",
-                    f"- 当前: {current:.4f}",
+                    f"- 当前: {q.price:.4f}",
                     f"- 涨跌: {q.change_pct:+.2f}%",
                 ])
                 alerts.append(Alert(

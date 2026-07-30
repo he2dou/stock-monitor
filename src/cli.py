@@ -6,10 +6,10 @@ from pathlib import Path
 
 from src.config_loader import load_alerts, load_app_config, load_strategies, load_watchlist
 from src.index_history import backfill_index_snapshots
-from src.index_snapshots import load_market_indices, market_snapshot_date
+from src.index_snapshots import load_market_indices
 from src.market_hours import is_market_open
 from src.sources.sinatx_source import SinaTxSource
-from src.trading_store import TradingStore
+from src.trading_store import TradingStore, snapshot_date_for
 
 BASE_DIR = Path(__file__).parent.parent
 CONFIG_DIR = BASE_DIR / "config"
@@ -157,7 +157,7 @@ def cmd_update_snapshots(args) -> None:
             store.save_quote_snapshots(quotes)
             saved = len(quotes)
         elif quotes:
-            snapshot_dates = {q.symbol: market_snapshot_date(q.market) for q in quotes}
+            snapshot_dates = {q.symbol: snapshot_date_for(q.market, q.timestamp) for q in quotes}
             saved = store.save_index_snapshots(quotes, snapshot_dates)
 
         print_json({
