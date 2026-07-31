@@ -1,6 +1,7 @@
 from src.models import Quote
-from src.paper_trading import PaperTradingService
-from src.strategy_engine import StrategyEngine
+from src.paper_trading import PaperBroker, PaperTradingService
+from src.strategy_engine import StrategyEngine, parse_strategy
+from src.trading_models import StrategySignal
 from src.trading_store import TradingStore
 
 
@@ -91,15 +92,16 @@ def test_sell_rejects_when_position_insufficient(tmp_path):
     assert store.fill_count() == 0
 
 
-def test_cooldown_generates_rejected_order_on_next_trading_day(tmp_path):
+def test_cooldown_allows_order_on_next_trading_day(tmp_path):
     store = make_store(tmp_path)
     service = PaperTradingService(store, StrategyEngine([buy_strategy()]))
     first = Quote("SOXL", "半导体ETF", "美股", 100, -11, 1000, timestamp="2026-07-29T14:00:00+08:00")
     next_day = Quote("SOXL", "半导体ETF", "美股", 100, -11, 1000, timestamp="2026-07-30T14:00:00+08:00")
     service.process([first])
     messages = service.process([next_day])
-    assert "strategy cooldown" in messages[0].message
+    assert "FILLED" in messages[0].message
     assert store.order_count() == 2
+    assert store.fill_count() == 2
 
 
 def test_same_signal_only_creates_one_order_per_trading_day(tmp_path):
@@ -128,3 +130,94 @@ def test_us_signal_after_midnight_beijing_uses_previous_trading_day(tmp_path):
 
     assert "daily signal already ordered for 2026-07-29" in duplicate[0].message
     assert store.order_count() == 1
+
+def test_risk_percent_buy_sizing_uses_signal_stop_price(tmp_path):
+    store = make_store(tmp_path)
+    strategy = parse_strategy(buy_strategy(
+        id="risk_buy_soxl",
+        sizing={"type": "risk_percent", "amount": 1.0, "currency": "USD", "lot_size": 1},
+        constraints={"cooldown_minutes": 0, "max_position_amount": 20000},
+    ))
+    signal = StrategySignal(
+        strategy=strategy,
+        symbol="SOXL",
+        market="美股",
+        name="半导体ETF",
+        action="buy",
+        trigger_field="price",
+        trigger_op="leveraged_breakout_pullback_confirmed",
+        trigger_value=13.0,
+        current_value=13.3,
+        quote_price=13.3,
+        quote_timestamp="2026-07-29T22:00:00+08:00",
+        metadata={"stop_price": 11.96},
+    )
+
+    execution = PaperBroker(store).execute(signal)
+
+    assert execution.status == "FILLED"
+    assert execution.quantity == 373
+    assert round(execution.amount, 2) == 4960.9
+    assert store.get_position("美股", "SOXL")["quantity"] == 373
+
+
+def test_partial_sell_uses_position_fraction_quantity(tmp_path):
+    store = make_store(tmp_path)
+    store.upsert_position("美股", "SOXL", "半导体ETF", "USD", 101, 10.0, 0.0)
+    strategy = parse_strategy(buy_strategy(
+        id="partial_sell_soxl",
+        action="sell",
+        trigger={"field": "price", "op": "above", "value": 18.0},
+        sizing={"type": "fixed_amount", "amount": 100000, "currency": "USD", "lot_size": 1},
+        constraints={"cooldown_minutes": 0},
+    ))
+    signal = StrategySignal(
+        strategy=strategy,
+        symbol="SOXL",
+        market="美股",
+        name="半导体ETF",
+        action="sell",
+        trigger_field="price",
+        trigger_op="partial_take_profit",
+        trigger_value=18.0,
+        current_value=18.0,
+        quote_price=18.0,
+        quote_timestamp="2026-07-29T22:00:00+08:00",
+        metadata={"position_fraction": 0.5, "exit_kind": "partial"},
+    )
+
+    execution = PaperBroker(store).execute(signal)
+
+    assert execution.status == "FILLED"
+    assert execution.quantity == 50
+    assert store.get_position("美股", "SOXL")["quantity"] == 51
+
+
+def test_daily_signal_key_allows_partial_and_final_exit_same_day(tmp_path):
+    store = make_store(tmp_path)
+    store.upsert_position("美股", "SOXL", "半导体ETF", "USD", 100, 10.0, 0.0)
+    strategy = parse_strategy(buy_strategy(
+        id="exit_soxl",
+        action="sell",
+        trigger={"field": "price", "op": "above", "value": 18.0},
+        sizing={"type": "fixed_amount", "amount": 100000, "currency": "USD", "lot_size": 1},
+        constraints={"cooldown_minutes": 0},
+    ))
+    partial = StrategySignal(
+        strategy=strategy, symbol="SOXL", market="美股", name="半导体ETF", action="sell",
+        trigger_field="price", trigger_op="partial_take_profit", trigger_value=18.0,
+        current_value=18.0, quote_price=18.0, quote_timestamp="2026-07-29T22:00:00+08:00",
+        metadata={"position_fraction": 0.5, "exit_kind": "partial"},
+    )
+    final = StrategySignal(
+        strategy=strategy, symbol="SOXL", market="美股", name="半导体ETF", action="sell",
+        trigger_field="price", trigger_op="trailing_or_initial_stop", trigger_value=15.8,
+        current_value=15.5, quote_price=15.5, quote_timestamp="2026-07-29T23:00:00+08:00",
+        metadata={"position_fraction": 1.0, "exit_kind": "final"},
+    )
+
+    assert PaperBroker(store).execute(partial).status == "FILLED"
+    assert PaperBroker(store).execute(final).status == "FILLED"
+    assert store.order_count() == 2
+    assert store.fill_count() == 2
+    assert store.get_position("美股", "SOXL")["quantity"] == 0

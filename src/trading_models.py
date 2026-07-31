@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Literal
 
 
@@ -32,8 +32,23 @@ class BreakoutPullbackSetup:
 
 
 @dataclass
+class LeveragedBreakoutPullbackSetup:
+    lookback_bars: int = 20
+    breakout_buffer_pct: float = 0.5
+    pullback_tolerance_pct: float = 4.0
+    confirmation_pct: float = 0.0
+    max_pullback_bars: int = 12
+    invalidation_pct: float = 8.0
+    trend_short_bars: int = 20
+    trend_long_bars: int = 60
+    partial_take_profit_r: float = 3.0
+    partial_sell_fraction: float = 0.5
+    trailing_stop_pct: float = 12.0
+
+
+@dataclass
 class StrategySizing:
-    type: Literal["fixed_amount"]
+    type: Literal["fixed_amount", "risk_percent"]
     amount: float
     currency: str | None = None
     lot_size: int | None = None
@@ -54,8 +69,9 @@ class TradingStrategy:
     trigger: StrategyTrigger | None
     sizing: StrategySizing
     constraints: StrategyConstraints
-    type: Literal["threshold", "breakout_pullback"] = "threshold"
+    type: Literal["threshold", "breakout_pullback", "leveraged_breakout_pullback"] = "threshold"
     breakout_pullback: BreakoutPullbackSetup | None = None
+    leveraged_breakout_pullback: LeveragedBreakoutPullbackSetup | None = None
 
 
 @dataclass
@@ -72,6 +88,7 @@ class StrategySignal:
     quote_price: float
     quote_timestamp: str
     cooldown_remaining_seconds: float = 0.0
+    metadata: dict = field(default_factory=dict)
 
 
 @dataclass

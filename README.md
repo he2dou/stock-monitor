@@ -134,6 +134,40 @@ strategies:
 
 突破回踩流程：价格先站上 `resistance * (1 + breakout_buffer_pct/100)`，再回踩到压力位上下 `pullback_tolerance_pct` 区间，随后重新站上 `resistance * (1 + confirmation_pct/100)` 时触发买入。如果回踩跌破 `resistance * (1 - invalidation_pct/100)`，或超过 `max_pullback_bars` 个轮询周期没有完成回踩，则重置等待下一次突破。
 
+SOXL 杠杆 ETF 突破回踩策略：
+```yaml
+strategies:
+  - id: "soxl_leveraged_breakout_pullback"
+    type: "leveraged_breakout_pullback"
+    enabled: false
+    symbol: "SOXL"
+    action: "buy"
+    leveraged_breakout_pullback:
+      lookback_bars: 20
+      breakout_buffer_pct: 0.5
+      pullback_tolerance_pct: 4.0
+      confirmation_pct: 0.0
+      max_pullback_bars: 12
+      invalidation_pct: 8.0
+      trend_short_bars: 20
+      trend_long_bars: 60
+      partial_take_profit_r: 3.0
+      partial_sell_fraction: 0.5
+      trailing_stop_pct: 12.0
+    sizing:
+      type: "risk_percent"
+      amount: 1.0
+      currency: "USD"
+      lot_size: 1
+    constraints:
+      cooldown_minutes: 300
+      max_position_amount: 20000
+```
+
+`leveraged_breakout_pullback` 针对 SOXL 这类高波动杠杆 ETF 做了更宽的回踩和支撑失效阈值。它用最近 `lookback_bars` 个价格动态计算压力位，突破后等待回踩确认；只有 `trend_short_bars` 均价高于 `trend_long_bars` 均价时才允许入场。当前版本的趋势过滤基于 SOXL 自身价格序列，尚未接入纳指或半导体指数作为外部过滤器。
+
+入场成交后，策略记录初始止损价和每股风险。价格达到 `partial_take_profit_r` 倍风险收益时，先按 `partial_sell_fraction` 卖出部分持仓；剩余持仓按 `trailing_stop_pct` 从最高价回撤触发移动止损。`risk_percent` 仓位模式按账户现金的一定百分比作为单笔最大亏损：`quantity = floor((cash * amount / 100) / (entry_price - stop_price) / lot_size) * lot_size`，同时受可用现金和 `max_position_amount` 限制。
+
 ### 6. 启动
 ```bash
 python -m src.main
@@ -233,16 +267,30 @@ python -m src.cli backfill-index-snapshots --from 2026-07-01 --to 2026-07-28
 
 `list-index-snapshots` 不会凭空生成历史数据；不带 `--backfill` 时它只读取数据库里已经存在的记录。
 
+### K 线拉取和策略回测
+```bash
+# 第一步：手动拉取 SOXL 最近三年日 K，写入 SQLite daily_bars
+python -m src.cli fetch-kline --symbol SOXL --name SOXL --market 美股 --years 3
+
+# 也可以指定明确日期区间
+python -m src.cli fetch-kline --symbol SOXL --name SOXL --market 美股 --from 2023-07-31 --to 2026-07-31
+
+# 第二步：使用 daily_bars 执行 SOXL 策略回测，并生成报告和交易明细 CSV
+python -m src.backtest --source daily-bars --symbol SOXL --strategy-id soxl_leveraged_breakout_pullback --enable-selected --from 2023-07-31 --to 2026-07-31 --report reports/soxl_leveraged_breakout_pullback_3y_report.md --trades-csv reports/soxl_leveraged_breakout_pullback_3y_trades.csv
+```
+
+`fetch-kline` 默认使用 Nasdaq 历史日线接口写入 `daily_bars` 表，按 `symbol + date` 覆盖更新；也可用 `--provider yahoo` 切换到 Yahoo Chart。`src.backtest --source daily-bars` 会把日 K 收盘价转换成每日回放价格，并使用同一套策略引擎和模拟成交逻辑生成买卖点、金额、收益、回撤和报告。
+
 ### 回测
 ```bash
-# 使用默认 SQLite 数据库回测
+# 使用默认 SQLite 数据库中的 quote_snapshots 回测
 python -m src.backtest --from 2026-07-01 --to 2026-07-28
 
 # 指定 SQLite 数据库回测
 python -m src.backtest --from 2026-07-01 --to 2026-07-28 --db data/trading.sqlite3
 ```
 
-回测基于 `quote_snapshots` 中已保存的行情快照，不会额外请求外部历史行情 API。
+不指定 `--source` 时，回测基于 `quote_snapshots` 中已保存的行情快照。需要使用历史日 K 时，先执行 `fetch-kline`，再传入 `--source daily-bars`。
 
 ### 运行测试
 ```bash
@@ -289,7 +337,7 @@ market_indices:
 - 买入检查现金，卖出检查持仓；失败会生成 `REJECTED` 订单并通知原因。
 - A股、港股、美股分别使用 CNY、HKD、USD 独立模拟账户，不做汇率换算。
 - 默认 lot size：A股=100，港股=100，美股=1，可在策略中覆盖。
-- 下单数量：`floor(amount / price / lot_size) * lot_size`。
+- `fixed_amount` 下单数量：`floor(amount / price / lot_size) * lot_size`。`risk_percent` 下单数量按信号止损价计算账户风险暴露。
 - 行情快照、策略信号、订单、成交、持仓和账户余额保存在 SQLite。
 
 ## 回测
@@ -310,6 +358,7 @@ python -m src.backtest --from 2026-07-01 --to 2026-07-28
 | `config/alerts.yaml` | 纯预警种子/导入文件，不再作为运行时直接读取来源 |
 | `config/strategies.yaml` | 模拟交易策略，运行中动态重载 |
 | `config/config.yaml` | 应用配置（轮询周期、Webhook、指数快照、模拟账户、数据库路径） |
+| SQLite `daily_bars` | 手动拉取的历史日 K 数据，用于 SOXL 等策略回测 |
 
 ### market 取值
 - `A股` - 沪深A股
@@ -317,7 +366,7 @@ python -m src.backtest --from 2026-07-01 --to 2026-07-28
 - `美股` - 美国股票
 
 ### trigger 字段
-- `type`: 可省略，默认 `threshold`；也可设置为 `breakout_pullback`
+- `type`: 可省略，默认 `threshold`；也可设置为 `breakout_pullback` 或 `leveraged_breakout_pullback`
 - `field`: `price` 或 `change_pct`，仅 `threshold` 使用
 - `op`: `above` 或 `below`，仅 `threshold` 使用
 - `value`: 阈值，仅 `threshold` 使用
@@ -327,6 +376,14 @@ python -m src.backtest --from 2026-07-01 --to 2026-07-28
 - `breakout_pullback.confirmation_pct`: 支撑有效后的确认百分比
 - `breakout_pullback.max_pullback_bars`: 突破后等待回踩的最大轮询次数
 - `breakout_pullback.invalidation_pct`: 支撑失败重置百分比
+- `leveraged_breakout_pullback.lookback_bars`: 动态压力位回看轮询数
+- `leveraged_breakout_pullback.pullback_tolerance_pct`: SOXL 回踩支撑容忍百分比
+- `leveraged_breakout_pullback.invalidation_pct`: SOXL 支撑失效重置百分比
+- `leveraged_breakout_pullback.trend_short_bars` / `trend_long_bars`: 趋势过滤均线轮询数
+- `leveraged_breakout_pullback.partial_take_profit_r`: 分批止盈触发的 R 倍数
+- `leveraged_breakout_pullback.partial_sell_fraction`: 分批止盈卖出比例
+- `leveraged_breakout_pullback.trailing_stop_pct`: 剩余持仓移动止损回撤百分比
+- `sizing.type`: `fixed_amount` 或 `risk_percent`
 
 ## 运行测试
 ```bash

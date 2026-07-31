@@ -1,6 +1,6 @@
 strategies:
   - id: "soxl_drop_buy"
-    enabled: true
+    enabled: false
     symbol: "SOXL"
     action: "buy"
     trigger:
@@ -16,7 +16,7 @@ strategies:
       cooldown_minutes: 300
       max_position_amount: 5000
   - id: "xphx_drop_buy"
-    enabled: true
+    enabled: false
     symbol: "159995"
     action: "buy"
     trigger:
@@ -35,7 +35,7 @@ strategies:
   # 使用前必须按标的实际形态修改 resistance，并将 enabled 改为 true。
   - id: "soxl_breakout_pullback"
     type: "breakout_pullback"
-    enabled: false
+    enabled: true
     symbol: "SOXL"
     action: "buy"
     breakout_pullback:
@@ -53,3 +53,30 @@ strategies:
     constraints:
       cooldown_minutes: 300
       max_position_amount: 5000
+  # SOXL 专用突破回踩策略模板：使用动态压力位、趋势过滤、按账户风险百分比下单、分批止盈和移动止损。
+  # 该策略适合高波动杠杆 ETF，启用前建议先用历史 quote_snapshots 回测并确认参数。
+  - id: "soxl_leveraged_breakout_pullback"
+    type: "leveraged_breakout_pullback"
+    enabled: false
+    symbol: "SOXL"
+    action: "buy"
+    leveraged_breakout_pullback:
+      lookback_bars: 20              # 用最近 20 个轮询价格寻找动态压力位
+      breakout_buffer_pct: 0.5       # 高于动态压力位 0.5% 视为有效突破
+      pullback_tolerance_pct: 4.0    # 回踩到压力位上下 4% 区间视为测试支撑
+      confirmation_pct: 0.0          # 回踩后重新站上压力位即确认
+      max_pullback_bars: 12          # 突破后最多等待 12 个轮询周期完成回踩
+      invalidation_pct: 8.0          # 跌破压力位下方 8% 视为支撑失败
+      trend_short_bars: 20           # 短周期均线过滤
+      trend_long_bars: 60            # 长周期均线过滤，短均线必须高于长均线
+      partial_take_profit_r: 3.0     # 达到 3R 先卖出一部分
+      partial_sell_fraction: 0.5     # 分批止盈卖出当前持仓的 50%
+      trailing_stop_pct: 12.0        # 剩余持仓使用最高价回撤 12% 移动止损
+    sizing:
+      type: "risk_percent"          # 按账户现金风险百分比计算数量
+      amount: 1.0                    # 单笔最大风险为 USD 账户现金的 1%
+      currency: "USD"
+      lot_size: 1
+    constraints:
+      cooldown_minutes: 300
+      max_position_amount: 20000

@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import date
 from pathlib import Path
 
 from src.config_loader import load_alerts, load_app_config, load_watchlist
 from src.index_history import backfill_index_snapshots
+from src.kline_history import NasdaqDailyBarSource, YahooDailyBarSource
 from src.index_snapshots import load_market_indices
 from src.market_hours import is_market_open
 from src.sources.sinatx_source import SinaTxSource
@@ -65,6 +67,21 @@ def _open_items(items: list[dict], ignore_hours: bool) -> tuple[list[dict], list
         else:
             skipped.append(item)
     return open_items, skipped
+
+
+def _date_years_ago(end: date, years: int) -> date:
+    try:
+        return end.replace(year=end.year - years)
+    except ValueError:
+        return end.replace(month=2, day=28, year=end.year - years)
+
+
+def _kline_range(start: str | None, end: str | None, years: int) -> tuple[str, str]:
+    end_date = date.fromisoformat(end) if end else date.today()
+    start_date = date.fromisoformat(start) if start else _date_years_ago(end_date, years)
+    if end_date < start_date:
+        raise ValueError("--to must be greater than or equal to --from")
+    return start_date.isoformat(), end_date.isoformat()
 
 
 def cmd_import_yaml(args) -> None:
@@ -131,6 +148,34 @@ def cmd_backfill_index_snapshots(args) -> None:
     print_json(result)
     store.close()
 
+
+def cmd_fetch_kline(args) -> None:
+    start, end = _kline_range(args.start, args.end, args.years)
+    store = default_store()
+    try:
+        source_cls = NasdaqDailyBarSource if args.provider == "nasdaq" else YahooDailyBarSource
+        bars = source_cls(timeout=args.timeout).fetch_daily_bars(
+            symbol=args.symbol,
+            name=args.name,
+            market=args.market,
+            start=start,
+            end=end,
+        )
+        saved = store.save_daily_bars([bar.to_dict() for bar in bars])
+        print_json({
+            "ok": True,
+            "symbol": args.symbol,
+            "market": args.market,
+            "from": start,
+            "to": end,
+            "fetched": len(bars),
+            "provider": args.provider,
+            "saved": saved,
+            "first_date": bars[0].date if bars else None,
+            "last_date": bars[-1].date if bars else None,
+        })
+    finally:
+        store.close()
 
 def cmd_update_snapshots(args) -> None:
     store = default_store()
@@ -247,6 +292,16 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--to", dest="end", required=True, help="End snapshot date, YYYY-MM-DD")
     p.set_defaults(func=cmd_backfill_index_snapshots)
 
+    p = sub.add_parser("fetch-kline", help="Fetch historical daily OHLCV bars into SQLite daily_bars")
+    p.add_argument("--symbol", required=True)
+    p.add_argument("--name", default="SOXL")
+    p.add_argument("--market", default="美股", choices=["A股", "港股", "美股"])
+    p.add_argument("--from", dest="start", default=None, help="Start date, YYYY-MM-DD")
+    p.add_argument("--to", dest="end", default=None, help="End date, YYYY-MM-DD")
+    p.add_argument("--years", type=int, default=3, help="Years to fetch when --from is omitted")
+    p.add_argument("--provider", choices=["nasdaq", "yahoo"], default="nasdaq")
+    p.add_argument("--timeout", type=int, default=20)
+    p.set_defaults(func=cmd_fetch_kline)
     p = sub.add_parser("update-snapshots", help="Fetch realtime quotes and update stock or index snapshots")
     p.add_argument("--target", required=True, choices=["stock", "index"], help="Snapshot type to update")
     p.add_argument("--symbol", action="append", help="Symbol to update; repeat or comma-separate for multiple")

@@ -110,6 +110,22 @@ class TradingStore:
                 UNIQUE(symbol, snapshot_date)
             );
 
+            CREATE TABLE IF NOT EXISTS daily_bars (
+                symbol TEXT NOT NULL,
+                name TEXT NOT NULL,
+                market TEXT NOT NULL,
+                date TEXT NOT NULL,
+                open REAL NOT NULL,
+                high REAL NOT NULL,
+                low REAL NOT NULL,
+                close REAL NOT NULL,
+                adj_close REAL NOT NULL,
+                volume REAL NOT NULL,
+                source TEXT NOT NULL DEFAULT 'yahoo',
+                updated_at TEXT NOT NULL,
+                PRIMARY KEY (symbol, date)
+            );
+
             CREATE TABLE IF NOT EXISTS strategy_signals (
                 signal_id TEXT PRIMARY KEY,
                 strategy_id TEXT NOT NULL,
@@ -216,6 +232,12 @@ class TradingStore:
             ON index_snapshots(symbol, snapshot_date)
             """
         )
+        self.conn.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_daily_bars_symbol_date
+            ON daily_bars(symbol, date)
+            """
+        )
 
         signal_columns = {
             row["name"] for row in self.conn.execute("PRAGMA table_info(strategy_signals)").fetchall()
@@ -228,10 +250,12 @@ class TradingStore:
         }
         if "trading_day" not in order_columns:
             self.conn.execute("ALTER TABLE orders ADD COLUMN trading_day TEXT")
+        if "signal_key" not in order_columns:
+            self.conn.execute("ALTER TABLE orders ADD COLUMN signal_key TEXT NOT NULL DEFAULT ''")
         self.conn.execute(
             """
             CREATE INDEX IF NOT EXISTS idx_orders_daily_signal
-            ON orders(strategy_id, symbol, side, trading_day)
+            ON orders(strategy_id, symbol, side, trading_day, signal_key)
             """
         )
 
@@ -328,6 +352,58 @@ class TradingStore:
             for row in rows
         ]
 
+    def save_daily_bars(self, bars: list[dict]) -> int:
+        saved = 0
+        now = utc_now()
+        with self.conn:
+            for bar in bars:
+                cursor = self.conn.execute(
+                    """
+                    INSERT INTO daily_bars
+                    (symbol, name, market, date, open, high, low, close, adj_close,
+                     volume, source, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT(symbol, date) DO UPDATE SET
+                        name=excluded.name,
+                        market=excluded.market,
+                        open=excluded.open,
+                        high=excluded.high,
+                        low=excluded.low,
+                        close=excluded.close,
+                        adj_close=excluded.adj_close,
+                        volume=excluded.volume,
+                        source=excluded.source,
+                        updated_at=excluded.updated_at
+                    """,
+                    (
+                        bar["symbol"], bar["name"], bar["market"], bar["date"],
+                        float(bar["open"]), float(bar["high"]), float(bar["low"]),
+                        float(bar["close"]), float(bar.get("adj_close", bar["close"])),
+                        float(bar.get("volume", 0) or 0), bar.get("source", "yahoo"), now,
+                    ),
+                )
+                saved += cursor.rowcount
+        return saved
+
+    def load_daily_bars(self, symbols: list[str] | None = None,
+                        start: str | None = None, end: str | None = None) -> list[dict]:
+        sql = "SELECT * FROM daily_bars"
+        params: list[str] = []
+        clauses: list[str] = []
+        if symbols:
+            placeholders = ",".join("?" for _ in symbols)
+            clauses.append(f"symbol IN ({placeholders})")
+            params.extend(symbols)
+        if start:
+            clauses.append("date >= ?")
+            params.append(start)
+        if end:
+            clauses.append("date <= ?")
+            params.append(end)
+        if clauses:
+            sql += " WHERE " + " AND ".join(clauses)
+        sql += " ORDER BY date ASC, symbol ASC"
+        return [dict(row) for row in self.conn.execute(sql, params).fetchall()]
     def index_snapshot_exists(self, symbol: str, snapshot_date: str) -> bool:
         row = self.conn.execute(
             """
@@ -459,37 +535,39 @@ class TradingStore:
                 (
                     signal_id, signal.strategy.id, signal.symbol, signal.market, signal.action,
                     signal.trigger_field, signal.trigger_op, signal.trigger_value, signal.current_value,
-                    signal.quote_price, utc_now(),
+                    signal.quote_price, signal.quote_timestamp or utc_now(),
                 ),
             )
         return signal_id
 
     def record_order(self, signal_id: str, strategy_id: str, symbol: str, market: str,
                      side: str, quantity: int, price: float, currency: str,
-                     status: str, reason: str = "", trading_day: str | None = None) -> str:
+                     status: str, reason: str = "", trading_day: str | None = None,
+                     signal_key: str = "") -> str:
         order_id = str(uuid.uuid4())
         with self.conn:
             self.conn.execute(
                 """
                 INSERT INTO orders
                 (order_id, signal_id, strategy_id, symbol, market, side, quantity,
-                 price, currency, status, reason, trading_day, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 price, currency, status, reason, trading_day, signal_key, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (order_id, signal_id, strategy_id, symbol, market, side, int(quantity),
-                 float(price), currency, status, reason, trading_day, utc_now()),
+                 float(price), currency, status, reason, trading_day, signal_key, utc_now()),
             )
         return order_id
 
     def has_order_for_signal_on_day(self, strategy_id: str, symbol: str, side: str,
-                                    trading_day: str) -> bool:
+                                    trading_day: str, signal_key: str = "") -> bool:
         row = self.conn.execute(
             """
             SELECT 1 FROM orders
             WHERE strategy_id = ? AND symbol = ? AND side = ? AND trading_day = ?
+              AND signal_key = ?
             LIMIT 1
             """,
-            (strategy_id, symbol, side, trading_day),
+            (strategy_id, symbol, side, trading_day, signal_key),
         ).fetchone()
         return row is not None
 

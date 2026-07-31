@@ -5,6 +5,7 @@ from unittest.mock import patch
 import pandas as pd
 from pathlib import Path
 from src import cli
+from src.kline_history import DailyBar
 from src.models import Quote
 
 
@@ -251,3 +252,29 @@ def test_cli_update_snapshots_skips_closed_market(tmp_path, monkeypatch, capsys)
     assert result["saved"] == 0
     assert result["skipped_closed"] == ["SOXL"]
     source.return_value.fetch_quotes.assert_not_called()
+
+def test_cli_fetch_kline_writes_daily_bars(tmp_path, monkeypatch, capsys):
+    write_configs(tmp_path)
+    monkeypatch.setattr(cli, "BASE_DIR", tmp_path)
+    monkeypatch.setattr(cli, "CONFIG_DIR", tmp_path / "config")
+    source = patch("src.cli.NasdaqDailyBarSource").start()
+    source.return_value.fetch_daily_bars.return_value = [
+        DailyBar("SOXL", "SOXL", "美股", "2026-07-28", 20, 21, 19, 20.5, 20.5, 1000)
+    ]
+    try:
+        args = cli.build_parser().parse_args([
+            "fetch-kline", "--symbol", "SOXL", "--name", "SOXL",
+            "--market", "美股", "--from", "2026-07-28", "--to", "2026-07-28"
+        ])
+        args.func(args)
+    finally:
+        patch.stopall()
+
+    result = json.loads(capsys.readouterr().out)
+    assert result["fetched"] == 1
+    assert result["saved"] == 1
+    store = cli.default_store()
+    rows = store.load_daily_bars(symbols=["SOXL"])
+    assert len(rows) == 1
+    assert rows[0]["close"] == 20.5
+    store.close()

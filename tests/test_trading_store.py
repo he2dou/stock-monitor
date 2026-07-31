@@ -137,3 +137,22 @@ def test_store_can_be_used_from_scheduler_worker_thread(tmp_path):
     assert saved == 1
     assert store.load_index_snapshots()[0]["symbol"] == ".DJI"
     store.close()
+
+def test_store_upserts_daily_bars_per_symbol_date(tmp_path):
+    store = TradingStore(str(tmp_path / "trading.sqlite3"))
+    first = {
+        "symbol": "SOXL", "name": "SOXL", "market": "美股", "date": "2026-07-28",
+        "open": 20.0, "high": 21.0, "low": 19.5, "close": 20.5,
+        "adj_close": 20.5, "volume": 1000, "source": "yahoo",
+    }
+    latest = dict(first, close=22.0, volume=2000)
+
+    assert store.save_daily_bars([first]) == 1
+    assert store.save_daily_bars([latest]) == 1
+    rows = store.load_daily_bars(symbols=["SOXL"], start="2026-07-28", end="2026-07-28")
+
+    assert len(rows) == 1
+    assert rows[0]["symbol"] == "SOXL"
+    assert rows[0]["close"] == 22.0
+    assert rows[0]["volume"] == 2000
+    store.close()
