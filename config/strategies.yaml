@@ -78,7 +78,7 @@ strategies:
   - id: "leveraged_breakout_pullback_hkd"
     type: "leveraged_breakout_pullback"
     enabled: true
-    symbol: "9988.HK"
+    symbol: "09988"
     action: "buy"
     leveraged_breakout_pullback:
       bar_timeframe: "daily"         # 参数语义尺度：日线。回测 quote-snapshots(10m) 时会 warning
