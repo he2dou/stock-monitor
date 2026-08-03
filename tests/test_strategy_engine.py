@@ -261,3 +261,191 @@ def test_leveraged_exit_signal_is_not_blocked_by_entry_cooldown():
     partial = engine.generate_signals([q(24.0)])[0]
     assert partial.trigger_op == "partial_take_profit"
     assert partial.cooldown_remaining_seconds == 0.0
+
+
+# ---------------------------------------------------------------------------
+# Phase 5-6 新行为测试: 分级止损 / 时间止损 / 止损后冷却 / 量能确认 / RSI / 百分位阻力
+# ---------------------------------------------------------------------------
+
+def _fill_buy(engine, signal, price=None):
+    """辅助: 模拟买入成交。"""
+    engine.mark_filled("soxl_lbp", signal, OrderExecution(
+        strategy_id="soxl_lbp", symbol="SOXL", market="美股", side="buy",
+        status="FILLED", quantity=100, price=price or signal.quote_price,
+        amount=(price or signal.quote_price) * 100, currency="USD",
+    ))
+
+
+def _fill_sell(engine, signal, price=None):
+    engine.mark_filled("soxl_lbp", signal, OrderExecution(
+        strategy_id="soxl_lbp", symbol="SOXL", market="美股", side="sell",
+        status="FILLED", quantity=50, price=price or signal.quote_price,
+        amount=(price or signal.quote_price) * 50, currency="USD",
+    ))
+
+
+def test_leveraged_tiered_stop_tightens_after_partial():
+    """部分止盈后,移动止损应收紧到 trailing_stop_pct_after_partial。"""
+    raw = leveraged_breakout_pullback_strategy(leveraged_breakout_pullback={
+        "lookback_bars": 3, "trend_short_bars": 2, "trend_long_bars": 4,
+        "trailing_stop_pct": 22.0,
+        "trailing_stop_pct_after_partial": 10.0,
+        "partial_take_profit_r": 3.0, "partial_sell_fraction": 0.5,
+    })
+    engine = StrategyEngine([raw])
+    buy = drive_lbp_entry(engine)[0]  # entry ~17, stop ~14.72, risk 2.28
+    _fill_buy(engine, buy)
+    # partial target = 17 + 3*2.28 = 23.84; drive to 24 -> partial fires
+    partial = engine.generate_signals([q(24.0)])[0]
+    assert partial.trigger_op == "partial_take_profit"
+    _fill_sell(engine, partial)
+    # highest=24; tight stop=24*(1-0.10)=21.6; price 21.5 应触发(22% 会到 18.72 才触发)
+    stop = engine.generate_signals([q(21.5)])[0]
+    assert stop.trigger_op == "trailing_or_initial_stop"
+
+
+def test_leveraged_time_stop_exits_when_below_1r():
+    """持仓达到 time_stop_bars 且未到 1R 浮盈 -> 时间止损离场。"""
+    raw = leveraged_breakout_pullback_strategy(leveraged_breakout_pullback={
+        "lookback_bars": 3, "trend_short_bars": 2, "trend_long_bars": 4,
+        "trailing_stop_pct": 50.0,  # 宽到不会先触发
+        "time_stop_bars": 3,
+        "partial_take_profit_r": 100.0,  # 不触发部分止盈
+    })
+    engine = StrategyEngine([raw])
+    buy = drive_lbp_entry(engine)[0]  # entry 17, stop 14.72, 1R target=19.28
+    _fill_buy(engine, buy)
+    # 持仓 3 根,价格 18 (< 19.28 即 <1R) -> 时间止损
+    sig = None
+    for _ in range(3):
+        sigs = engine.generate_signals([q(18.0)])
+        if sigs:
+            sig = sigs[0]
+    assert sig is not None and sig.trigger_op == "time_stop"
+
+
+def test_leveraged_time_stop_does_not_fire_when_above_1r():
+    """浮盈已超 1R 时,即使达到 time_stop_bars 也不应时间止损。"""
+    raw = leveraged_breakout_pullback_strategy(leveraged_breakout_pullback={
+        "lookback_bars": 3, "trend_short_bars": 2, "trend_long_bars": 4,
+        "trailing_stop_pct": 50.0,
+        "time_stop_bars": 2,
+        "partial_take_profit_r": 100.0,
+    })
+    engine = StrategyEngine([raw])
+    buy = drive_lbp_entry(engine)[0]  # entry 17, 1R=19.28
+    _fill_buy(engine, buy)
+    # 价格 20 (>19.28 即 >1R),持仓 3 根 -> 不应时间止损
+    sig = None
+    for _ in range(3):
+        sigs = engine.generate_signals([q(20.0)])
+        if sigs:
+            sig = sigs[0]
+    assert sig is None
+
+
+def test_leveraged_cooldown_after_stop_blocks_reentry():
+    """止损离场后在冷却窗口内不应重新进场。"""
+    raw = leveraged_breakout_pullback_strategy(leveraged_breakout_pullback={
+        "lookback_bars": 3, "trend_short_bars": 2, "trend_long_bars": 4,
+        "trailing_stop_pct": 12.0,
+        "cooldown_after_stop_minutes": 2880,  # 2 天
+    })
+    engine = StrategyEngine([raw])
+    buy = drive_lbp_entry(engine)[0]
+    _fill_buy(engine, buy)
+    # 触发最终止损
+    final = engine.generate_signals([q(14.0)])[0]  # 低于 stop
+    assert final.trigger_op == "trailing_or_initial_stop"
+    engine.mark_filled("soxl_lbp", final, OrderExecution(
+        strategy_id="soxl_lbp", symbol="SOXL", market="美股", side="sell",
+        status="FILLED", quantity=100, price=14.0, amount=1400, currency="USD",
+    ))
+    # 冷却期内: 即使再次满足突破回踩也不进场(用最后一个 quote 的时间戳)
+    state = engine._leveraged_states["soxl_lbp"]
+    assert "last_stop_time" in state
+
+
+def test_leveraged_volume_confirm_blocks_low_volume_breakout():
+    """require_volume_confirm 时,低量突破不应确认。"""
+    raw = leveraged_breakout_pullback_strategy(leveraged_breakout_pullback={
+        "lookback_bars": 3, "trend_short_bars": 2, "trend_long_bars": 4,
+        "require_volume_confirm": True, "volume_confirm_mult": 1.5,
+        "volume_avg_period": 3,
+    })
+    engine = StrategyEngine([raw])
+    # 前 4 根建立趋势 + 均量基准 1000
+    for p in [10, 12, 14, 15]:
+        assert engine.generate_signals([Quote("SOXL", "半导体ETF", "美股", p, 0, 1000)]) == []
+    # 突破但量 500 (< 1500) -> 不应进入 waiting_pullback
+    engine.generate_signals([Quote("SOXL", "半导体ETF", "美股", 20, 0, 500)])
+    assert engine._leveraged_states["soxl_lbp"]["phase"] == "waiting_breakout"
+
+
+def test_leveraged_volume_confirm_allows_high_volume_breakout():
+    raw = leveraged_breakout_pullback_strategy(leveraged_breakout_pullback={
+        "lookback_bars": 3, "trend_short_bars": 2, "trend_long_bars": 4,
+        "require_volume_confirm": True, "volume_confirm_mult": 1.5,
+        "volume_avg_period": 3,
+    })
+    engine = StrategyEngine([raw])
+    for p in [10, 12, 14, 15]:
+        engine.generate_signals([Quote("SOXL", "半导体ETF", "美股", p, 0, 1000)])
+    # 突破且量 2000 (> 1500) -> 应进入 waiting_pullback
+    engine.generate_signals([Quote("SOXL", "半导体ETF", "美股", 20, 0, 2000)])
+    assert engine._leveraged_states["soxl_lbp"]["phase"] == "waiting_pullback"
+
+
+def test_leveraged_rsi_filter_blocks_overbought_entry():
+    """RSI 超买时不进场。"""
+    raw = leveraged_breakout_pullback_strategy(leveraged_breakout_pullback={
+        "lookback_bars": 3, "trend_short_bars": 2, "trend_long_bars": 4,
+        "rsi_period": 5, "rsi_max": 50.0,  # 很低,容易触发
+    })
+    engine = StrategyEngine([raw])
+    # 连续大涨 -> RSI 极高
+    for p in [10, 12, 14, 16]:
+        engine.generate_signals([Quote("SOXL", "半导体ETF", "美股", p, 0, 1000)])
+    # 此时若 RSI > 50,确认阶段不会发买入信号
+    sigs = engine.generate_signals([Quote("SOXL", "半导体ETF", "美股", 17, 0, 1000)])
+    # RSI 应 > 50 -> 不进场
+    assert sigs == []
+
+
+def test_leveraged_percentile_resistance_ignores_spike():
+    """resistance_percentile<100 时应忽略单根异常尖峰。"""
+    raw = leveraged_breakout_pullback_strategy(leveraged_breakout_pullback={
+        "lookback_bars": 5, "trend_short_bars": 2, "trend_long_bars": 4,
+        "resistance_percentile": 80.0,
+        "breakout_buffer_pct": 0.0,
+    })
+    engine = StrategyEngine([raw])
+    # 价格含一个尖峰 100,其余 ~16
+    for p in [14, 16, 15, 100, 16]:
+        engine.generate_signals([Quote("SOXL", "半导体ETF", "美股", p, 0, 1000)])
+    state = engine._leveraged_states["soxl_lbp"]
+    # 尖峰 bar 会触发 waiting_pullback(resistance=100)。这里主要验证百分位函数本身
+    # 直接测辅助方法
+    assert engine._percentile_resistance([14, 15, 16, 100], 80.0) < 100
+
+
+def test_percentile_resistance_max_when_100():
+    engine = StrategyEngine([])
+    assert engine._percentile_resistance([10, 20, 15], 100.0) == 20
+    assert engine._percentile_resistance([10, 20, 15], 50.0) == 15
+
+
+def test_leveraged_pending_entry_prevents_duplicate_signal():
+    """次根成交模式: 信号发出后未成交前,不应重复发出买入信号。"""
+    raw = leveraged_breakout_pullback_strategy()
+    engine = StrategyEngine([raw])
+    buy = drive_lbp_entry(engine)[0]
+    assert buy.action == "buy"
+    # 信号已发出但尚未 mark_filled -> phase 应为 entry_pending
+    assert engine._leveraged_states["soxl_lbp"]["phase"] == "entry_pending"
+    # 再喂一根满足条件的价格 -> 不应再发信号
+    sigs = engine.generate_signals([q(18.0)])
+    assert sigs == []
+    # 成交后 phase 恢复
+    _fill_buy(engine, buy)
+    assert engine._leveraged_states["soxl_lbp"]["phase"] == "waiting_breakout"

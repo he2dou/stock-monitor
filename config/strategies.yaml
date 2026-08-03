@@ -1,41 +1,9 @@
-strategies:
-  - id: "soxl_drop_buy"
-    enabled: false
-    symbol: "SOXL"
-    action: "buy"
-    trigger:
-      field: "change_pct"
-      op: "below"
-      value: -15.0
-    sizing:
-      type: "fixed_amount"
-      amount: 1000
-      currency: "USD"
-      lot_size: 1
-    constraints:
-      cooldown_minutes: 300
-      max_position_amount: 5000
-  - id: "xphx_drop_buy"
-    enabled: false
-    symbol: "159995"
-    action: "buy"
-    trigger:
-      field: "change_pct"
-      op: "below"
-      value: -3.0
-    sizing:
-      type: "fixed_amount"
-      amount: 1000
-      currency: "CNY"
-      lot_size: 100
-    constraints:
-      cooldown_minutes: 300
-      max_position_amount: 5000
+﻿strategies:
   # 突破回踩策略模板：长期下跌后，突破压力位，回踩确认支撑有效后买入。
   # 使用前必须按标的实际形态修改 resistance，并将 enabled 改为 true。
   - id: "soxl_breakout_pullback"
     type: "breakout_pullback"
-    enabled: true
+    enabled: false
     symbol: "SOXL"
     action: "buy"
     breakout_pullback:
@@ -53,30 +21,48 @@ strategies:
     constraints:
       cooldown_minutes: 300
       max_position_amount: 5000
-  # SOXL 专用突破回踩策略模板：使用动态压力位、趋势过滤、按账户风险百分比下单、分批止盈和移动止损。
-  # 该策略适合高波动杠杆 ETF，启用前建议先用历史 quote_snapshots 回测并确认参数。
+  # SOXL 专用突破回踩策略：动态压力位、趋势过滤、按总权益风险百分比下单、分批止盈、
+  # 分级移动止损、时间止损、量能/RSI 过滤。适合高波动杠杆 ETF。
+  # 重要：bar_timeframe 标注参数的时间尺度。lookback_bars/trend_*_bars 的单位与该尺度一致。
+  # 启用前建议先用历史数据回测（推荐 --next-bar --apply-costs）并做 walk-forward 验证。
   - id: "soxl_leveraged_breakout_pullback"
     type: "leveraged_breakout_pullback"
-    enabled: false
+    enabled: true
     symbol: "SOXL"
     action: "buy"
     leveraged_breakout_pullback:
-      lookback_bars: 30              # 用最近 30 个轮询价格寻找动态压力位
+      bar_timeframe: "daily"         # 参数语义尺度：日线。回测 quote-snapshots(30m) 时会 warning
+      lookback_bars: 30              # 用最近 30 个 bar 的价格寻找动态压力位
+      resistance_percentile: 95      # 用 95 分位而非 max，忽略单根异常尖峰
       breakout_buffer_pct: 0.75      # 高于动态压力位 0.75% 视为有效突破
       pullback_tolerance_pct: 7.0    # 回踩到压力位上下 7% 区间视为测试支撑
       confirmation_pct: 0.0          # 回踩后重新站上压力位即确认
-      max_pullback_bars: 12          # 突破后最多等待 12 个轮询周期完成回踩
+      require_close_above_resistance_bars: 1  # 站上压力位几根确认（1=旧行为）
+      max_pullback_bars: 12          # 突破后最多等待 12 个 bar 完成回踩
       invalidation_pct: 6.0          # 跌破压力位下方 6% 视为支撑失败
       trend_short_bars: 12           # 短周期均线过滤
       trend_long_bars: 50            # 长周期均线过滤，短均线必须高于长均线
       partial_take_profit_r: 2.5     # 达到 2.5R 先卖出一部分
       partial_sell_fraction: 0.5     # 分批止盈卖出当前持仓的 50%
-      trailing_stop_pct: 22.0        # 剩余持仓使用最高价回撤 22% 移动止损
+      trailing_stop_pct: 22.0        # 部分止盈前：最高价回撤 22% 移动止损
+      trailing_stop_pct_after_partial: 20.0  # 部分止盈后收紧到 20%（回测校准：11-15%过紧致频繁震荡止损）
+      time_stop_bars: 40             # 持仓 40 个 bar 未到 1R 浮盈则平仓（回测校准：20 过紧）
+      cooldown_after_stop_minutes: 2880   # 止损离场后冷却 2 个交易日（2880 分钟）
+      require_volume_confirm: false  # 放量确认（回测显示对 SOXL 过滤过严，默认关闭，可按需开）
+      volume_confirm_mult: 1.3       # 突破量 > 近 20 期均量 × 1.3
+      volume_avg_period: 20
+      rsi_period: 14                 # RSI 过滤周期
+      rsi_max: 85                    # RSI > 85 不进场，防追高（回测校准：75 过严，滤掉强主升段）
     sizing:
-      type: "risk_percent"          # 按账户现金风险百分比计算数量
-      amount: 2.0                    # 单笔最大风险为 USD 账户现金的 2%
+      type: "risk_percent"          # 按风险百分比计算数量
+      amount: 2.0                    # 单笔最大风险为基数的 2%
       currency: "USD"
       lot_size: 1
+      equity_basis: "equity"         # 风险基数=总权益(现金+持仓市值)，可复利（旧默认 cash）
+      min_position_value_pct: 5.0    # 仓位占基数最低 5%，避免宽止损时仓位过小（待校准）
+    costs:                           # 交易成本，回测 --apply-costs 时生效
+      commission_bps: 1.0            # 单边佣金 1bp（约 0.01%）
+      slippage_bps: 2.0             # 单边滑点 2bp（约 0.02%）
     constraints:
       cooldown_minutes: 0
       max_position_amount: 50000

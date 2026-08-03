@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from src.index_snapshots import market_snapshot_date
 from src.models import Quote
 from src.strategy_engine import StrategyEngine
-from src.trading_models import OrderExecution, StrategySignal, TradeMessage, TradingStrategy
+from src.trading_models import OrderExecution, StrategySignal, TradeMessage, TradingStrategy, TradingCosts
 from src.trading_store import TradingStore
 
 MARKET_CURRENCY = {"A股": "CNY", "港股": "HKD", "美股": "USD"}
@@ -14,8 +14,9 @@ DEFAULT_LOT_SIZE = {"A股": 100, "港股": 100, "美股": 1}
 
 
 class PaperBroker:
-    def __init__(self, store: TradingStore):
+    def __init__(self, store: TradingStore, costs: TradingCosts | None = None):
         self.store = store
+        self.costs = costs
 
     def execute(self, signal: StrategySignal) -> OrderExecution:
         strategy = signal.strategy
@@ -69,8 +70,21 @@ class PaperBroker:
             if risk_per_share <= 0:
                 return 0
             cash = self.store.get_balance(currency)
-            risk_cash = cash * float(strategy.sizing.amount) / 100.0
+            # 风险基数: equity = 现金 + 持仓市值; cash = 仅现金(旧行为)
+            if strategy.sizing.equity_basis == "equity":
+                position = self.store.get_position(signal.market, signal.symbol)
+                position_value = int(position["quantity"]) * price
+                base = cash + position_value
+            else:
+                base = cash
+            risk_cash = base * float(strategy.sizing.amount) / 100.0
             risk_quantity = int(risk_cash // risk_per_share)
+            # 最小仓位下限: 占基数最低比例,避免宽止损时仓位缩到接近0
+            min_pct = strategy.sizing.min_position_value_pct
+            if min_pct is not None and min_pct > 0:
+                min_value = base * min_pct / 100.0
+                min_quantity = int(min_value // price)
+                risk_quantity = max(risk_quantity, min_quantity)
             cash_quantity = int(cash // price)
             raw_quantity = min(risk_quantity, cash_quantity)
             return int(math.floor(raw_quantity / lot_size) * lot_size)
@@ -83,35 +97,52 @@ class PaperBroker:
         raw_quantity = int(strategy.sizing.amount // price)
         return int(math.floor(raw_quantity / lot_size) * lot_size)
 
+    def _fill_price(self, signal: StrategySignal) -> float:
+        """实际成交价 = 信号价 + 滑点(买入上浮,卖出下浮)。无 costs 时回退为信号价。"""
+        price = signal.quote_price
+        if self.costs is None or self.costs.slippage_bps <= 0:
+            return price
+        if signal.action == "buy":
+            return price * (1 + self.costs.slippage_bps / 10000.0)
+        return price * (1 - self.costs.slippage_bps / 10000.0)
+
+    def _commission(self, amount: float) -> float:
+        """单边佣金金额。"""
+        if self.costs is None or self.costs.commission_bps <= 0:
+            return 0.0
+        return amount * self.costs.commission_bps / 10000.0
+
     def _buy(self, signal_id: str, signal: StrategySignal, quantity: int,
              currency: str, trading_day: str, signal_key: str) -> OrderExecution:
         strategy = signal.strategy
-        amount = quantity * signal.quote_price
+        fill_price = self._fill_price(signal)
+        amount = quantity * fill_price
+        commission = self._commission(amount)
         cash = self.store.get_balance(currency)
         position = self.store.get_position(signal.market, signal.symbol)
-        current_position_value = int(position["quantity"]) * signal.quote_price
+        current_position_value = int(position["quantity"]) * fill_price
         max_amount = strategy.constraints.max_position_amount
         if max_amount is not None and current_position_value + amount > max_amount:
             reason = "max position amount exceeded"
             self.store.record_order(
                 signal_id, strategy.id, signal.symbol, signal.market, "buy",
-                quantity, signal.quote_price, currency, "REJECTED", reason, trading_day, signal_key,
+                quantity, fill_price, currency, "REJECTED", reason, trading_day, signal_key,
             )
             return self._result(signal, "REJECTED", quantity, amount, currency, reason, cash)
-        if cash < amount:
+        if cash < amount + commission:
             reason = "insufficient cash"
             self.store.record_order(
                 signal_id, strategy.id, signal.symbol, signal.market, "buy",
-                quantity, signal.quote_price, currency, "REJECTED", reason, trading_day, signal_key,
+                quantity, fill_price, currency, "REJECTED", reason, trading_day, signal_key,
             )
             return self._result(signal, "REJECTED", quantity, amount, currency, reason, cash)
 
         order_id = self.store.record_order(
             signal_id, strategy.id, signal.symbol, signal.market, "buy",
-            quantity, signal.quote_price, currency, "FILLED", "", trading_day, signal_key,
+            quantity, fill_price, currency, "FILLED", "", trading_day, signal_key,
         )
-        self.store.record_fill(order_id, signal.quote_price, quantity)
-        new_cash = cash - amount
+        self.store.record_fill(order_id, fill_price, quantity)
+        new_cash = cash - amount - commission
         self.store.update_balance(currency, new_cash)
 
         old_qty = int(position["quantity"])
@@ -122,12 +153,14 @@ class PaperBroker:
             signal.market, signal.symbol, signal.name, currency, new_qty,
             new_avg_cost, float(position["realized_pnl"]),
         )
-        return self._result(signal, "FILLED", quantity, amount, currency, "", new_cash)
+        return self._buy_result(signal, quantity, fill_price, amount, commission, currency, new_cash)
 
     def _sell(self, signal_id: str, signal: StrategySignal, quantity: int,
               currency: str, trading_day: str, signal_key: str) -> OrderExecution:
         strategy = signal.strategy
-        amount = quantity * signal.quote_price
+        fill_price = self._fill_price(signal)
+        amount = quantity * fill_price
+        commission = self._commission(amount)
         position = self.store.get_position(signal.market, signal.symbol)
         held_qty = int(position["quantity"])
         cash = self.store.get_balance(currency)
@@ -135,26 +168,26 @@ class PaperBroker:
             reason = "insufficient position quantity"
             self.store.record_order(
                 signal_id, strategy.id, signal.symbol, signal.market, "sell",
-                quantity, signal.quote_price, currency, "REJECTED", reason, trading_day, signal_key,
+                quantity, fill_price, currency, "REJECTED", reason, trading_day, signal_key,
             )
             return self._result(signal, "REJECTED", quantity, amount, currency, reason, cash)
 
         order_id = self.store.record_order(
             signal_id, strategy.id, signal.symbol, signal.market, "sell",
-            quantity, signal.quote_price, currency, "FILLED", "", trading_day, signal_key,
+            quantity, fill_price, currency, "FILLED", "", trading_day, signal_key,
         )
-        self.store.record_fill(order_id, signal.quote_price, quantity)
-        new_cash = cash + amount
+        self.store.record_fill(order_id, fill_price, quantity)
+        new_cash = cash + amount - commission
         self.store.update_balance(currency, new_cash)
 
         avg_cost = float(position["avg_cost"])
-        realized = float(position["realized_pnl"]) + (signal.quote_price - avg_cost) * quantity
+        realized = float(position["realized_pnl"]) + (fill_price - avg_cost) * quantity
         new_qty = held_qty - quantity
         new_avg_cost = avg_cost if new_qty else 0.0
         self.store.upsert_position(
             signal.market, signal.symbol, signal.name, currency, new_qty, new_avg_cost, realized,
         )
-        return self._result(signal, "FILLED", quantity, amount, currency, "", new_cash)
+        return self._sell_result(signal, quantity, fill_price, amount, commission, currency, new_cash)
 
     @staticmethod
     def _result(signal: StrategySignal, status: str, quantity: int, amount: float,
@@ -171,6 +204,38 @@ class PaperBroker:
             currency=currency,
             reason=reason,
             remaining_cash=remaining_cash,
+        )
+
+    def _buy_result(self, signal: StrategySignal, quantity: int, fill_price: float,
+                    amount: float, commission: float, currency: str,
+                    remaining_cash: float) -> OrderExecution:
+        return self._filled_result(signal, quantity, fill_price, amount, commission,
+                                   currency, remaining_cash)
+
+    def _sell_result(self, signal: StrategySignal, quantity: int, fill_price: float,
+                     amount: float, commission: float, currency: str,
+                     remaining_cash: float) -> OrderExecution:
+        return self._filled_result(signal, quantity, fill_price, amount, commission,
+                                   currency, remaining_cash)
+
+    @staticmethod
+    def _filled_result(signal: StrategySignal, quantity: int, fill_price: float,
+                       amount: float, commission: float, currency: str,
+                       remaining_cash: float) -> OrderExecution:
+        return OrderExecution(
+            strategy_id=signal.strategy.id,
+            symbol=signal.symbol,
+            market=signal.market,
+            side=signal.action,
+            status="FILLED",
+            quantity=quantity,
+            price=fill_price,
+            amount=amount,
+            currency=currency,
+            reason="",
+            remaining_cash=remaining_cash,
+            commission=commission,
+            slippage=fill_price - signal.quote_price,
         )
 
 
