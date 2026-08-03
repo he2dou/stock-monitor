@@ -1,4 +1,4 @@
-﻿strategies:
+strategies:
   # 突破回踩策略模板：长期下跌后，突破压力位，回踩确认支撑有效后买入。
   # 使用前必须按标的实际形态修改 resistance，并将 enabled 改为 true。
   - id: "soxl_breakout_pullback"
@@ -25,7 +25,7 @@
   # 分级移动止损、时间止损、量能/RSI 过滤。适合高波动杠杆 ETF。
   # 重要：bar_timeframe 标注参数的时间尺度。lookback_bars/trend_*_bars 的单位与该尺度一致。
   # 启用前建议先用历史数据回测（推荐 --next-bar --apply-costs）并做 walk-forward 验证。
-  - id: "leveraged_breakout_pullback_usd"
+  - id: "soxl_leveraged_breakout_pullback"
     type: "leveraged_breakout_pullback"
     enabled: true
     symbol: "SOXL"
@@ -47,7 +47,7 @@
       partial_take_profit_r: 2.5     # 达到 2.5R 先卖出一部分
       partial_sell_fraction: 0.5     # 分批止盈卖出当前持仓的 50%
       # --- 止损：扫描证明 22% 单级最优(Sharpe1.34/Calmar2.19)；分级/时间止损在 SOXL 强趋势上是负贡献 ---
-      trailing_stop_pct: 22.0        # 最高价回撤 22% 移动止损
+      trailing_stop_pct: 11.0        # 最高价回撤 11% 移动止损
       trailing_stop_pct_after_partial: null  # 不分级（部分止盈后不收紧，扫描校准：收紧致收益腰斩）
       time_stop_bars: null           # 不启用时间止损（扫描校准：会过早平掉盈利仓位）
       cooldown_after_stop_minutes: 0  # 不启用止损后冷却（SOXL 突破机会少，冷却会错过重新进场）
@@ -111,7 +111,7 @@
       type: "risk_percent"          # 按风险百分比计算数量
       amount: 3.0                    # 单笔最大风险为基数的 3%（进取版：扫描校准收益85%，回撤-9.4%，Sharpe/Calmar更优）
       currency: "HKD"
-      lot_size: 1
+      lot_size: 100
       # --- 基数：扫描证明 cash 与 equity 在单边行情结果一致；保持 cash 更保守、不放大复利风险 ---
       equity_basis: "cash"           # 风险基数=现金（旧默认；equity 会随浮盈放大仓位，震荡市风险更高）
       min_position_value_pct: null   # 不设下限（扫描显示 SOXL 行情下不起作用）
@@ -160,8 +160,8 @@
     sizing:
       type: "risk_percent"          # 按风险百分比计算数量
       amount: 3.0                    # 单笔最大风险为基数的 3%（进取版：扫描校准收益85%，回撤-9.4%，Sharpe/Calmar更优）
-      currency: "USD"
-      lot_size: 1
+      currency: "CNY"
+      lot_size: 100
       # --- 基数：扫描证明 cash 与 equity 在单边行情结果一致；保持 cash 更保守、不放大复利风险 ---
       equity_basis: "cash"           # 风险基数=现金（旧默认；equity 会随浮盈放大仓位，震荡市风险更高）
       min_position_value_pct: null   # 不设下限（扫描显示 SOXL 行情下不起作用）
