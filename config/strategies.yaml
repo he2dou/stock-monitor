@@ -1,31 +1,9 @@
 ﻿strategies:
-  # 突破回踩策略模板：长期下跌后，突破压力位，回踩确认支撑有效后买入。
-  # 使用前必须按标的实际形态修改 resistance，并将 enabled 改为 true。
-  - id: "soxl_breakout_pullback"
-    type: "breakout_pullback"
-    enabled: false
-    symbol: "SOXL"
-    action: "buy"
-    breakout_pullback:
-      resistance: 100.0
-      breakout_buffer_pct: 1.0       # 价格高于压力位 1% 视为有效突破
-      pullback_tolerance_pct: 1.0    # 回踩到压力位上下 1% 区间视为触及支撑
-      confirmation_pct: 0.3          # 回踩后重新站上压力位 0.3% 触发买入
-      max_pullback_bars: 8           # 突破后最多等待 8 个轮询周期回踩
-      invalidation_pct: 2.0          # 跌破压力位下方 2% 视为支撑失败，重置等待
-    sizing:
-      type: "fixed_amount"
-      amount: 1000
-      currency: "USD"
-      lot_size: 1
-    constraints:
-      cooldown_minutes: 300
-      max_position_amount: 5000
   # SOXL 专用突破回踩策略：动态压力位、趋势过滤、按总权益风险百分比下单、分批止盈、
   # 分级移动止损、时间止损、量能/RSI 过滤。适合高波动杠杆 ETF。
   # 重要：bar_timeframe 标注参数的时间尺度。lookback_bars/trend_*_bars 的单位与该尺度一致。
   # 启用前建议先用历史数据回测（推荐 --next-bar --apply-costs）并做 walk-forward 验证。
-  - id: "soxl_leveraged_breakout_pullback"
+  - id: "leveraged_breakout_pullback_usd"
     type: "leveraged_breakout_pullback"
     enabled: true
     symbol: "SOXL"
@@ -47,7 +25,107 @@
       partial_take_profit_r: 2.5     # 达到 2.5R 先卖出一部分
       partial_sell_fraction: 0.5     # 分批止盈卖出当前持仓的 50%
       # --- 止损：扫描证明 22% 单级最优(Sharpe1.34/Calmar2.19)；分级/时间止损在 SOXL 强趋势上是负贡献 ---
-      trailing_stop_pct: 22.0        # 最高价回撤 22% 移动止损（扫描最优）
+      trailing_stop_pct: 22.0        # 最高价回撤 22% 移动止损
+      trailing_stop_pct_after_partial: null  # 不分级（部分止盈后不收紧，扫描校准：收紧致收益腰斩）
+      time_stop_bars: null           # 不启用时间止损（扫描校准：会过早平掉盈利仓位）
+      cooldown_after_stop_minutes: 0  # 不启用止损后冷却（SOXL 突破机会少，冷却会错过重新进场）
+      # --- 过滤：扫描证明 RSI/量能确认在 SOXL 上无效或负贡献，默认全关 ---
+      require_volume_confirm: false  # 放量确认（扫描显示过滤过严，挡掉有效突破）
+      volume_confirm_mult: 1.3
+      volume_avg_period: 20
+      rsi_period: null               # 不过滤 RSI（扫描显示 80-95 与不过滤结果一致或更差）
+      rsi_max: null
+    sizing:
+      type: "risk_percent"          # 按风险百分比计算数量
+      amount: 3.0                    # 单笔最大风险为基数的 3%（进取版：扫描校准收益85%，回撤-9.4%，Sharpe/Calmar更优）
+      currency: "USD"
+      lot_size: 1
+      # --- 基数：扫描证明 cash 与 equity 在单边行情结果一致；保持 cash 更保守、不放大复利风险 ---
+      equity_basis: "cash"           # 风险基数=现金（旧默认；equity 会随浮盈放大仓位，震荡市风险更高）
+      min_position_value_pct: null   # 不设下限（扫描显示 SOXL 行情下不起作用）
+    costs:                           # 交易成本，回测 --apply-costs 时生效
+      commission_bps: 1.0            # 单边佣金 1bp（约 0.01%）
+      slippage_bps: 2.0             # 单边滑点 2bp（约 0.02%）
+    constraints:
+      cooldown_minutes: 0
+      max_position_amount: 50000
+  # SOXL 专用突破回踩策略：动态压力位、趋势过滤、按总权益风险百分比下单、分批止盈、
+  # 分级移动止损、时间止损、量能/RSI 过滤。适合高波动杠杆 ETF。
+  # 重要：bar_timeframe 标注参数的时间尺度。lookback_bars/trend_*_bars 的单位与该尺度一致。
+  # 启用前建议先用历史数据回测（推荐 --next-bar --apply-costs）并做 walk-forward 验证。
+  - id: "leveraged_breakout_pullback_hkd"
+    type: "leveraged_breakout_pullback"
+    enabled: true
+    symbol: "09988"
+    action: "buy"
+    leveraged_breakout_pullback:
+      bar_timeframe: "daily"         # 参数语义尺度：日线。回测 quote-snapshots(10m) 时会 warning
+      lookback_bars: 30              # 用最近 30 个 bar 的价格寻找动态压力位
+      # --- 阻力位：扫描证明取 max(100) 严格最优；任何百分位过滤都是负贡献
+      # （SOXL 突破常从前高发起，过滤尖峰反而丢失真实阻力位，收益从 52% 跌到 22%）---
+      resistance_percentile: 100     # 100 = 取 max（旧行为，扫描校准最优）
+      breakout_buffer_pct: 0.75      # 高于动态压力位 0.75% 视为有效突破
+      pullback_tolerance_pct: 7.0    # 回踩到压力位上下 7% 区间视为测试支撑
+      confirmation_pct: 0.0          # 回踩后重新站上压力位即确认
+      require_close_above_resistance_bars: 1  # 站上压力位几根确认（1=当根即确认）
+      max_pullback_bars: 12          # 突破后最多等待 12 个 bar 完成回踩
+      invalidation_pct: 6.0          # 跌破压力位下方 6% 视为支撑失败
+      trend_short_bars: 12           # 短周期均线过滤
+      trend_long_bars: 50            # 长周期均线过滤，短均线必须高于长均线
+      partial_take_profit_r: 2.5     # 达到 2.5R 先卖出一部分
+      partial_sell_fraction: 0.5     # 分批止盈卖出当前持仓的 50%
+      # --- 止损：扫描证明 11% 单级最优(Sharpe1.34/Calmar2.19)；分级/时间止损在 SOXL 强趋势上是负贡献 ---
+      trailing_stop_pct: 11.0        # 最高价回撤 11% 移动止损
+      trailing_stop_pct_after_partial: null  # 不分级（部分止盈后不收紧，扫描校准：收紧致收益腰斩）
+      time_stop_bars: null           # 不启用时间止损（扫描校准：会过早平掉盈利仓位）
+      cooldown_after_stop_minutes: 0  # 不启用止损后冷却（SOXL 突破机会少，冷却会错过重新进场）
+      # --- 过滤：扫描证明 RSI/量能确认在 SOXL 上无效或负贡献，默认全关 ---
+      require_volume_confirm: false  # 放量确认（扫描显示过滤过严，挡掉有效突破）
+      volume_confirm_mult: 1.3
+      volume_avg_period: 20
+      rsi_period: null               # 不过滤 RSI（扫描显示 80-95 与不过滤结果一致或更差）
+      rsi_max: null
+    sizing:
+      type: "risk_percent"          # 按风险百分比计算数量
+      amount: 3.0                    # 单笔最大风险为基数的 3%（进取版：扫描校准收益85%，回撤-9.4%，Sharpe/Calmar更优）
+      currency: "HKD"
+      lot_size: 1
+      # --- 基数：扫描证明 cash 与 equity 在单边行情结果一致；保持 cash 更保守、不放大复利风险 ---
+      equity_basis: "cash"           # 风险基数=现金（旧默认；equity 会随浮盈放大仓位，震荡市风险更高）
+      min_position_value_pct: null   # 不设下限（扫描显示 SOXL 行情下不起作用）
+    costs:                           # 交易成本，回测 --apply-costs 时生效
+      commission_bps: 1.0            # 单边佣金 1bp（约 0.01%）
+      slippage_bps: 2.0             # 单边滑点 2bp（约 0.02%）
+    constraints:
+      cooldown_minutes: 0
+      max_position_amount: 100000
+  # SOXL 专用突破回踩策略：动态压力位、趋势过滤、按总权益风险百分比下单、分批止盈、
+  # 分级移动止损、时间止损、量能/RSI 过滤。适合高波动杠杆 ETF。
+  # 重要：bar_timeframe 标注参数的时间尺度。lookback_bars/trend_*_bars 的单位与该尺度一致。
+  # 启用前建议先用历史数据回测（推荐 --next-bar --apply-costs）并做 walk-forward 验证。
+  - id: "leveraged_breakout_pullback_cny"
+    type: "leveraged_breakout_pullback"
+    enabled: true
+    symbol: "SOXL"
+    action: "buy"
+    leveraged_breakout_pullback:
+      bar_timeframe: "daily"         # 参数语义尺度：日线。回测 quote-snapshots(10m) 时会 warning
+      lookback_bars: 30              # 用最近 30 个 bar 的价格寻找动态压力位
+      # --- 阻力位：扫描证明取 max(100) 严格最优；任何百分位过滤都是负贡献
+      # （SOXL 突破常从前高发起，过滤尖峰反而丢失真实阻力位，收益从 52% 跌到 22%）---
+      resistance_percentile: 100     # 100 = 取 max（旧行为，扫描校准最优）
+      breakout_buffer_pct: 0.75      # 高于动态压力位 0.75% 视为有效突破
+      pullback_tolerance_pct: 7.0    # 回踩到压力位上下 7% 区间视为测试支撑
+      confirmation_pct: 0.0          # 回踩后重新站上压力位即确认
+      require_close_above_resistance_bars: 1  # 站上压力位几根确认（1=当根即确认）
+      max_pullback_bars: 12          # 突破后最多等待 12 个 bar 完成回踩
+      invalidation_pct: 6.0          # 跌破压力位下方 6% 视为支撑失败
+      trend_short_bars: 12           # 短周期均线过滤
+      trend_long_bars: 50            # 长周期均线过滤，短均线必须高于长均线
+      partial_take_profit_r: 2.5     # 达到 2.5R 先卖出一部分
+      partial_sell_fraction: 0.5     # 分批止盈卖出当前持仓的 50%
+      # --- 止损：扫描证明 11% 单级最优(Sharpe1.34/Calmar2.19)；分级/时间止损在 SOXL 强趋势上是负贡献 ---
+      trailing_stop_pct: 11.0        # 最高价回撤 11% 移动止损
       trailing_stop_pct_after_partial: null  # 不分级（部分止盈后不收紧，扫描校准：收紧致收益腰斩）
       time_stop_bars: null           # 不启用时间止损（扫描校准：会过早平掉盈利仓位）
       cooldown_after_stop_minutes: 0  # 不启用止损后冷却（SOXL 突破机会少，冷却会错过重新进场）
