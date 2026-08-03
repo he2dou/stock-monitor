@@ -1,4 +1,26 @@
 ﻿strategies:
+  # 突破回踩策略模板：长期下跌后，突破压力位，回踩确认支撑有效后买入。
+  # 使用前必须按标的实际形态修改 resistance，并将 enabled 改为 true。
+  - id: "soxl_breakout_pullback"
+    type: "breakout_pullback"
+    enabled: false
+    symbol: "SOXL"
+    action: "buy"
+    breakout_pullback:
+      resistance: 100.0
+      breakout_buffer_pct: 1.0       # 价格高于压力位 1% 视为有效突破
+      pullback_tolerance_pct: 1.0    # 回踩到压力位上下 1% 区间视为触及支撑
+      confirmation_pct: 0.3          # 回踩后重新站上压力位 0.3% 触发买入
+      max_pullback_bars: 8           # 突破后最多等待 8 个轮询周期回踩
+      invalidation_pct: 2.0          # 跌破压力位下方 2% 视为支撑失败，重置等待
+    sizing:
+      type: "fixed_amount"
+      amount: 1000
+      currency: "USD"
+      lot_size: 1
+    constraints:
+      cooldown_minutes: 300
+      max_position_amount: 5000
   # SOXL 专用突破回踩策略：动态压力位、趋势过滤、按总权益风险百分比下单、分批止盈、
   # 分级移动止损、时间止损、量能/RSI 过滤。适合高波动杠杆 ETF。
   # 重要：bar_timeframe 标注参数的时间尺度。lookback_bars/trend_*_bars 的单位与该尺度一致。
@@ -56,7 +78,7 @@
   - id: "leveraged_breakout_pullback_hkd"
     type: "leveraged_breakout_pullback"
     enabled: true
-    symbol: "09988"
+    symbol: "9988.HK"
     action: "buy"
     leveraged_breakout_pullback:
       bar_timeframe: "daily"         # 参数语义尺度：日线。回测 quote-snapshots(10m) 时会 warning
@@ -106,7 +128,7 @@
   - id: "leveraged_breakout_pullback_cny"
     type: "leveraged_breakout_pullback"
     enabled: true
-    symbol: "SOXL"
+    symbol: "159516"
     action: "buy"
     leveraged_breakout_pullback:
       bar_timeframe: "daily"         # 参数语义尺度：日线。回测 quote-snapshots(10m) 时会 warning
