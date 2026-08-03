@@ -31,35 +31,40 @@
     symbol: "SOXL"
     action: "buy"
     leveraged_breakout_pullback:
-      bar_timeframe: "daily"         # 参数语义尺度：日线。回测 quote-snapshots(30m) 时会 warning
+      bar_timeframe: "daily"         # 参数语义尺度：日线。回测 quote-snapshots(10m) 时会 warning
       lookback_bars: 30              # 用最近 30 个 bar 的价格寻找动态压力位
-      resistance_percentile: 95      # 用 95 分位而非 max，忽略单根异常尖峰
+      # --- 阻力位：扫描证明取 max(100) 严格最优；任何百分位过滤都是负贡献
+      # （SOXL 突破常从前高发起，过滤尖峰反而丢失真实阻力位，收益从 52% 跌到 22%）---
+      resistance_percentile: 100     # 100 = 取 max（旧行为，扫描校准最优）
       breakout_buffer_pct: 0.75      # 高于动态压力位 0.75% 视为有效突破
       pullback_tolerance_pct: 7.0    # 回踩到压力位上下 7% 区间视为测试支撑
       confirmation_pct: 0.0          # 回踩后重新站上压力位即确认
-      require_close_above_resistance_bars: 1  # 站上压力位几根确认（1=旧行为）
+      require_close_above_resistance_bars: 1  # 站上压力位几根确认（1=当根即确认）
       max_pullback_bars: 12          # 突破后最多等待 12 个 bar 完成回踩
       invalidation_pct: 6.0          # 跌破压力位下方 6% 视为支撑失败
       trend_short_bars: 12           # 短周期均线过滤
       trend_long_bars: 50            # 长周期均线过滤，短均线必须高于长均线
       partial_take_profit_r: 2.5     # 达到 2.5R 先卖出一部分
       partial_sell_fraction: 0.5     # 分批止盈卖出当前持仓的 50%
-      trailing_stop_pct: 22.0        # 部分止盈前：最高价回撤 22% 移动止损
-      trailing_stop_pct_after_partial: 20.0  # 部分止盈后收紧到 20%（回测校准：11-15%过紧致频繁震荡止损）
-      time_stop_bars: 40             # 持仓 40 个 bar 未到 1R 浮盈则平仓（回测校准：20 过紧）
-      cooldown_after_stop_minutes: 2880   # 止损离场后冷却 2 个交易日（2880 分钟）
-      require_volume_confirm: false  # 放量确认（回测显示对 SOXL 过滤过严，默认关闭，可按需开）
-      volume_confirm_mult: 1.3       # 突破量 > 近 20 期均量 × 1.3
+      # --- 止损：扫描证明 22% 单级最优(Sharpe1.34/Calmar2.19)；分级/时间止损在 SOXL 强趋势上是负贡献 ---
+      trailing_stop_pct: 22.0        # 最高价回撤 22% 移动止损（扫描最优）
+      trailing_stop_pct_after_partial: null  # 不分级（部分止盈后不收紧，扫描校准：收紧致收益腰斩）
+      time_stop_bars: null           # 不启用时间止损（扫描校准：会过早平掉盈利仓位）
+      cooldown_after_stop_minutes: 0  # 不启用止损后冷却（SOXL 突破机会少，冷却会错过重新进场）
+      # --- 过滤：扫描证明 RSI/量能确认在 SOXL 上无效或负贡献，默认全关 ---
+      require_volume_confirm: false  # 放量确认（扫描显示过滤过严，挡掉有效突破）
+      volume_confirm_mult: 1.3
       volume_avg_period: 20
-      rsi_period: 14                 # RSI 过滤周期
-      rsi_max: 85                    # RSI > 85 不进场，防追高（回测校准：75 过严，滤掉强主升段）
+      rsi_period: null               # 不过滤 RSI（扫描显示 80-95 与不过滤结果一致或更差）
+      rsi_max: null
     sizing:
       type: "risk_percent"          # 按风险百分比计算数量
-      amount: 2.0                    # 单笔最大风险为基数的 2%
+      amount: 3.0                    # 单笔最大风险为基数的 3%（进取版：扫描校准收益85%，回撤-9.4%，Sharpe/Calmar更优）
       currency: "USD"
       lot_size: 1
-      equity_basis: "equity"         # 风险基数=总权益(现金+持仓市值)，可复利（旧默认 cash）
-      min_position_value_pct: 5.0    # 仓位占基数最低 5%，避免宽止损时仓位过小（待校准）
+      # --- 基数：扫描证明 cash 与 equity 在单边行情结果一致；保持 cash 更保守、不放大复利风险 ---
+      equity_basis: "cash"           # 风险基数=现金（旧默认；equity 会随浮盈放大仓位，震荡市风险更高）
+      min_position_value_pct: null   # 不设下限（扫描显示 SOXL 行情下不起作用）
     costs:                           # 交易成本，回测 --apply-costs 时生效
       commission_bps: 1.0            # 单边佣金 1bp（约 0.01%）
       slippage_bps: 2.0             # 单边滑点 2bp（约 0.02%）

@@ -4673,3 +4673,11 @@ sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in
 2026-08-03 16:29:31,526 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
 2026-08-03 16:29:31,532 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
 2026-08-03 16:29:31,532 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-03 16:39:31 CST)" executed successfully
+2026-08-03 16:39:31,525 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-03 16:49:31 CST)" (scheduled at 2026-08-03 16:39:31.516401+08:00)
+2026-08-03 16:39:31,541 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-03 16:39:31,549 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-03 16:39:31,549 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-03 16:49:31 CST)" executed successfully
+2026-08-03 16:49:31,532 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-03 16:59:31 CST)" (scheduled at 2026-08-03 16:49:31.516401+08:00)
+2026-08-03 16:49:31,536 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-03 16:49:31,549 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-03 16:49:31,549 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-03 16:59:31 CST)" executed successfully
