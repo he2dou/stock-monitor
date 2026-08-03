@@ -120,6 +120,17 @@ def _max_drawdown(equity_curve: list[dict]) -> float:
     return max_dd
 
 
+def _max_drawdown_for_currency(equity_curve: list[dict], currency: str) -> float:
+    peak: float | None = None
+    max_dd = 0.0
+    for point in equity_curve:
+        equity = float((point.get("equity_by_currency") or {}).get(currency, 0.0))
+        if peak is None or equity > peak:
+            peak = equity
+        if peak and peak > 0:
+            max_dd = min(max_dd, (equity - peak) / peak * 100.0)
+    return max_dd
+
 def _buy_hold_return(quotes: list[Quote], symbol: str | None) -> float | None:
     if not symbol:
         return None
@@ -212,6 +223,7 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
         "return_pct_by_currency": return_pct_by_currency,
         "buy_hold_return_pct": _buy_hold_return(quotes, primary_symbol),
         "max_drawdown_pct": _max_drawdown(equity_curve),
+        "usd_max_drawdown_pct": _max_drawdown_for_currency(equity_curve, "USD"),
         "sell_win_rate_pct": (len(winning_sells) / len(sell_fills) * 100.0) if sell_fills else None,
         "open_positions": _positions(test_store),
         "trades": trades,
@@ -258,6 +270,7 @@ def write_markdown_report(summary: dict, path: str) -> None:
         f"- USD account return: {_fmt_pct((summary.get('return_pct_by_currency') or {}).get('USD'))}",
         f"- Buy and hold return: {_fmt_pct(summary.get('buy_hold_return_pct'))}",
         f"- Max drawdown: {summary['max_drawdown_pct']:.2f}%",
+        f"- USD max drawdown: {summary.get('usd_max_drawdown_pct', summary['max_drawdown_pct']):.2f}%",
         f"- Realized PnL: {summary['realized_pnl']:.2f}",
         f"- Sell win rate: {_fmt_pct(summary.get('sell_win_rate_pct'))}",
         "",

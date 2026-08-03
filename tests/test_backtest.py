@@ -69,6 +69,49 @@ def test_run_backtest_replays_daily_bars_and_writes_report(tmp_path):
     assert "SOXL Strategy Backtest Report" in report.read_text(encoding="utf-8")
     assert "buy_soxl" in csv_path.read_text(encoding="utf-8")
 
+
+def test_backtest_reports_usd_drawdown_separately(tmp_path):
+    db = tmp_path / "trading.sqlite3"
+    store = TradingStore(str(db))
+    store.save_daily_bars([
+        {
+            "symbol": "SOXL", "name": "SOXL", "market": "美股", "date": "2026-07-27",
+            "open": 10, "high": 10, "low": 10, "close": 10,
+            "adj_close": 10, "volume": 1000, "source": "test",
+        },
+        {
+            "symbol": "SOXL", "name": "SOXL", "market": "美股", "date": "2026-07-28",
+            "open": 8, "high": 8, "low": 8, "close": 8,
+            "adj_close": 8, "volume": 1000, "source": "test",
+        },
+        {
+            "symbol": "SOXL", "name": "SOXL", "market": "美股", "date": "2026-07-29",
+            "open": 4, "high": 4, "low": 4, "close": 4,
+            "adj_close": 4, "volume": 1000, "source": "test",
+        },
+    ])
+    store.close()
+    strategies = [{
+        "id": "buy_soxl",
+        "enabled": True,
+        "symbol": "SOXL",
+        "action": "buy",
+        "trigger": {"field": "change_pct", "op": "below", "value": -10},
+        "sizing": {"type": "fixed_amount", "amount": 1000, "currency": "USD", "lot_size": 1},
+        "constraints": {"cooldown_minutes": 10000},
+    }]
+
+    summary = run_backtest(
+        str(db), strategies, {"USD": 50000, "CNY": 100000},
+        start="2026-07-27", end="2026-07-29", source="daily-bars", symbols=["SOXL"],
+    )
+    report = tmp_path / "report.md"
+    write_markdown_report(summary, str(report))
+
+    assert round(summary["max_drawdown_pct"], 2) == -0.33
+    assert round(summary["usd_max_drawdown_pct"], 2) == -1.00
+    assert "USD max drawdown: -1.00%" in report.read_text(encoding="utf-8")
+
 def test_backtest_cooldown_uses_quote_dates_not_runtime_clock(tmp_path):
     db = tmp_path / "trading.sqlite3"
     store = TradingStore(str(db))

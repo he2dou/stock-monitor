@@ -143,25 +143,25 @@ strategies:
     symbol: "SOXL"
     action: "buy"
     leveraged_breakout_pullback:
-      lookback_bars: 20
-      breakout_buffer_pct: 0.5
-      pullback_tolerance_pct: 4.0
+      lookback_bars: 30
+      breakout_buffer_pct: 0.75
+      pullback_tolerance_pct: 7.0
       confirmation_pct: 0.0
       max_pullback_bars: 12
-      invalidation_pct: 8.0
-      trend_short_bars: 20
-      trend_long_bars: 60
-      partial_take_profit_r: 3.0
+      invalidation_pct: 6.0
+      trend_short_bars: 12
+      trend_long_bars: 50
+      partial_take_profit_r: 2.5
       partial_sell_fraction: 0.5
-      trailing_stop_pct: 12.0
+      trailing_stop_pct: 22.0
     sizing:
       type: "risk_percent"
-      amount: 1.0
+      amount: 2.0
       currency: "USD"
       lot_size: 1
     constraints:
-      cooldown_minutes: 300
-      max_position_amount: 20000
+      cooldown_minutes: 0
+      max_position_amount: 50000
 ```
 
 `leveraged_breakout_pullback` 针对 SOXL 这类高波动杠杆 ETF 做了更宽的回踩和支撑失效阈值。它用最近 `lookback_bars` 个价格动态计算压力位，突破后等待回踩确认；只有 `trend_short_bars` 均价高于 `trend_long_bars` 均价时才允许入场。当前版本的趋势过滤基于 SOXL 自身价格序列，尚未接入纳指或半导体指数作为外部过滤器。

@@ -61,22 +61,22 @@ strategies:
     symbol: "SOXL"
     action: "buy"
     leveraged_breakout_pullback:
-      lookback_bars: 20              # 用最近 20 个轮询价格寻找动态压力位
-      breakout_buffer_pct: 0.5       # 高于动态压力位 0.5% 视为有效突破
-      pullback_tolerance_pct: 4.0    # 回踩到压力位上下 4% 区间视为测试支撑
+      lookback_bars: 30              # 用最近 30 个轮询价格寻找动态压力位
+      breakout_buffer_pct: 0.75      # 高于动态压力位 0.75% 视为有效突破
+      pullback_tolerance_pct: 7.0    # 回踩到压力位上下 7% 区间视为测试支撑
       confirmation_pct: 0.0          # 回踩后重新站上压力位即确认
       max_pullback_bars: 12          # 突破后最多等待 12 个轮询周期完成回踩
-      invalidation_pct: 8.0          # 跌破压力位下方 8% 视为支撑失败
-      trend_short_bars: 20           # 短周期均线过滤
-      trend_long_bars: 60            # 长周期均线过滤，短均线必须高于长均线
-      partial_take_profit_r: 3.0     # 达到 3R 先卖出一部分
+      invalidation_pct: 6.0          # 跌破压力位下方 6% 视为支撑失败
+      trend_short_bars: 12           # 短周期均线过滤
+      trend_long_bars: 50            # 长周期均线过滤，短均线必须高于长均线
+      partial_take_profit_r: 2.5     # 达到 2.5R 先卖出一部分
       partial_sell_fraction: 0.5     # 分批止盈卖出当前持仓的 50%
-      trailing_stop_pct: 12.0        # 剩余持仓使用最高价回撤 12% 移动止损
+      trailing_stop_pct: 22.0        # 剩余持仓使用最高价回撤 22% 移动止损
     sizing:
       type: "risk_percent"          # 按账户现金风险百分比计算数量
-      amount: 1.0                    # 单笔最大风险为 USD 账户现金的 1%
+      amount: 2.0                    # 单笔最大风险为 USD 账户现金的 2%
       currency: "USD"
       lot_size: 1
     constraints:
-      cooldown_minutes: 300
-      max_position_amount: 20000
+      cooldown_minutes: 0
+      max_position_amount: 50000
