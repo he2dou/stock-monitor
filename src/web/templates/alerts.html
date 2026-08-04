@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>新增预警</h2>
+  <form class="row-form" method="post" action="/alerts/add">
+    <select name="symbol">{% for sym in symbols %}<option>{{ sym }}</option>{% endfor %}</select>
+    <select name="field">{% for f in fields %}<option value="{{ f }}">{{ f }}</option>{% endfor %}</select>
+    <select name="op">{% for o in ops %}<option value="{{ o }}">{{ o }}</option>{% endfor %}</select>
+    <input name="value" type="number" step="any" placeholder="阈值" required>
+    <input name="cooldown_seconds" type="number" placeholder="冷却秒(可选)">
+    <button class="btn primary" type="submit">添加</button>
+  </form>
+</section>
+<section>
+  <h2>预警规则</h2>
+  <table>
+    <tr><th>规则ID</th><th>代码</th><th>字段</th><th>比较</th><th class="num">阈值</th><th class="num">冷却</th><th>状态</th><th>操作</th></tr>
+    {% for r in rules %}
+    <tr>
+      <td class="mono">{{ r.rule_id[:8] }}</td><td>{{ r.symbol }}</td><td>{{ r.field }}</td><td>{{ r.op }}</td><td class="num">{{ r.value }}</td><td class="num">{{ r.cooldown_seconds or "—" }}</td>
+      <td>{% if r.enabled %}<span class="badge ok">启用</span>{% else %}<span class="badge off">停用</span>{% endif %}</td>
+      <td class="actions">
+        <form method="post" action="/alerts/{{ r.rule_id }}/toggle"><button class="btn sm" type="submit">{% if r.enabled %}停用{% else %}启用{% endif %}</button></form>
+        <form method="post" action="/alerts/{{ r.rule_id }}/delete"><button class="btn sm danger" type="submit">删除</button></form>
+      </td>
+    </tr>
+    {% else %}<tr><td colspan="8" class="empty">无预警规则</td></tr>{% endfor %}
+  </table>
+</section>
+{% endblock %}

@@ -2,16 +2,15 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import date
 from pathlib import Path
 
 from src.config_loader import load_alerts, load_app_config, load_watchlist
-from src.index_history import backfill_index_snapshots
-from src.kline_history import NasdaqDailyBarSource, YahooDailyBarSource
 from src.index_snapshots import load_market_indices
+from src.kline_history import NasdaqDailyBarSource, YahooDailyBarSource
 from src.market_hours import is_market_open
+from src.service import ops
 from src.sources.sinatx_source import SinaTxSource
-from src.trading_store import TradingStore, snapshot_date_for
+from src.trading_store import TradingStore
 
 BASE_DIR = Path(__file__).parent.parent
 CONFIG_DIR = BASE_DIR / "config"
@@ -43,45 +42,6 @@ def _split_values(values: list[str] | None) -> set[str]:
     for value in values or []:
         result.update(part.strip() for part in value.split(",") if part.strip())
     return result
-
-
-def _filter_items(items: list[dict], symbols: set[str], markets: set[str]) -> list[dict]:
-    selected: list[dict] = []
-    for item in items:
-        if symbols and str(item.get("symbol")) not in symbols:
-            continue
-        if markets and str(item.get("market")) not in markets:
-            continue
-        selected.append(item)
-    return selected
-
-
-def _open_items(items: list[dict], ignore_hours: bool) -> tuple[list[dict], list[dict]]:
-    if ignore_hours:
-        return items, []
-    open_items: list[dict] = []
-    skipped: list[dict] = []
-    for item in items:
-        if is_market_open(str(item.get("market", ""))):
-            open_items.append(item)
-        else:
-            skipped.append(item)
-    return open_items, skipped
-
-
-def _date_years_ago(end: date, years: int) -> date:
-    try:
-        return end.replace(year=end.year - years)
-    except ValueError:
-        return end.replace(month=2, day=28, year=end.year - years)
-
-
-def _kline_range(start: str | None, end: str | None, years: int) -> tuple[str, str]:
-    end_date = date.fromisoformat(end) if end else date.today()
-    start_date = date.fromisoformat(start) if start else _date_years_ago(end_date, years)
-    if end_date < start_date:
-        raise ValueError("--to must be greater than or equal to --from")
-    return start_date.isoformat(), end_date.isoformat()
 
 
 def cmd_import_yaml(args) -> None:
@@ -136,80 +96,62 @@ def cmd_list_alerts(args) -> None:
 
 def cmd_list_index_snapshots(args) -> None:
     store = default_store()
-    if args.backfill:
-        backfill_index_snapshots(store, load_default_app_config(), args.start, args.end)
-    print_json(store.load_index_snapshots(start=args.start, end=args.end))
-    store.close()
+    try:
+        if args.backfill:
+            ops.backfill_indices(store, app_config=load_default_app_config(), start=args.start, end=args.end)
+        print_json(store.load_index_snapshots(start=args.start, end=args.end))
+    finally:
+        store.close()
 
 
 def cmd_backfill_index_snapshots(args) -> None:
     store = default_store()
-    result = backfill_index_snapshots(store, load_default_app_config(), args.start, args.end)
-    print_json(result)
-    store.close()
+    try:
+        result = ops.backfill_indices(store, app_config=load_default_app_config(), start=args.start, end=args.end)
+        print_json(result)
+    finally:
+        store.close()
 
 
 def cmd_fetch_kline(args) -> None:
-    start, end = _kline_range(args.start, args.end, args.years)
     store = default_store()
     try:
         source_cls = NasdaqDailyBarSource if args.provider == "nasdaq" else YahooDailyBarSource
-        bars = source_cls(timeout=args.timeout).fetch_daily_bars(
+        result = ops.fetch_kline(
+            store,
             symbol=args.symbol,
             name=args.name,
             market=args.market,
-            start=start,
-            end=end,
+            start=args.start,
+            end=args.end,
+            years=args.years,
+            provider=args.provider,
+            source=source_cls(timeout=args.timeout),
         )
-        saved = store.save_daily_bars([bar.to_dict() for bar in bars])
-        print_json({
-            "ok": True,
-            "symbol": args.symbol,
-            "market": args.market,
-            "from": start,
-            "to": end,
-            "fetched": len(bars),
-            "provider": args.provider,
-            "saved": saved,
-            "first_date": bars[0].date if bars else None,
-            "last_date": bars[-1].date if bars else None,
-        })
+        print_json(result)
     finally:
         store.close()
+
 
 def cmd_update_snapshots(args) -> None:
     store = default_store()
     try:
-        app_config = load_default_app_config()
-        symbols = _split_values(args.symbol)
-        markets = _split_values(args.market)
-        if args.target == "stock":
-            items = store.load_watchlist(include_disabled=args.include_disabled)
-        else:
-            items = load_market_indices(app_config)
-        selected = _filter_items(items, symbols, markets)
-        to_fetch, skipped = _open_items(selected, args.ignore_hours)
-        quotes = SinaTxSource().fetch_quotes(to_fetch) if to_fetch else []
-
-        saved = 0
-        if quotes and args.target == "stock":
-            store.save_quote_snapshots(quotes)
-            saved = len(quotes)
-        elif quotes:
-            snapshot_dates = {q.symbol: snapshot_date_for(q.market, q.timestamp) for q in quotes}
-            saved = store.save_index_snapshots(quotes, snapshot_dates)
-
-        print_json({
-            "target": args.target,
-            "selected": len(selected),
-            "requested": len(to_fetch),
-            "fetched": len(quotes),
-            "saved": saved,
-            "skipped_closed": [item.get("symbol") for item in skipped],
-            "updated_symbols": [q.symbol for q in quotes],
-        })
+        result = ops.update_snapshots(
+            store,
+            app_config=load_default_app_config(),
+            target=args.target,
+            symbols=_split_values(args.symbol),
+            markets=_split_values(args.market),
+            ignore_hours=args.ignore_hours,
+            include_disabled=args.include_disabled,
+            source=SinaTxSource(),
+            market_open_fn=is_market_open,
+            load_indices_fn=load_market_indices,
+        )
+        print_json(result)
     finally:
         store.close()
+
 
 def cmd_add_alert(args) -> None:
     store = default_store()
@@ -302,6 +244,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--provider", choices=["nasdaq", "yahoo"], default="nasdaq")
     p.add_argument("--timeout", type=int, default=20)
     p.set_defaults(func=cmd_fetch_kline)
+
     p = sub.add_parser("update-snapshots", help="Fetch realtime quotes and update stock or index snapshots")
     p.add_argument("--target", required=True, choices=["stock", "index"], help="Snapshot type to update")
     p.add_argument("--symbol", action="append", help="Symbol to update; repeat or comma-separate for multiple")
@@ -330,7 +273,6 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("del-alert")
     p.add_argument("--rule-id", required=True)
     p.set_defaults(func=cmd_del_alert)
-
 
     return parser
 

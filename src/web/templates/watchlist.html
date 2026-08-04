@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>新增股票</h2>
+  <form class="row-form" method="post" action="/watchlist/add">
+    <input name="symbol" placeholder="代码" required>
+    <input name="name" placeholder="名称" required>
+    <select name="market">{% for m in markets %}<option>{{ m }}</option>{% endfor %}</select>
+    <label class="chk"><input type="checkbox" name="enabled" value="1" checked>启用</label>
+    <button class="btn primary" type="submit">添加</button>
+  </form>
+</section>
+<section>
+  <h2>股票池</h2>
+  <table>
+    <tr><th>代码</th><th>名称</th><th>市场</th><th>状态</th><th>操作</th></tr>
+    {% for s in stocks %}
+    <tr>
+      <td>{{ s.symbol }}</td><td>{{ s.name }}</td><td>{{ s.market }}</td>
+      <td>{% if s.enabled %}<span class="badge ok">启用</span>{% else %}<span class="badge off">停用</span>{% endif %}</td>
+      <td class="actions">
+        <form method="post" action="/watchlist/{{ s.symbol }}/toggle"><button class="btn sm" type="submit">{% if s.enabled %}停用{% else %}启用{% endif %}</button></form>
+        <form method="post" action="/watchlist/{{ s.symbol }}/delete" onsubmit="return confirm('删除 {{ s.symbol }}？')"><button class="btn sm danger" type="submit">删除</button></form>
+      </td>
+    </tr>
+    {% else %}<tr><td colspan="5" class="empty">股票池为空</td></tr>{% endfor %}
+  </table>
+</section>
+{% endblock %}

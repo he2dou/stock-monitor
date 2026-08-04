@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>回测</h2>
+  <form class="grid-form" method="post" action="/backtest/run">
+    <label>策略<select name="strategy_id"><option value="">全部</option>{% for id in strategy_ids %}<option>{{ id }}</option>{% endfor %}</select></label>
+    <label>代码（可选）<input name="symbol" placeholder="如 SOXL"></label>
+    <label>开始<input name="start" placeholder="YYYY-MM-DD"></label>
+    <label>结束<input name="end" placeholder="YYYY-MM-DD"></label>
+    <label>数据源<select name="source"><option value="quote-snapshots">quote-snapshots</option><option value="daily-bars">daily-bars</option></select></label>
+    <label class="chk"><input type="checkbox" name="next_bar" value="1">下一bar成交</label>
+    <label class="chk"><input type="checkbox" name="apply_costs" value="1">应用成本</label>
+    <button class="btn primary" type="submit">运行回测</button>
+  </form>
+</section>
+{% if result %}
+<section>
+  <h2>回测结果</h2>
+  <div class="stats">
+    <div class="stat"><span class="k">总收益</span><span class="v{% if result.total_return_pct >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(result.total_return_pct) }}%</span></div>
+    <div class="stat"><span class="k">最大回撤</span><span class="v down">{{ "%.2f"|format(result.max_drawdown_pct) }}%</span></div>
+    <div class="stat"><span class="k">胜率</span><span class="v">{{ "%.1f"|format(result.sell_win_rate_pct or 0) }}%</span></div>
+    <div class="stat"><span class="k">Sharpe</span><span class="v">{{ "%.2f"|format(result.sharpe_ratio or 0) }}</span></div>
+    <div class="stat"><span class="k">成交</span><span class="v">{{ result.fills }}</span></div>
+    <div class="stat"><span class="k">均R</span><span class="v">{{ "%.2f"|format(result.avg_r_multiple or 0) }}</span></div>
+  </div>
+  <table>
+    <tr><th>日期</th><th>策略</th><th>代码</th><th>方向</th><th>状态</th><th class="num">数量</th><th class="num">价格</th><th class="num">金额</th><th>原因</th></tr>
+    {% for t in trades %}
+    <tr><td>{{ t.date }}</td><td class="mono">{{ t.strategy_id }}</td><td>{{ t.symbol }}</td><td>{{ t.side }}</td><td>{% if t.status == "FILLED" %}<span class="badge ok">成交</span>{% else %}<span class="badge off">拒绝</span>{% endif %}</td><td class="num">{{ t.quantity }}</td><td class="num">{{ t.price }}</td><td class="num">{{ "%.2f"|format(t.amount) }}</td><td>{{ t.reason }}</td></tr>
+    {% else %}<tr><td colspan="9" class="empty">无成交记录</td></tr>{% endfor %}
+  </table>
+</section>
+{% endif %}
+{% endblock %}

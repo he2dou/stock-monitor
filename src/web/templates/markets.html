@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>大盘指数</h2>
+  <table>
+    <tr><th>市场</th><th>代码</th><th>名称</th><th class="num">点位</th><th class="num">涨跌%</th><th>快照日</th></tr>
+    {% for i in indices %}
+    <tr><td>{{ i.market }}</td><td>{{ i.symbol }}</td><td>{{ i.name }}</td><td class="num">{{ i.price }}</td><td class="num{% if i.change_pct >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(i.change_pct) }}</td><td>{{ i.snapshot_date }}</td></tr>
+    {% else %}<tr><td colspan="6" class="empty">暂无指数快照</td></tr>{% endfor %}
+  </table>
+</section>
+<section>
+  <h2>股票最新行情</h2>
+  <table>
+    <tr><th>市场</th><th>代码</th><th>名称</th><th class="num">现价</th><th class="num">涨跌%</th><th class="num">成交量</th><th>快照日</th><th>时间</th></tr>
+    {% for q in quotes %}
+    <tr><td>{{ q.market }}</td><td><a href="/markets/history/{{ q.symbol }}">{{ q.symbol }}</a></td><td>{{ q.name }}</td><td class="num">{{ q.price }}</td><td class="num{% if q.change_pct >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(q.change_pct) }}</td><td class="num">{{ q.volume }}</td><td>{{ q.snapshot_date }}</td><td class="mono sm">{{ q.timestamp }}</td></tr>
+    {% else %}<tr><td colspan="8" class="empty">暂无快照</td></tr>{% endfor %}
+  </table>
+</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ active }} · Stock Monitor{% endblock %}</title>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <a class="brand" href="/">Stock Monitor</a>
+    <nav>
+    {% for label, href in nav %}
+      <a href="{{ href }}" class="nav-link{% if active == label %} active{% endif %}">{{ label }}</a>
+    {% endfor %}
+    </nav>
+    <form method="post" action="/logout" class="logout"><button class="btn sm" type="submit">退出</button></form>
+  </aside>
+  <main class="main">
+    {% if flash %}<div class="flash">{{ flash }}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

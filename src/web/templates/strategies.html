@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>策略配置（编辑 config/strategies.yaml）</h2>
+  {% if error %}<div class="flash err">{{ error }}</div>{% endif %}
+  <form method="post" action="/strategies/save">
+    <textarea name="content" class="code" spellcheck="false">{{ content }}</textarea>
+    <div class="row-form" style="margin-top:10px"><button class="btn primary" type="submit">保存并校验</button><span class="hint">保存后下一轮监控自动生效，无需重启</span></div>
+  </form>
+</section>
+<section>
+  <h2>已加载策略（{{ strategies|length }}）</h2>
+  <table>
+    <tr><th>ID</th><th>类型</th><th>代码</th><th>动作</th><th>启用</th></tr>
+    {% for s in strategies %}
+    <tr><td class="mono">{{ s.id }}</td><td>{{ s.type }}</td><td>{{ s.symbol }}</td><td>{{ s.action }}</td><td>{% if s.enabled %}是{% else %}否{% endif %}</td></tr>
+    {% else %}<tr><td colspan="5" class="empty">无策略</td></tr>{% endfor %}
+  </table>
+</section>
+{% endblock %}

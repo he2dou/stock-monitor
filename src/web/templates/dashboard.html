@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="stats">
+  <div class="stat"><span class="k">股票池</span><span class="v">{{ counts.watchlist }}</span></div>
+  <div class="stat"><span class="k">预警规则</span><span class="v">{{ counts.alerts }}</span></div>
+  <div class="stat"><span class="k">订单</span><span class="v">{{ counts.orders }}</span></div>
+  <div class="stat"><span class="k">成交</span><span class="v">{{ counts.fills }}</span></div>
+  <div class="stat"><span class="k">已实现盈亏</span><span class="v{% if counts.realized_pnl >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(counts.realized_pnl) }}</span></div>
+</div>
+<section>
+  <h2>账户余额</h2>
+  <table>
+    <tr><th>币种</th><th class="num">现金</th><th class="num">预留</th></tr>
+    {% for b in balances %}
+    <tr><td>{{ b.currency }}</td><td class="num">{{ "%.2f"|format(b.cash) }}</td><td class="num">{{ "%.2f"|format(b.reserved_cash) }}</td></tr>
+    {% else %}<tr><td colspan="3" class="empty">暂无账户</td></tr>{% endfor %}
+  </table>
+</section>
+<section>
+  <h2>持仓</h2>
+  <table>
+    <tr><th>市场</th><th>代码</th><th>名称</th><th>币种</th><th class="num">数量</th><th class="num">均价</th><th class="num">已实现</th></tr>
+    {% for p in positions %}
+    <tr><td>{{ p.market }}</td><td>{{ p.symbol }}</td><td>{{ p.name }}</td><td>{{ p.currency }}</td><td class="num">{{ p.quantity }}</td><td class="num">{{ "%.4f"|format(p.avg_cost) }}</td><td class="num{% if p.realized_pnl >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(p.realized_pnl) }}</td></tr>
+    {% else %}<tr><td colspan="7" class="empty">无持仓</td></tr>{% endfor %}
+  </table>
+</section>
+<section>
+  <h2>最新行情</h2>
+  <table>
+    <tr><th>市场</th><th>代码</th><th>名称</th><th class="num">现价</th><th class="num">涨跌%</th><th>快照日</th></tr>
+    {% for q in quotes %}
+    <tr><td>{{ q.market }}</td><td><a href="/markets/history/{{ q.symbol }}">{{ q.symbol }}</a></td><td>{{ q.name }}</td><td class="num">{{ q.price }}</td><td class="num{% if q.change_pct >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(q.change_pct) }}</td><td>{{ q.snapshot_date }}</td></tr>
+    {% else %}<tr><td colspan="6" class="empty">暂无快照</td></tr>{% endfor %}
+  </table>
+</section>
+<section>
+  <h2>大盘指数</h2>
+  <table>
+    <tr><th>市场</th><th>代码</th><th>名称</th><th class="num">点位</th><th class="num">涨跌%</th><th>快照日</th></tr>
+    {% for i in indices %}
+    <tr><td>{{ i.market }}</td><td>{{ i.symbol }}</td><td>{{ i.name }}</td><td class="num">{{ i.price }}</td><td class="num{% if i.change_pct >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(i.change_pct) }}</td><td>{{ i.snapshot_date }}</td></tr>
+    {% else %}<tr><td colspan="6" class="empty">暂无指数快照</td></tr>{% endfor %}
+  </table>
+</section>
+{% endblock %}

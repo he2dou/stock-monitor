@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>操作</h2>
+  <div class="ops-grid">
+    <form method="post" action="/ops/update-snapshots"><input type="hidden" name="target" value="stock"><button class="btn primary" type="submit">更新股票快照</button></form>
+    <form method="post" action="/ops/update-snapshots"><input type="hidden" name="target" value="index"><button class="btn primary" type="submit">更新指数快照</button></form>
+    {% if has_monitor %}<form method="post" action="/ops/run-now"><button class="btn primary" type="submit">立即执行监控轮询</button></form>{% endif %}
+  </div>
+</section>
+<section>
+  <h2>抓取K线</h2>
+  <form class="row-form" method="post" action="/ops/fetch-kline">
+    <input name="symbol" placeholder="代码（如 SOXL）" required>
+    <select name="provider"><option value="nasdaq">nasdaq</option><option value="yahoo">yahoo</option></select>
+    <input name="years" type="number" value="3" min="1" max="10">
+    <button class="btn primary" type="submit">抓取</button>
+  </form>
+</section>
+<section>
+  <h2>日志（最后 200 行）</h2>
+  <pre class="log">{{ log_tail }}</pre>
+</section>
+{% endblock %}

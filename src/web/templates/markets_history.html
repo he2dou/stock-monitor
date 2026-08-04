@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>{{ symbol }} 走势</h2>
+  {% if sparkline %}
+  <svg class="spark" viewBox="0 0 240 48" preserveAspectRatio="none"><polyline points="{{ sparkline }}" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+  {% endif %}
+  <table>
+    <tr><th>快照日</th><th class="num">现价</th><th class="num">涨跌%</th><th class="num">成交量</th><th>时间</th></tr>
+    {% for r in history %}
+    <tr><td>{{ r.snapshot_date }}</td><td class="num">{{ r.price }}</td><td class="num{% if r.change_pct >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(r.change_pct) }}</td><td class="num">{{ r.volume }}</td><td class="mono sm">{{ r.timestamp }}</td></tr>
+    {% else %}<tr><td colspan="5" class="empty">无历史数据</td></tr>{% endfor %}
+  </table>
+</section>
+{% endblock %}

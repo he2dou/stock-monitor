@@ -8,7 +8,10 @@ from pathlib import Path
 # and webhook traffic. These endpoints are directly reachable.
 os.environ.setdefault("NO_PROXY", "*")
 
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+import uvicorn
+
+from src.web.app import create_app
 from apscheduler.triggers.interval import IntervalTrigger
 
 from src.config_loader import load_watchlist, load_alerts, load_app_config, load_strategies
@@ -152,7 +155,7 @@ def main():
     logger.info("Running initial fetch...")
     monitor.run_once()
 
-    scheduler = BlockingScheduler()
+    scheduler = BackgroundScheduler()
     scheduler.add_job(
         monitor.run_once,
         IntervalTrigger(minutes=interval_minutes),
@@ -161,13 +164,21 @@ def main():
         max_instances=1,
         coalesce=True,
     )
+    scheduler.start()
+    logger.info(f"Scheduler started in background. Next run in {interval_minutes} minutes.")
 
-    logger.info(
-        f"Scheduler started. Next run in {interval_minutes} minutes. Press Ctrl+C to stop.")
+    web_cfg = app_config.get("web", {}) or {}
+    host = web_cfg.get("host", "127.0.0.1")
+    port = int(web_cfg.get("port", 8000))
+    app = create_app(store=monitor.index_store, config_dir=CONFIG_DIR)
+    app.state.monitor = monitor
+
+    logger.info(f"Web admin running at http://{host}:{port}")
     try:
-        scheduler.start()
+        uvicorn.run(app, host=host, port=port)
     except (KeyboardInterrupt, SystemExit):
         logger.info("Shutting down...")
+    finally:
         scheduler.shutdown()
 
 
