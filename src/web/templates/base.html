@@ -8,11 +8,23 @@
 </head>
 <body>
 <div class="shell">
-  <aside class="side">
-    <a class="brand" href="/">Stock Monitor</a>
+  <aside class="side" id="sidebar">
+    <div class="side-head">
+      <a class="brand" href="/">Stock Monitor</a>
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="toggle nav" title="收缩/展开菜单">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
     <nav>
-    {% for label, href in nav %}
-      <a href="{{ href }}" class="nav-link{% if active == label %} active{% endif %}">{{ label }}</a>
+    {% for group_name, items in nav %}
+      <div class="nav-group">
+        <div class="nav-group-title">{{ group_name }}</div>
+      {% for label, href in items %}
+        <a href="{{ href }}" class="nav-link{% if active == label %} active{% endif %}">{{ label }}</a>
+      {% endfor %}
+      </div>
     {% endfor %}
     </nav>
     <form method="post" action="/logout" class="logout"><button class="btn sm" type="submit">退出</button></form>
@@ -22,5 +34,17 @@
     {% block content %}{% endblock %}
   </main>
 </div>
+<script>
+(function(){
+  var s=document.getElementById("sidebar");
+  var t=document.getElementById("navToggle");
+  var k="sm_sidebar";
+  if(localStorage.getItem(k)==="1"){s.classList.add("collapsed");}
+  t.addEventListener("click",function(){
+    s.classList.toggle("collapsed");
+    localStorage.setItem(k,s.classList.contains("collapsed")?"1":"0");
+  });
+})();
+</script>
 </body>
 </html>

@@ -12,14 +12,20 @@ BASE_DIR = WEB_DIR.parent.parent
 CONFIG_DIR = BASE_DIR / "config"
 
 NAV = [
-    ("概览", "/"),
-    ("股票池", "/watchlist"),
-    ("预警", "/alerts"),
-    ("行情", "/markets"),
-    ("持仓", "/portfolio"),
-    ("策略", "/strategies"),
-    ("回测", "/backtest"),
-    ("运维", "/ops"),
+    ("监控", [
+        ("概览", "/"),
+        ("股票池", "/watchlist"),
+        ("预警", "/alerts"),
+        ("行情", "/markets"),
+    ]),
+    ("交易", [
+        ("持仓", "/portfolio"),
+        ("策略", "/strategies"),
+        ("回测", "/backtest"),
+    ]),
+    ("系统", [
+        ("运维", "/ops"),
+    ]),
 ]
 
 

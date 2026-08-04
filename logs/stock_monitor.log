@@ -5547,3 +5547,15 @@ sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in
 2026-08-04 17:25:47,971 [INFO] __main__: Web admin running at http://127.0.0.1:8000
 2026-08-04 17:26:33,535 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
 2026-08-04 17:26:33,549 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 17:35:47,960 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 17:35:47 CST)" (scheduled at 2026-08-04 17:35:47.949753+08:00)
+2026-08-04 17:35:47,964 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 17:35:47,978 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 17:35:47,978 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 17:45:47 CST)" executed successfully
+2026-08-04 17:45:47,962 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 17:55:47 CST)" (scheduled at 2026-08-04 17:45:47.949753+08:00)
+2026-08-04 17:45:47,967 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 17:45:47,980 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 17:45:47,981 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 17:55:47 CST)" executed successfully
+2026-08-04 17:55:47,952 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:05:47 CST)" (scheduled at 2026-08-04 17:55:47.949753+08:00)
+2026-08-04 17:55:47,957 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 17:55:47,971 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 17:55:47,971 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:05:47 CST)" executed successfully
