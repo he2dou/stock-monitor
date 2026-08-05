@@ -147,12 +147,12 @@ async def ensure_login(request: Request) -> None:
     if not users:
         return
     if not request.session.get("user"):
-        raise HTTPException(status_code=302, headers={"Location": "/login"})
+        raise HTTPException(status_code=303, headers={"Location": "/login"})
     # Verify the user still exists (handles config changes while logged in)
     username = request.session.get("user")
     if username not in users:
         request.session.clear()
-        raise HTTPException(status_code=302, headers={"Location": "/login"})
+        raise HTTPException(status_code=303, headers={"Location": "/login"})
 
 
 def verify_csrf_token(request: Request, token: str) -> bool:

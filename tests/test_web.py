@@ -133,7 +133,7 @@ def test_auth_redirect_and_login(tmp_path):
 
     # Unauthenticated request redirects to login
     r = client.get("/", follow_redirects=False)
-    assert r.status_code == 302
+    assert r.status_code == 303
     assert r.headers["location"] == "/login"
 
     # GET login page to obtain CSRF token
@@ -259,7 +259,7 @@ def test_multi_user_login(tmp_path):
 
     # Unauthenticated redirect
     r = client.get("/", follow_redirects=False)
-    assert r.status_code == 302
+    assert r.status_code == 303
 
     # Login as alice
     csrf = _get_csrf(client)
@@ -314,7 +314,7 @@ def test_logout(tmp_path):
 
     # Now need auth again
     r = client.get("/", follow_redirects=False)
-    assert r.status_code == 302
+    assert r.status_code == 303
     store.close()
 
 

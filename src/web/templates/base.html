@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}{{ active }} — Stock Monitor{% endblock %}</title>
 <link rel="stylesheet" href="/static/styles.css">
+<script>!function(){var t=localStorage.getItem("sm_theme")||"system",r="system"===t?window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light":t;document.documentElement.setAttribute("data-theme",r)}()</script>
 </head>
 <body>
 <div class="shell">
@@ -32,8 +33,8 @@
     </nav>
     <div class="user-bar" id="userBar">
   <div class="user-bar-info">
-    <span class="user-avatar">{{ current_user[0] | upper }}</span>
-    <span class="user-bar-name">{{ current_user }}</span>
+    <span class="user-avatar">{{ (current_user if current_user else '管理员')[0] | upper }}</span>
+    <span class="user-bar-name">{{ current_user if current_user else '管理员' }}</span>
     <svg class="user-bar-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
   </div>
   <div class="user-popup" id="userPopup">
@@ -41,6 +42,25 @@
       <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       <span>修改密码</span>
     </a>
+    <div class="user-popup-item theme-item" id="themeToggle">
+      <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+      <span>外观</span>
+      <svg class="user-bar-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto;opacity:.4"><polyline points="9 6 15 12 9 18"/></svg>
+    </div>
+    <div class="theme-sub" id="themeSub">
+      <div class="user-popup-item theme-option" data-theme-val="light">
+        <svg class="nav-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <span>浅色</span>
+      </div>
+      <div class="user-popup-item theme-option" data-theme-val="dark">
+        <svg class="nav-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span>深色</span>
+      </div>
+      <div class="user-popup-item theme-option" data-theme-val="system">
+        <svg class="nav-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        <span>跟随系统</span>
+      </div>
+    </div>
     <form method="post" action="/logout" class="user-popup-item">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <button type="submit">
@@ -68,13 +88,65 @@
   });
   /* user popup toggle */
   var ub=document.getElementById("userBar");
-  var up=document.getElementById("userPopup");
+  var ui=document.querySelector(".user-bar-info");
   ub.addEventListener("click",function(e){
-    if(e.target.closest("form")||e.target.closest("a"))return;
+    if(!ui.contains(e.target))return;
     ub.classList.toggle("open");
   });
   document.addEventListener("click",function(e){
     if(!ub.contains(e.target))ub.classList.remove("open");
+  });
+
+  /* theme switching */
+  var TK="sm_theme";
+  var html=document.documentElement;
+  var themeToggle=document.getElementById("themeToggle");
+  var themeSub=document.getElementById("themeSub");
+
+  function getSystemTheme(){
+    return window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";
+  }
+  function applyTheme(preference){
+    var resolved=preference==="system"?getSystemTheme():preference;
+    html.setAttribute("data-theme",resolved);
+    /* update active indicator */
+    document.querySelectorAll(".theme-option").forEach(function(el){
+      el.classList.toggle("theme-active",el.getAttribute("data-theme-val")===preference);
+    });
+  }
+  /* init */
+  var saved=localStorage.getItem(TK)||"system";
+  applyTheme(saved);
+
+  /* toggle theme sub-menu */
+  themeToggle.addEventListener("click",function(e){
+    e.stopPropagation();
+    themeToggle.classList.toggle("theme-open");
+  });
+
+  /* click theme option */
+  document.querySelectorAll(".theme-option").forEach(function(opt){
+    opt.addEventListener("click",function(e){
+      e.stopPropagation();
+      var val=opt.getAttribute("data-theme-val");
+      localStorage.setItem(TK,val);
+      applyTheme(val);
+      themeToggle.classList.remove("theme-open");
+    });
+  });
+
+  /* close theme sub on outside click */
+  document.addEventListener("click",function(e){
+    if(!themeSub.contains(e.target)&&!themeToggle.contains(e.target)){
+      themeToggle.classList.remove("theme-open");
+    }
+  });
+
+  /* listen for system theme change when preference is "system" */
+  window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change",function(){
+    if(localStorage.getItem(TK)||"system"==="system"){
+      applyTheme("system");
+    }
   });
 })();
 </script>
