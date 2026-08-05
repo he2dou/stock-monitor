@@ -30,21 +30,26 @@
       </div>
     {% endfor %}
     </nav>
-    <form method="post" action="/logout" class="logout">
-  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-  <div class="logout-user">
-    <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-1a6 6 0 0 1 12 0v1"/></svg>
-    <span class="logout-username">{{ current_user }}</span>
+    <div class="user-bar" id="userBar">
+  <div class="user-bar-info">
+    <span class="user-avatar">{{ current_user[0] | upper }}</span>
+    <span class="user-bar-name">{{ current_user }}</span>
+    <svg class="user-bar-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
   </div>
-  <a href="/change-password" class="nav-link logout-link">
-    <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-    <span>修改密码</span>
-  </a>
-  <button class="btn sm logout-btn" type="submit">
-    <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-    <span>退出</span>
-  </button>
-</form>
+  <div class="user-popup" id="userPopup">
+    <a href="/change-password" class="user-popup-item">
+      <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>修改密码</span>
+    </a>
+    <form method="post" action="/logout" class="user-popup-item">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button type="submit">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        <span>退出登录</span>
+      </button>
+    </form>
+  </div>
+</div>
   </aside>
   <main class="main">
     {% if flash %}<div class="flash">{{ flash }}</div>{% endif %}
@@ -60,6 +65,16 @@
   t.addEventListener("click",function(){
     s.classList.toggle("collapsed");
     localStorage.setItem(k,s.classList.contains("collapsed")?"1":"0");
+  });
+  /* user popup toggle */
+  var ub=document.getElementById("userBar");
+  var up=document.getElementById("userPopup");
+  ub.addEventListener("click",function(e){
+    if(e.target.closest("form")||e.target.closest("a"))return;
+    ub.classList.toggle("open");
+  });
+  document.addEventListener("click",function(e){
+    if(!ub.contains(e.target))ub.classList.remove("open");
   });
 })();
 </script>
