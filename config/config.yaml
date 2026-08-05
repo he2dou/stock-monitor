@@ -25,7 +25,11 @@ paper_trading:
 web:
   host: "127.0.0.1"
   port: 8000
-  # 会话签名密钥；留空则启动时随机生成（重启后已登录会话失效）
   secret_key: ""
-  # 后台登录密码；留空则关闭登录校验（仅适合本地环境，勿暴露公网）
   admin_password: ""
+  # 多用户配置（可选，优先于 admin_password）
+  # users:
+  #   - username: "admin"
+  #     password_hash: "pbkdf2$200000$...$..."
+  #     display_name: "管理员"
+  # 密码哈希可通过 python -c "from src.web.auth import hash_password; print(hash_password('your_password'))" 生成

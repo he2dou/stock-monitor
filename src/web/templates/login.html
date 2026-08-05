@@ -3,15 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>登录 · Stock Monitor</title>
+<title>登录 — Stock Monitor</title>
 <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
 <div class="login-wrap">
   <form class="card login" method="post" action="/login">
-    <h1>Stock Monitor</h1>
+    <div class="login-brand">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+      <h1>Stock Monitor</h1>
+    </div>
     {% if error %}<div class="flash err">{{ error }}</div>{% endif %}
-    <label>密码<input type="password" name="password" autofocus required></label>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>用户名
+      <input type="text" name="username" value="admin" autofocus required>
+    </label>
+    <label>密码
+      <input type="password" name="password" required>
+    </label>
+    <label class="login-remember">
+      <input type="checkbox" name="remember" value="1"> 记住我
+    </label>
     <button class="btn primary" type="submit">登录</button>
   </form>
 </div>

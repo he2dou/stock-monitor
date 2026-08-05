@@ -9,7 +9,8 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
 from src.web.deps import WEB_DIR, CONFIG_DIR, build_store, load_web_app_config
-from src.web.auth import router as auth_router
+from src.web.auth import router as auth_router, _is_auth_enabled
+from src.web.csrf_middleware import CSRFMiddleware
 from src.web.routes import (
     alerts, backtest, dashboard, markets, ops, portfolio, strategies, watchlist,
 )
@@ -30,7 +31,8 @@ def create_app(store=None, config_dir: Path | None = None):
 
     web_cfg = app_config.get("web", {}) or {}
     secret = web_cfg.get("secret_key") or secrets.token_hex(32)
-    app.add_middleware(SessionMiddleware, secret_key=secret, same_site="lax", https_only=False)
+    app.add_middleware(CSRFMiddleware)
+    app.add_middleware(SessionMiddleware, secret_key=secret, same_site="lax", https_only=False, max_age=2592000)
 
     app.mount("/static", StaticFiles(directory=str(WEB_DIR / "static")), name="static")
     app.include_router(auth_router)

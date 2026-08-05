@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}{{ active }} · Stock Monitor{% endblock %}</title>
+<title>{% block title %}{{ active }} — Stock Monitor{% endblock %}</title>
 <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
@@ -18,16 +18,33 @@
       </button>
     </div>
     <nav>
-    {% for group_name, items in nav %}
+        {% for group_name, items in nav %}
       <div class="nav-group">
         <div class="nav-group-title">{{ group_name }}</div>
-      {% for label, href in items %}
-        <a href="{{ href }}" class="nav-link{% if active == label %} active{% endif %}">{{ label }}</a>
+      {% for label, href, icon_key in items %}
+        <a href="{{ href }}" class="nav-link{% if active == label %} active{% endif %}">
+          <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{{ icons[icon_key]|safe }}</svg>
+          <span>{{ label }}</span>
+        </a>
       {% endfor %}
       </div>
     {% endfor %}
     </nav>
-    <form method="post" action="/logout" class="logout"><button class="btn sm" type="submit">退出</button></form>
+    <form method="post" action="/logout" class="logout">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <div class="logout-user">
+    <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-1a6 6 0 0 1 12 0v1"/></svg>
+    <span class="logout-username">{{ current_user }}</span>
+  </div>
+  <a href="/change-password" class="nav-link logout-link">
+    <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <span>修改密码</span>
+  </a>
+  <button class="btn sm logout-btn" type="submit">
+    <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+    <span>退出</span>
+  </button>
+</form>
   </aside>
   <main class="main">
     {% if flash %}<div class="flash">{{ flash }}</div>{% endif %}

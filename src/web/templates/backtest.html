@@ -3,6 +3,7 @@
 <section>
   <h2>回测</h2>
   <form class="grid-form" method="post" action="/backtest/run">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <label>策略<select name="strategy_id"><option value="">全部</option>{% for id in strategy_ids %}<option>{{ id }}</option>{% endfor %}</select></label>
     <label>代码（可选）<input name="symbol" placeholder="如 SOXL"></label>
     <label>开始<input name="start" placeholder="YYYY-MM-DD"></label>

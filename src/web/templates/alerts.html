@@ -3,6 +3,7 @@
 <section>
   <h2>新增预警</h2>
   <form class="row-form" method="post" action="/alerts/add">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <select name="symbol">{% for sym in symbols %}<option>{{ sym }}</option>{% endfor %}</select>
     <select name="field">{% for f in fields %}<option value="{{ f }}">{{ f }}</option>{% endfor %}</select>
     <select name="op">{% for o in ops %}<option value="{{ o }}">{{ o }}</option>{% endfor %}</select>
@@ -20,8 +21,10 @@
       <td class="mono">{{ r.rule_id[:8] }}</td><td>{{ r.symbol }}</td><td>{{ r.field }}</td><td>{{ r.op }}</td><td class="num">{{ r.value }}</td><td class="num">{{ r.cooldown_seconds or "—" }}</td>
       <td>{% if r.enabled %}<span class="badge ok">启用</span>{% else %}<span class="badge off">停用</span>{% endif %}</td>
       <td class="actions">
-        <form method="post" action="/alerts/{{ r.rule_id }}/toggle"><button class="btn sm" type="submit">{% if r.enabled %}停用{% else %}启用{% endif %}</button></form>
-        <form method="post" action="/alerts/{{ r.rule_id }}/delete"><button class="btn sm danger" type="submit">删除</button></form>
+        <form method="post" action="/alerts/{{ r.rule_id }}/toggle">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn sm" type="submit">{% if r.enabled %}停用{% else %}启用{% endif %}</button></form>
+        <form method="post" action="/alerts/{{ r.rule_id }}/delete">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn sm danger" type="submit">删除</button></form>
       </td>
     </tr>
     {% else %}<tr><td colspan="8" class="empty">无预警规则</td></tr>{% endfor %}

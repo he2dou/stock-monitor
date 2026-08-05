@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Request
 
-from src.web.auth import ensure_login
+from src.web.auth import ensure_login, ensure_csrf
 from src.web.deps import get_store, pop_flash, render
 from src.web import queries
 

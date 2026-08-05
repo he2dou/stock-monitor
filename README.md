@@ -449,3 +449,37 @@ web:
 | `/strategies` | 策略：编辑 YAML 策略文件，保存前校验语法 |
 | `/backtest` | 回测：基于历史快照运行策略回测 |
 | `/ops` | 运维：查看日志、更新快照、抓取 K 线、立即触发监控周期 |
+
+### 用户授权
+
+后台支持多用户登录、密码哈希、CSRF 保护和登录频率限制。
+
+**启用授权**：在 `config/config.yaml` 的 `web` 段配置用户：
+
+```yaml
+web:
+  users:
+    - username: "admin"
+      password_hash: "pbkdf2$200000$...$..."
+      display_name: "管理员"
+```
+
+密码哈希生成：
+
+```bash
+python -c "from src.web.auth import hash_password; print(hash_password('your_password'))"
+```
+
+也可用传统的 `admin_password` 字段（明文密码，自动升级为用户 `admin`）。留空则开放访问（无需登录）。
+
+功能特性：
+
+| 功能 | 说明 |
+|------|------|
+| 多用户登录 | 用户名 + 密码，支持记住我 |
+| 密码哈希 | PBKDF2-SHA256，200k 迭代，零外部依赖 |
+| 修改密码 | 登录后可在 /change-password 修改，会写回 config.yaml |
+| CSRF 保护 | 所有 POST 表单带 token，中间件校验 |
+| 登录限制 | 同 IP 连续失败 5 次锁定 5 分钟 |
+| Session 安全 | max_age 30 天，httponly，会话过期重登 |
+| 开放模式 | 未配置密码时无需登录，适合本地开发 |

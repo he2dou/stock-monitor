@@ -5559,3 +5559,704 @@ sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in
 2026-08-04 17:55:47,957 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
 2026-08-04 17:55:47,971 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
 2026-08-04 17:55:47,971 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:05:47 CST)" executed successfully
+2026-08-04 18:05:47,955 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:15:47 CST)" (scheduled at 2026-08-04 18:05:47.949753+08:00)
+2026-08-04 18:05:47,959 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 18:05:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 18:05:47,974 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:15:47 CST)" executed successfully
+2026-08-04 18:15:47,958 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:25:47 CST)" (scheduled at 2026-08-04 18:15:47.949753+08:00)
+2026-08-04 18:15:47,962 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 18:15:47,977 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 18:15:47,977 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:25:47 CST)" executed successfully
+2026-08-04 18:25:47,958 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:35:47 CST)" (scheduled at 2026-08-04 18:25:47.949753+08:00)
+2026-08-04 18:25:47,962 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 18:25:47,976 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 18:25:47,976 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:35:47 CST)" executed successfully
+2026-08-04 18:29:11,777 [INFO] __main__: ============================================================
+2026-08-04 18:29:11,778 [INFO] __main__: Stock Price Monitor starting...
+2026-08-04 18:29:11,778 [INFO] __main__: ============================================================
+2026-08-04 18:29:11,803 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 18:29:11,805 [INFO] __main__: Running initial fetch...
+2026-08-04 18:29:11,809 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 18:29:11,823 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 18:29:11,825 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-04 18:29:11,826 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-04 18:29:11,826 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-04 18:29:11,827 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-04 18:29:11,848 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-04 18:29:11,883 [INFO] __main__: Shutting down...
+2026-08-04 18:29:11,883 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-04 18:35:47,965 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:45:47 CST)" (scheduled at 2026-08-04 18:35:47.949753+08:00)
+2026-08-04 18:35:47,969 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 18:35:48,276 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 18:35:48,276 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:45:47 CST)" executed successfully
+2026-08-04 18:45:47,954 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:55:47 CST)" (scheduled at 2026-08-04 18:45:47.949753+08:00)
+2026-08-04 18:45:47,957 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 18:45:47,995 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 18:45:47,995 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 18:55:47 CST)" executed successfully
+2026-08-04 18:55:47,963 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:05:47 CST)" (scheduled at 2026-08-04 18:55:47.949753+08:00)
+2026-08-04 18:55:47,967 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 18:55:47,981 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 18:55:47,982 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:05:47 CST)" executed successfully
+2026-08-04 19:05:47,955 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:15:47 CST)" (scheduled at 2026-08-04 19:05:47.949753+08:00)
+2026-08-04 19:05:47,959 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 19:05:47,975 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 19:05:47,975 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:15:47 CST)" executed successfully
+2026-08-04 19:15:47,962 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:25:47 CST)" (scheduled at 2026-08-04 19:15:47.949753+08:00)
+2026-08-04 19:15:47,966 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 19:15:48,003 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 19:15:48,003 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:25:47 CST)" executed successfully
+2026-08-04 19:25:47,955 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:35:47 CST)" (scheduled at 2026-08-04 19:25:47.949753+08:00)
+2026-08-04 19:25:47,959 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 19:25:47,973 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 19:25:47,974 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:35:47 CST)" executed successfully
+2026-08-04 19:35:48,007 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:45:47 CST)" (scheduled at 2026-08-04 19:35:47.949753+08:00)
+2026-08-04 19:35:48,011 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 19:35:48,025 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 19:35:48,025 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:45:47 CST)" executed successfully
+2026-08-04 19:45:47,960 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:55:47 CST)" (scheduled at 2026-08-04 19:45:47.949753+08:00)
+2026-08-04 19:45:47,964 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 19:45:48,010 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 19:45:48,010 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 19:55:47 CST)" executed successfully
+2026-08-04 19:55:47,963 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:05:47 CST)" (scheduled at 2026-08-04 19:55:47.949753+08:00)
+2026-08-04 19:55:47,967 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 19:55:47,982 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 19:55:47,982 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:05:47 CST)" executed successfully
+2026-08-04 20:05:47,961 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:15:47 CST)" (scheduled at 2026-08-04 20:05:47.949753+08:00)
+2026-08-04 20:05:47,965 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 20:05:47,979 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 20:05:47,980 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:15:47 CST)" executed successfully
+2026-08-04 20:15:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:25:47 CST)" (scheduled at 2026-08-04 20:15:47.949753+08:00)
+2026-08-04 20:15:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 20:15:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 20:15:48,006 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:25:47 CST)" executed successfully
+2026-08-04 20:25:47,951 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:35:47 CST)" (scheduled at 2026-08-04 20:25:47.949753+08:00)
+2026-08-04 20:25:47,955 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 20:25:47,969 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 20:25:47,976 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:35:47 CST)" executed successfully
+2026-08-04 20:35:47,959 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:45:47 CST)" (scheduled at 2026-08-04 20:35:47.949753+08:00)
+2026-08-04 20:35:47,963 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 20:35:47,978 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 20:35:47,979 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:45:47 CST)" executed successfully
+2026-08-04 20:45:47,951 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:55:47 CST)" (scheduled at 2026-08-04 20:45:47.949753+08:00)
+2026-08-04 20:45:47,956 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 20:45:47,970 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 20:45:47,970 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 20:55:47 CST)" executed successfully
+2026-08-04 20:55:47,963 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:05:47 CST)" (scheduled at 2026-08-04 20:55:47.949753+08:00)
+2026-08-04 20:55:47,968 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 20:55:47,982 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 20:55:47,982 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:05:47 CST)" executed successfully
+2026-08-04 21:05:47,955 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:15:47 CST)" (scheduled at 2026-08-04 21:05:47.949753+08:00)
+2026-08-04 21:05:47,959 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 21:05:47,973 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 21:05:47,973 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:15:47 CST)" executed successfully
+2026-08-04 21:15:47,950 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:25:47 CST)" (scheduled at 2026-08-04 21:15:47.949753+08:00)
+2026-08-04 21:15:47,955 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 21:15:47,995 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 21:15:47,995 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:25:47 CST)" executed successfully
+2026-08-04 21:25:47,965 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:35:47 CST)" (scheduled at 2026-08-04 21:25:47.949753+08:00)
+2026-08-04 21:25:47,969 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 21:25:47,983 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-04 21:25:47,983 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:35:47 CST)" executed successfully
+2026-08-04 21:35:47,963 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:45:47 CST)" (scheduled at 2026-08-04 21:35:47.949753+08:00)
+2026-08-04 21:35:47,967 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 21:35:48,008 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 21:35:49,694 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 21:35:49,694 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 21:35:49,709 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:133.9700 change:+14.78% volume:19434613
+2026-08-04 21:35:49,709 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:71.5600 change:+5.29% volume:10902103
+2026-08-04 21:35:49,723 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:222.4800 change:+4.66% volume:3492855
+2026-08-04 21:35:49,723 [INFO] src.monitor: 美股 | IBM(IBM) price:227.8400 change:+0.68% volume:488194
+2026-08-04 21:35:49,739 [INFO] src.monitor: No alerts triggered
+2026-08-04 21:35:49,755 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:45:47 CST)" executed successfully
+2026-08-04 21:45:47,963 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:55:47 CST)" (scheduled at 2026-08-04 21:45:47.949753+08:00)
+2026-08-04 21:45:47,967 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 21:45:47,981 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 21:45:48,380 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 21:45:48,380 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 21:45:48,398 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.2000 change:+15.84% volume:24267573
+2026-08-04 21:45:48,399 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:71.8400 change:+5.71% volume:15167033
+2026-08-04 21:45:48,399 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:224.5200 change:+5.62% volume:5028983
+2026-08-04 21:45:48,399 [INFO] src.monitor: 美股 | IBM(IBM) price:227.7300 change:+0.63% volume:735721
+2026-08-04 21:45:48,399 [INFO] src.monitor: No alerts triggered
+2026-08-04 21:45:48,400 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 21:55:47 CST)" executed successfully
+2026-08-04 21:55:47,952 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:05:47 CST)" (scheduled at 2026-08-04 21:55:47.949753+08:00)
+2026-08-04 21:55:47,957 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 21:55:47,969 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 21:55:48,368 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 21:55:48,368 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 21:55:48,381 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:134.9400 change:+15.62% volume:27077123
+2026-08-04 21:55:48,381 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.0200 change:+5.97% volume:18289044
+2026-08-04 21:55:48,382 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:218.5600 change:+2.81% volume:6042783
+2026-08-04 21:55:48,382 [INFO] src.monitor: 美股 | IBM(IBM) price:227.5600 change:+0.55% volume:884208
+2026-08-04 21:55:48,382 [INFO] src.monitor: No alerts triggered
+2026-08-04 21:55:48,383 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:05:47 CST)" executed successfully
+2026-08-04 22:05:47,955 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:15:47 CST)" (scheduled at 2026-08-04 22:05:47.949753+08:00)
+2026-08-04 22:05:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 22:05:47,986 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 22:05:48,353 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 22:05:48,353 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 22:05:48,369 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.0200 change:+15.69% volume:30209101
+2026-08-04 22:05:48,370 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.2800 change:+6.36% volume:21115506
+2026-08-04 22:05:48,370 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:218.5100 change:+2.79% volume:7144657
+2026-08-04 22:05:48,370 [INFO] src.monitor: 美股 | IBM(IBM) price:227.5800 change:+0.56% volume:1007500
+2026-08-04 22:05:48,370 [INFO] src.monitor: No alerts triggered
+2026-08-04 22:05:48,371 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:15:47 CST)" executed successfully
+2026-08-04 22:15:47,965 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:25:47 CST)" (scheduled at 2026-08-04 22:15:47.949753+08:00)
+2026-08-04 22:15:47,969 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 22:15:48,013 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 22:15:48,442 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 22:15:48,443 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 22:15:48,464 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:134.0600 change:+14.87% volume:31813113
+2026-08-04 22:15:48,464 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.4500 change:+6.61% volume:23423475
+2026-08-04 22:15:48,464 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:220.0700 change:+3.52% volume:7779696
+2026-08-04 22:15:48,464 [INFO] src.monitor: 美股 | IBM(IBM) price:228.7700 change:+1.09% volume:1182529
+2026-08-04 22:15:48,464 [INFO] src.monitor: No alerts triggered
+2026-08-04 22:15:48,465 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:25:47 CST)" executed successfully
+2026-08-04 22:25:47,962 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:35:47 CST)" (scheduled at 2026-08-04 22:25:47.949753+08:00)
+2026-08-04 22:25:47,980 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 22:25:48,000 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 22:25:48,312 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 22:25:48,312 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 22:25:48,332 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:133.6200 change:+14.48% volume:33570029
+2026-08-04 22:25:48,332 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.3700 change:+6.49% volume:25380350
+2026-08-04 22:25:48,332 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:219.2000 change:+3.11% volume:8254212
+2026-08-04 22:25:48,332 [INFO] src.monitor: 美股 | IBM(IBM) price:228.6500 change:+1.03% volume:1336650
+2026-08-04 22:25:48,333 [INFO] src.monitor: No alerts triggered
+2026-08-04 22:25:48,334 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:35:47 CST)" executed successfully
+2026-08-04 22:35:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:45:47 CST)" (scheduled at 2026-08-04 22:35:47.949753+08:00)
+2026-08-04 22:35:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 22:35:48,002 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 22:35:48,354 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 22:35:48,354 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 22:35:48,366 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:134.1600 change:+14.95% volume:35005780
+2026-08-04 22:35:48,366 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.5600 change:+6.77% volume:27159732
+2026-08-04 22:35:48,367 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:220.6100 change:+3.78% volume:8826967
+2026-08-04 22:35:48,367 [INFO] src.monitor: 美股 | IBM(IBM) price:228.7700 change:+1.08% volume:1452144
+2026-08-04 22:35:48,367 [INFO] src.monitor: No alerts triggered
+2026-08-04 22:35:48,368 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:45:47 CST)" executed successfully
+2026-08-04 22:45:47,959 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:55:47 CST)" (scheduled at 2026-08-04 22:45:47.949753+08:00)
+2026-08-04 22:45:47,963 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 22:45:47,978 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 22:45:48,327 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 22:45:48,327 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 22:45:48,342 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:134.1500 change:+14.94% volume:36013614
+2026-08-04 22:45:48,343 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.5400 change:+6.73% volume:29025469
+2026-08-04 22:45:48,343 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:220.2500 change:+3.61% volume:9113248
+2026-08-04 22:45:48,343 [INFO] src.monitor: 美股 | IBM(IBM) price:229.8500 change:+1.56% volume:1627481
+2026-08-04 22:45:48,344 [INFO] src.monitor: No alerts triggered
+2026-08-04 22:45:48,348 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 22:55:47 CST)" executed successfully
+2026-08-04 22:55:47,955 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:05:47 CST)" (scheduled at 2026-08-04 22:55:47.949753+08:00)
+2026-08-04 22:55:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 22:55:48,157 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 22:55:48,621 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 22:55:48,622 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 22:55:48,664 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:134.3200 change:+15.08% volume:36820766
+2026-08-04 22:55:48,664 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.4300 change:+6.58% volume:30110832
+2026-08-04 22:55:48,665 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:221.8500 change:+4.36% volume:9520889
+2026-08-04 22:55:48,665 [INFO] src.monitor: 美股 | IBM(IBM) price:228.6100 change:+1.01% volume:1802926
+2026-08-04 22:55:48,665 [INFO] src.monitor: No alerts triggered
+2026-08-04 22:55:48,666 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:05:47 CST)" executed successfully
+2026-08-04 23:05:47,961 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:15:47 CST)" (scheduled at 2026-08-04 23:05:47.949753+08:00)
+2026-08-04 23:05:47,965 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 23:05:47,979 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 23:05:48,278 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 23:05:48,278 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 23:05:48,289 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.3000 change:+15.93% volume:38007776
+2026-08-04 23:05:48,289 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.7400 change:+7.03% volume:31422125
+2026-08-04 23:05:48,289 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:222.0000 change:+4.43% volume:10079789
+2026-08-04 23:05:48,289 [INFO] src.monitor: 美股 | IBM(IBM) price:229.7700 change:+1.53% volume:1980520
+2026-08-04 23:05:48,289 [INFO] src.monitor: No alerts triggered
+2026-08-04 23:05:48,290 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:15:47 CST)" executed successfully
+2026-08-04 23:15:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:25:47 CST)" (scheduled at 2026-08-04 23:15:47.949753+08:00)
+2026-08-04 23:15:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 23:15:47,974 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 23:15:48,275 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 23:15:48,275 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 23:15:48,290 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:137.1300 change:+17.50% volume:39703500
+2026-08-04 23:15:48,290 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.0400 change:+7.47% volume:32981840
+2026-08-04 23:15:48,290 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:222.7500 change:+4.78% volume:10332841
+2026-08-04 23:15:48,291 [INFO] src.monitor: 美股 | IBM(IBM) price:229.9200 change:+1.60% volume:2107260
+2026-08-04 23:15:48,291 [INFO] src.monitor: No alerts triggered
+2026-08-04 23:15:48,291 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:25:47 CST)" executed successfully
+2026-08-04 23:25:47,963 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:35:47 CST)" (scheduled at 2026-08-04 23:25:47.949753+08:00)
+2026-08-04 23:25:47,968 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 23:25:47,981 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 23:25:48,306 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 23:25:48,306 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 23:25:48,327 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:137.5800 change:+17.88% volume:40830723
+2026-08-04 23:25:48,327 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.3400 change:+7.91% volume:34197720
+2026-08-04 23:25:48,327 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:225.7900 change:+6.21% volume:10929651
+2026-08-04 23:25:48,328 [INFO] src.monitor: 美股 | IBM(IBM) price:230.3400 change:+1.78% volume:2331395
+2026-08-04 23:25:48,328 [INFO] src.monitor: No alerts triggered
+2026-08-04 23:25:48,329 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:35:47 CST)" executed successfully
+2026-08-04 23:35:47,961 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:45:47 CST)" (scheduled at 2026-08-04 23:35:47.949753+08:00)
+2026-08-04 23:35:47,965 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 23:35:47,979 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 23:35:48,332 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 23:35:48,333 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 23:35:48,349 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:137.7000 change:+17.99% volume:41861566
+2026-08-04 23:35:48,350 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.2300 change:+7.75% volume:35421095
+2026-08-04 23:35:48,350 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:226.0100 change:+6.32% volume:11427491
+2026-08-04 23:35:48,350 [INFO] src.monitor: 美股 | IBM(IBM) price:230.2100 change:+1.72% volume:2434569
+2026-08-04 23:35:48,350 [INFO] src.monitor: No alerts triggered
+2026-08-04 23:35:48,351 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:45:47 CST)" executed successfully
+2026-08-04 23:45:47,959 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:55:47 CST)" (scheduled at 2026-08-04 23:45:47.949753+08:00)
+2026-08-04 23:45:47,971 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 23:45:47,984 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 23:45:48,322 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 23:45:48,323 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 23:45:48,335 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:138.8200 change:+18.94% volume:42946633
+2026-08-04 23:45:48,335 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.5000 change:+8.15% volume:37092481
+2026-08-04 23:45:48,335 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:226.2000 change:+6.40% volume:11729318
+2026-08-04 23:45:48,336 [INFO] src.monitor: 美股 | IBM(IBM) price:231.2000 change:+2.16% volume:2542859
+2026-08-04 23:45:48,336 [INFO] src.monitor: No alerts triggered
+2026-08-04 23:45:48,337 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-04 23:55:47 CST)" executed successfully
+2026-08-04 23:55:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:05:47 CST)" (scheduled at 2026-08-04 23:55:47.949753+08:00)
+2026-08-04 23:55:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-04 23:55:47,974 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-04 23:55:48,252 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-04 23:55:48,252 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-04 23:55:48,265 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:138.5600 change:+18.72% volume:43772627
+2026-08-04 23:55:48,266 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.4600 change:+8.09% volume:38502403
+2026-08-04 23:55:48,266 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:224.5200 change:+5.62% volume:12027687
+2026-08-04 23:55:48,266 [INFO] src.monitor: 美股 | IBM(IBM) price:231.1700 change:+2.15% volume:2705457
+2026-08-04 23:55:48,266 [INFO] src.monitor: No alerts triggered
+2026-08-04 23:55:48,282 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:05:47 CST)" executed successfully
+2026-08-05 00:05:47,962 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:15:47 CST)" (scheduled at 2026-08-05 00:05:47.949753+08:00)
+2026-08-05 00:05:47,967 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 00:05:47,981 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 00:05:48,334 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 00:05:48,334 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 00:05:48,351 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:139.1800 change:+19.25% volume:44798584
+2026-08-05 00:05:48,351 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.6100 change:+8.31% volume:39461240
+2026-08-05 00:05:48,352 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:224.6700 change:+5.69% volume:12236623
+2026-08-05 00:05:48,352 [INFO] src.monitor: 美股 | IBM(IBM) price:231.1800 change:+2.15% volume:2793811
+2026-08-05 00:05:48,352 [INFO] src.monitor: No alerts triggered
+2026-08-05 00:05:48,353 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:15:47 CST)" executed successfully
+2026-08-05 00:15:47,957 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:25:47 CST)" (scheduled at 2026-08-05 00:15:47.949753+08:00)
+2026-08-05 00:15:47,962 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 00:15:47,975 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 00:15:48,652 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 00:15:48,652 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 00:15:48,715 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:137.9100 change:+18.16% volume:45580575
+2026-08-05 00:15:48,716 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.4600 change:+8.09% volume:40139205
+2026-08-05 00:15:48,716 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:225.1400 change:+5.91% volume:12440132
+2026-08-05 00:15:48,717 [INFO] src.monitor: 美股 | IBM(IBM) price:230.3500 change:+1.79% volume:2898514
+2026-08-05 00:15:48,717 [INFO] src.monitor: No alerts triggered
+2026-08-05 00:15:48,719 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:25:47 CST)" executed successfully
+2026-08-05 00:25:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:35:47 CST)" (scheduled at 2026-08-05 00:25:47.949753+08:00)
+2026-08-05 00:25:47,961 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 00:25:47,975 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 00:25:48,344 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 00:25:48,344 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 00:25:48,357 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:139.0100 change:+19.10% volume:46347142
+2026-08-05 00:25:48,357 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.6800 change:+8.42% volume:41617920
+2026-08-05 00:25:48,358 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:224.5600 change:+5.64% volume:12667909
+2026-08-05 00:25:48,358 [INFO] src.monitor: 美股 | IBM(IBM) price:231.5200 change:+2.30% volume:2985506
+2026-08-05 00:25:48,359 [INFO] src.monitor: No alerts triggered
+2026-08-05 00:25:48,360 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:35:47 CST)" executed successfully
+2026-08-05 00:35:47,954 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:45:47 CST)" (scheduled at 2026-08-05 00:35:47.949753+08:00)
+2026-08-05 00:35:47,962 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 00:35:47,984 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 00:35:48,285 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 00:35:48,285 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 00:35:48,344 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:139.3900 change:+19.44% volume:46789662
+2026-08-05 00:35:48,344 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.7900 change:+8.58% volume:42494948
+2026-08-05 00:35:48,344 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:224.4200 change:+5.57% volume:12879732
+2026-08-05 00:35:48,345 [INFO] src.monitor: 美股 | IBM(IBM) price:231.2700 change:+2.19% volume:3092981
+2026-08-05 00:35:48,345 [INFO] src.monitor: No alerts triggered
+2026-08-05 00:35:48,346 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:45:47 CST)" executed successfully
+2026-08-05 00:45:47,964 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:55:47 CST)" (scheduled at 2026-08-05 00:45:47.949753+08:00)
+2026-08-05 00:45:47,968 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 00:45:47,982 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 00:45:48,278 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 00:45:48,278 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 00:45:48,291 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:139.2500 change:+19.31% volume:47339804
+2026-08-05 00:45:48,291 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.8600 change:+8.68% volume:43309038
+2026-08-05 00:45:48,292 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:224.7500 change:+5.72% volume:13078373
+2026-08-05 00:45:48,292 [INFO] src.monitor: 美股 | IBM(IBM) price:231.2900 change:+2.20% volume:3164331
+2026-08-05 00:45:48,292 [INFO] src.monitor: No alerts triggered
+2026-08-05 00:45:48,293 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 00:55:47 CST)" executed successfully
+2026-08-05 00:55:47,959 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:05:47 CST)" (scheduled at 2026-08-05 00:55:47.949753+08:00)
+2026-08-05 00:55:47,963 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 00:55:47,976 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 00:55:48,286 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 00:55:48,286 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 00:55:48,300 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:139.2500 change:+19.31% volume:47992285
+2026-08-05 00:55:48,300 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.8800 change:+8.71% volume:44137635
+2026-08-05 00:55:48,300 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:225.1900 change:+5.93% volume:13218233
+2026-08-05 00:55:48,300 [INFO] src.monitor: 美股 | IBM(IBM) price:231.0300 change:+2.09% volume:3235393
+2026-08-05 00:55:48,300 [INFO] src.monitor: No alerts triggered
+2026-08-05 00:55:48,301 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:05:47 CST)" executed successfully
+2026-08-05 01:05:47,960 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:15:47 CST)" (scheduled at 2026-08-05 01:05:47.949753+08:00)
+2026-08-05 01:05:47,963 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 01:05:47,977 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 01:05:48,264 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 01:05:48,264 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 01:05:48,278 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:140.3600 change:+20.26% volume:48876060
+2026-08-05 01:05:48,278 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.2300 change:+9.23% volume:45828596
+2026-08-05 01:05:48,278 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:225.0200 change:+5.85% volume:13354593
+2026-08-05 01:05:48,279 [INFO] src.monitor: 美股 | IBM(IBM) price:231.8400 change:+2.44% volume:3386324
+2026-08-05 01:05:48,279 [INFO] src.monitor: No alerts triggered
+2026-08-05 01:05:48,280 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:15:47 CST)" executed successfully
+2026-08-05 01:15:47,960 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:25:47 CST)" (scheduled at 2026-08-05 01:15:47.949753+08:00)
+2026-08-05 01:15:47,964 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 01:15:47,978 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 01:15:48,277 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 01:15:48,277 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 01:15:48,308 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:140.2200 change:+20.14% volume:49507542
+2026-08-05 01:15:48,308 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.3000 change:+9.32% volume:46933833
+2026-08-05 01:15:48,308 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:223.6500 change:+5.21% volume:13590694
+2026-08-05 01:15:48,308 [INFO] src.monitor: 美股 | IBM(IBM) price:232.3200 change:+2.66% volume:3501365
+2026-08-05 01:15:48,309 [INFO] src.monitor: No alerts triggered
+2026-08-05 01:15:48,310 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:25:47 CST)" executed successfully
+2026-08-05 01:25:47,963 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:35:47 CST)" (scheduled at 2026-08-05 01:25:47.949753+08:00)
+2026-08-05 01:25:47,967 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 01:25:47,981 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 01:25:48,300 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 01:25:48,300 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 01:25:48,315 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:140.4500 change:+20.34% volume:50059371
+2026-08-05 01:25:48,316 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.3600 change:+9.41% volume:47935028
+2026-08-05 01:25:48,316 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:225.3800 change:+6.02% volume:13816361
+2026-08-05 01:25:48,316 [INFO] src.monitor: 美股 | IBM(IBM) price:232.5300 change:+2.75% volume:3609691
+2026-08-05 01:25:48,316 [INFO] src.monitor: No alerts triggered
+2026-08-05 01:25:48,317 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:35:47 CST)" executed successfully
+2026-08-05 01:35:47,952 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:45:47 CST)" (scheduled at 2026-08-05 01:35:47.949753+08:00)
+2026-08-05 01:35:47,956 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 01:35:47,970 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 01:35:48,271 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 01:35:48,272 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 01:35:48,285 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:140.7500 change:+20.59% volume:50627294
+2026-08-05 01:35:48,285 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.4500 change:+9.54% volume:49546756
+2026-08-05 01:35:48,285 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:226.6700 change:+6.63% volume:14138454
+2026-08-05 01:35:48,285 [INFO] src.monitor: 美股 | IBM(IBM) price:232.5100 change:+2.74% volume:3735311
+2026-08-05 01:35:48,285 [INFO] src.monitor: No alerts triggered
+2026-08-05 01:35:48,287 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:45:47 CST)" executed successfully
+2026-08-05 01:45:49,874 [WARNING] apscheduler.executors.default: Run time of job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 01:55:47 CST)" was missed by 0:00:01.924993
+2026-08-05 01:55:47,955 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:05:47 CST)" (scheduled at 2026-08-05 01:55:47.949753+08:00)
+2026-08-05 01:55:47,959 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 01:55:47,973 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 01:55:48,278 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 01:55:48,279 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 01:55:48,291 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:140.8100 change:+20.65% volume:52705490
+2026-08-05 01:55:48,291 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.6700 change:+9.87% volume:52756711
+2026-08-05 01:55:48,292 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:224.8600 change:+5.77% volume:14574367
+2026-08-05 01:55:48,292 [INFO] src.monitor: 美股 | IBM(IBM) price:232.7300 change:+2.83% volume:3952207
+2026-08-05 01:55:48,292 [INFO] src.monitor: No alerts triggered
+2026-08-05 01:55:48,293 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:05:47 CST)" executed successfully
+2026-08-05 02:05:47,962 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:15:47 CST)" (scheduled at 2026-08-05 02:05:47.949753+08:00)
+2026-08-05 02:05:47,965 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 02:05:47,980 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 02:05:48,290 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 02:05:48,290 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 02:05:48,305 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:139.8400 change:+19.82% volume:53517554
+2026-08-05 02:05:48,306 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.5200 change:+9.65% volume:54034807
+2026-08-05 02:05:48,306 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:225.1500 change:+5.91% volume:14842420
+2026-08-05 02:05:48,306 [INFO] src.monitor: 美股 | IBM(IBM) price:233.0000 change:+2.96% volume:4137303
+2026-08-05 02:05:48,306 [INFO] src.monitor: No alerts triggered
+2026-08-05 02:05:48,308 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:15:47 CST)" executed successfully
+2026-08-05 02:15:47,964 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:25:47 CST)" (scheduled at 2026-08-05 02:15:47.949753+08:00)
+2026-08-05 02:15:47,969 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 02:15:47,984 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 02:15:48,297 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 02:15:48,297 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 02:15:48,322 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:140.5300 change:+20.41% volume:54252903
+2026-08-05 02:15:48,322 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.7600 change:+10.00% volume:54979834
+2026-08-05 02:15:48,322 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:226.1300 change:+6.37% volume:15122460
+2026-08-05 02:15:48,323 [INFO] src.monitor: 美股 | IBM(IBM) price:233.0900 change:+2.99% volume:4226878
+2026-08-05 02:15:48,323 [INFO] src.monitor: No alerts triggered
+2026-08-05 02:15:48,324 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:25:47 CST)" executed successfully
+2026-08-05 02:25:47,958 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:35:47 CST)" (scheduled at 2026-08-05 02:25:47.949753+08:00)
+2026-08-05 02:25:47,962 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 02:25:47,976 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 02:25:48,297 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 02:25:48,297 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 02:25:48,309 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:141.1500 change:+20.94% volume:54901130
+2026-08-05 02:25:48,310 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.8400 change:+10.12% volume:55950008
+2026-08-05 02:25:48,310 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:226.8500 change:+6.71% volume:15401849
+2026-08-05 02:25:48,310 [INFO] src.monitor: 美股 | IBM(IBM) price:233.1000 change:+3.00% volume:4312908
+2026-08-05 02:25:48,311 [INFO] src.monitor: No alerts triggered
+2026-08-05 02:25:48,312 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:35:47 CST)" executed successfully
+2026-08-05 02:35:47,949 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:45:47 CST)" (scheduled at 2026-08-05 02:35:47.949753+08:00)
+2026-08-05 02:35:47,953 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 02:35:47,967 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 02:35:48,320 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 02:35:48,320 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 02:35:48,334 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:141.0600 change:+20.86% volume:55572697
+2026-08-05 02:35:48,334 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.8500 change:+10.14% volume:56832250
+2026-08-05 02:35:48,334 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:228.5300 change:+7.50% volume:16028974
+2026-08-05 02:35:48,335 [INFO] src.monitor: 美股 | IBM(IBM) price:233.2100 change:+3.05% volume:4411386
+2026-08-05 02:35:48,335 [INFO] src.monitor: No alerts triggered
+2026-08-05 02:35:48,336 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:45:47 CST)" executed successfully
+2026-08-05 02:45:47,958 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:55:47 CST)" (scheduled at 2026-08-05 02:45:47.949753+08:00)
+2026-08-05 02:45:47,962 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 02:45:47,977 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 02:45:48,271 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 02:45:48,271 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 02:45:48,284 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:140.8000 change:+20.64% volume:56122387
+2026-08-05 02:45:48,284 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.8000 change:+10.06% volume:57686481
+2026-08-05 02:45:48,284 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:227.2200 change:+6.88% volume:16309132
+2026-08-05 02:45:48,285 [INFO] src.monitor: 美股 | IBM(IBM) price:232.7700 change:+2.85% volume:4518502
+2026-08-05 02:45:48,285 [INFO] src.monitor: No alerts triggered
+2026-08-05 02:45:48,286 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 02:55:47 CST)" executed successfully
+2026-08-05 02:55:47,961 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:05:47 CST)" (scheduled at 2026-08-05 02:55:47.949753+08:00)
+2026-08-05 02:55:47,965 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 02:55:47,979 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 02:55:48,277 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 02:55:48,277 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 02:55:48,290 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:141.0000 change:+20.82% volume:56822187
+2026-08-05 02:55:48,290 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.8700 change:+10.16% volume:58787003
+2026-08-05 02:55:48,290 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:227.4400 change:+6.99% volume:16657893
+2026-08-05 02:55:48,291 [INFO] src.monitor: 美股 | IBM(IBM) price:232.6300 change:+2.79% volume:4608281
+2026-08-05 02:55:48,291 [INFO] src.monitor: No alerts triggered
+2026-08-05 02:55:48,292 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:05:47 CST)" executed successfully
+2026-08-05 03:05:47,951 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:15:47 CST)" (scheduled at 2026-08-05 03:05:47.949753+08:00)
+2026-08-05 03:05:47,956 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 03:05:47,970 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 03:05:48,256 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 03:05:48,256 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 03:05:48,271 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:141.7200 change:+21.42% volume:57883136
+2026-08-05 03:05:48,272 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:75.0700 change:+10.45% volume:60110865
+2026-08-05 03:05:48,272 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:227.0000 change:+6.78% volume:17096003
+2026-08-05 03:05:48,272 [INFO] src.monitor: 美股 | IBM(IBM) price:233.2200 change:+3.05% volume:4688408
+2026-08-05 03:05:48,272 [INFO] src.monitor: No alerts triggered
+2026-08-05 03:05:48,273 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:15:47 CST)" executed successfully
+2026-08-05 03:15:47,952 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:25:47 CST)" (scheduled at 2026-08-05 03:15:47.949753+08:00)
+2026-08-05 03:15:47,956 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 03:15:47,969 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 03:15:48,263 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 03:15:48,263 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 03:15:48,276 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:141.9500 change:+21.63% volume:58735742
+2026-08-05 03:15:48,276 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:75.2300 change:+10.69% volume:61347266
+2026-08-05 03:15:48,276 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:226.6200 change:+6.60% volume:17577249
+2026-08-05 03:15:48,277 [INFO] src.monitor: 美股 | IBM(IBM) price:233.3000 change:+3.09% volume:4774783
+2026-08-05 03:15:48,277 [INFO] src.monitor: No alerts triggered
+2026-08-05 03:15:48,278 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:25:47 CST)" executed successfully
+2026-08-05 03:25:47,964 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:35:47 CST)" (scheduled at 2026-08-05 03:25:47.949753+08:00)
+2026-08-05 03:25:47,969 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 03:25:47,985 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 03:25:48,279 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 03:25:48,280 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 03:25:48,292 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:141.4600 change:+21.21% volume:59719934
+2026-08-05 03:25:48,292 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:75.1300 change:+10.54% volume:62333307
+2026-08-05 03:25:48,292 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:227.9800 change:+7.24% volume:17921359
+2026-08-05 03:25:48,292 [INFO] src.monitor: 美股 | IBM(IBM) price:233.7000 change:+3.27% volume:4883411
+2026-08-05 03:25:48,293 [INFO] src.monitor: No alerts triggered
+2026-08-05 03:25:48,294 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:35:47 CST)" executed successfully
+2026-08-05 03:35:47,951 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:45:47 CST)" (scheduled at 2026-08-05 03:35:47.949753+08:00)
+2026-08-05 03:35:47,955 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 03:35:47,970 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 03:35:48,272 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 03:35:48,272 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 03:35:48,286 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:140.7700 change:+20.62% volume:62919657
+2026-08-05 03:35:48,286 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:75.0700 change:+10.46% volume:63358222
+2026-08-05 03:35:48,287 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:226.7000 change:+6.64% volume:18213912
+2026-08-05 03:35:48,287 [INFO] src.monitor: 美股 | IBM(IBM) price:233.9900 change:+3.39% volume:5041321
+2026-08-05 03:35:48,288 [INFO] src.monitor: No alerts triggered
+2026-08-05 03:35:48,289 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:45:47 CST)" executed successfully
+2026-08-05 03:45:47,950 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:55:47 CST)" (scheduled at 2026-08-05 03:45:47.949753+08:00)
+2026-08-05 03:45:47,953 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 03:45:47,967 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 03:45:48,260 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 03:45:48,260 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 03:45:48,272 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:141.4500 change:+21.19% volume:64494501
+2026-08-05 03:45:48,273 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:75.3000 change:+10.80% volume:64397130
+2026-08-05 03:45:48,273 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:226.4800 change:+6.54% volume:18546402
+2026-08-05 03:45:48,273 [INFO] src.monitor: 美股 | IBM(IBM) price:234.8500 change:+3.77% volume:5208969
+2026-08-05 03:45:48,273 [INFO] src.monitor: No alerts triggered
+2026-08-05 03:45:48,274 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 03:55:47 CST)" executed successfully
+2026-08-05 03:55:47,964 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:05:47 CST)" (scheduled at 2026-08-05 03:55:47.949753+08:00)
+2026-08-05 03:55:47,969 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 03:55:47,983 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-05 03:55:48,275 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-05 03:55:48,275 [INFO] src.monitor: Fetching quotes for 4/10 stocks in open markets...
+2026-08-05 03:55:48,321 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:140.7100 change:+20.56% volume:67372347
+2026-08-05 03:55:48,321 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:74.8100 change:+10.08% volume:67269465
+2026-08-05 03:55:48,322 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:226.0400 change:+6.33% volume:19028572
+2026-08-05 03:55:48,322 [INFO] src.monitor: 美股 | IBM(IBM) price:234.1500 change:+3.46% volume:5537942
+2026-08-05 03:55:48,322 [INFO] src.monitor: No alerts triggered
+2026-08-05 03:55:48,323 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:05:47 CST)" executed successfully
+2026-08-05 04:05:47,961 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:15:47 CST)" (scheduled at 2026-08-05 04:05:47.949753+08:00)
+2026-08-05 04:05:47,965 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 04:05:47,979 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 04:05:47,979 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:15:47 CST)" executed successfully
+2026-08-05 04:15:47,950 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:25:47 CST)" (scheduled at 2026-08-05 04:15:47.949753+08:00)
+2026-08-05 04:15:47,955 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 04:15:47,971 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 04:15:47,971 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:25:47 CST)" executed successfully
+2026-08-05 04:25:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:35:47 CST)" (scheduled at 2026-08-05 04:25:47.949753+08:00)
+2026-08-05 04:25:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 04:25:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 04:25:47,974 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:35:47 CST)" executed successfully
+2026-08-05 04:35:47,964 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:45:47 CST)" (scheduled at 2026-08-05 04:35:47.949753+08:00)
+2026-08-05 04:35:47,969 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 04:35:47,982 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 04:35:47,983 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:45:47 CST)" executed successfully
+2026-08-05 04:45:47,962 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:55:47 CST)" (scheduled at 2026-08-05 04:45:47.949753+08:00)
+2026-08-05 04:45:47,980 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 04:45:47,995 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 04:45:47,996 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 04:55:47 CST)" executed successfully
+2026-08-05 04:55:47,960 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:05:47 CST)" (scheduled at 2026-08-05 04:55:47.949753+08:00)
+2026-08-05 04:55:47,964 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 04:55:47,979 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 04:55:47,979 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:05:47 CST)" executed successfully
+2026-08-05 05:05:47,955 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:15:47 CST)" (scheduled at 2026-08-05 05:05:47.949753+08:00)
+2026-08-05 05:05:47,959 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 05:05:47,972 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 05:05:47,972 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:15:47 CST)" executed successfully
+2026-08-05 05:15:47,952 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:25:47 CST)" (scheduled at 2026-08-05 05:15:47.949753+08:00)
+2026-08-05 05:15:47,957 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 05:15:47,969 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 05:15:47,970 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:25:47 CST)" executed successfully
+2026-08-05 05:25:47,957 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:35:47 CST)" (scheduled at 2026-08-05 05:25:47.949753+08:00)
+2026-08-05 05:25:47,961 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 05:25:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 05:25:47,975 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:35:47 CST)" executed successfully
+2026-08-05 05:35:47,954 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:45:47 CST)" (scheduled at 2026-08-05 05:35:47.949753+08:00)
+2026-08-05 05:35:47,961 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 05:35:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 05:35:47,975 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:45:47 CST)" executed successfully
+2026-08-05 05:45:47,962 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:55:47 CST)" (scheduled at 2026-08-05 05:45:47.949753+08:00)
+2026-08-05 05:45:47,971 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 05:45:47,984 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 05:45:47,984 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 05:55:47 CST)" executed successfully
+2026-08-05 05:55:47,952 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:05:47 CST)" (scheduled at 2026-08-05 05:55:47.949753+08:00)
+2026-08-05 05:55:47,957 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 05:55:47,970 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 05:55:47,971 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:05:47 CST)" executed successfully
+2026-08-05 06:05:47,952 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:15:47 CST)" (scheduled at 2026-08-05 06:05:47.949753+08:00)
+2026-08-05 06:05:47,956 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 06:05:47,970 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 06:05:47,971 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:15:47 CST)" executed successfully
+2026-08-05 06:15:47,955 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:25:47 CST)" (scheduled at 2026-08-05 06:15:47.949753+08:00)
+2026-08-05 06:15:47,959 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 06:15:47,973 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 06:15:47,973 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:25:47 CST)" executed successfully
+2026-08-05 06:25:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:35:47 CST)" (scheduled at 2026-08-05 06:25:47.949753+08:00)
+2026-08-05 06:25:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 06:25:47,975 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 06:25:47,975 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:35:47 CST)" executed successfully
+2026-08-05 06:35:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:45:47 CST)" (scheduled at 2026-08-05 06:35:47.949753+08:00)
+2026-08-05 06:35:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 06:35:47,975 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 06:35:47,975 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:45:47 CST)" executed successfully
+2026-08-05 06:45:47,961 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:55:47 CST)" (scheduled at 2026-08-05 06:45:47.949753+08:00)
+2026-08-05 06:45:47,966 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 06:45:47,980 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 06:45:47,981 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 06:55:47 CST)" executed successfully
+2026-08-05 06:55:47,962 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:05:47 CST)" (scheduled at 2026-08-05 06:55:47.949753+08:00)
+2026-08-05 06:55:47,967 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 06:55:47,981 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 06:55:47,981 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:05:47 CST)" executed successfully
+2026-08-05 07:05:47,952 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:15:47 CST)" (scheduled at 2026-08-05 07:05:47.949753+08:00)
+2026-08-05 07:05:47,957 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 07:05:47,971 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 07:05:47,971 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:15:47 CST)" executed successfully
+2026-08-05 07:15:47,955 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:25:47 CST)" (scheduled at 2026-08-05 07:15:47.949753+08:00)
+2026-08-05 07:15:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 07:15:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 07:15:47,974 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:25:47 CST)" executed successfully
+2026-08-05 07:25:47,957 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:35:47 CST)" (scheduled at 2026-08-05 07:25:47.949753+08:00)
+2026-08-05 07:25:47,961 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 07:25:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 07:25:47,975 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:35:47 CST)" executed successfully
+2026-08-05 07:35:47,951 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:45:47 CST)" (scheduled at 2026-08-05 07:35:47.949753+08:00)
+2026-08-05 07:35:47,956 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 07:35:47,970 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 07:35:47,970 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:45:47 CST)" executed successfully
+2026-08-05 07:45:47,961 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:55:47 CST)" (scheduled at 2026-08-05 07:45:47.949753+08:00)
+2026-08-05 07:45:47,965 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 07:45:47,979 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 07:45:47,980 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 07:55:47 CST)" executed successfully
+2026-08-05 07:55:47,957 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:05:47 CST)" (scheduled at 2026-08-05 07:55:47.949753+08:00)
+2026-08-05 07:55:47,961 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 07:55:47,975 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 07:55:47,976 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:05:47 CST)" executed successfully
+2026-08-05 08:05:47,962 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:15:47 CST)" (scheduled at 2026-08-05 08:05:47.949753+08:00)
+2026-08-05 08:05:47,966 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 08:05:47,979 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 08:05:47,980 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:15:47 CST)" executed successfully
+2026-08-05 08:15:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:25:47 CST)" (scheduled at 2026-08-05 08:15:47.949753+08:00)
+2026-08-05 08:15:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 08:15:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 08:15:47,974 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:25:47 CST)" executed successfully
+2026-08-05 08:25:47,951 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:35:47 CST)" (scheduled at 2026-08-05 08:25:47.949753+08:00)
+2026-08-05 08:25:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 08:25:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 08:25:47,975 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:35:47 CST)" executed successfully
+2026-08-05 08:35:47,963 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:45:47 CST)" (scheduled at 2026-08-05 08:35:47.949753+08:00)
+2026-08-05 08:35:47,967 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 08:35:47,980 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 08:35:47,981 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:45:47 CST)" executed successfully
+2026-08-05 08:45:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:55:47 CST)" (scheduled at 2026-08-05 08:45:47.949753+08:00)
+2026-08-05 08:45:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 08:45:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 08:45:47,974 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 08:55:47 CST)" executed successfully
+2026-08-05 08:55:47,950 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:05:47 CST)" (scheduled at 2026-08-05 08:55:47.949753+08:00)
+2026-08-05 08:55:47,955 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 08:55:47,968 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 08:55:47,968 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:05:47 CST)" executed successfully
+2026-08-05 09:05:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:15:47 CST)" (scheduled at 2026-08-05 09:05:47.949753+08:00)
+2026-08-05 09:05:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 09:05:47,973 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 09:05:47,973 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:15:47 CST)" executed successfully
+2026-08-05 09:15:47,952 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:25:47 CST)" (scheduled at 2026-08-05 09:15:47.949753+08:00)
+2026-08-05 09:15:47,960 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 09:15:47,974 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 09:15:47,974 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:25:47 CST)" executed successfully
+2026-08-05 09:25:47,956 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:35:47 CST)" (scheduled at 2026-08-05 09:25:47.949753+08:00)
+2026-08-05 09:25:47,961 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 09:25:47,975 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-05 09:25:47,976 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:35:47 CST)" executed successfully
+2026-08-05 09:35:47,959 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:45:47 CST)" (scheduled at 2026-08-05 09:35:47.949753+08:00)
+2026-08-05 09:35:47,964 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 09:35:47,980 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-05 09:35:49,027 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-05 09:35:49,028 [INFO] src.monitor: Fetching quotes for 6/10 stocks in open markets...
+2026-08-05 09:35:49,189 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1260 change:+2.83% volume:1985096
+2026-08-05 09:35:49,189 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:0.9940 change:+0.40% volume:648217
+2026-08-05 09:35:49,190 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8630 change:+0.70% volume:1005230
+2026-08-05 09:35:49,190 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:493.4000 change:+1.19% volume:995838
+2026-08-05 09:35:49,190 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:128.4000 change:+2.07% volume:5256255
+2026-08-05 09:35:49,191 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.6610 change:+3.28% volume:8913322
+2026-08-05 09:35:49,201 [INFO] src.monitor: No alerts triggered
+2026-08-05 09:35:49,202 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:45:47 CST)" executed successfully
+2026-08-05 09:45:47,958 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:55:47 CST)" (scheduled at 2026-08-05 09:45:47.949753+08:00)
+2026-08-05 09:45:47,965 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 09:45:47,980 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-05 09:45:49,035 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-05 09:45:49,036 [INFO] src.monitor: Fetching quotes for 6/10 stocks in open markets...
+2026-08-05 09:45:49,583 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1390 change:+4.02% volume:3403341
+2026-08-05 09:45:49,584 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0000 change:+1.01% volume:1465835
+2026-08-05 09:45:49,584 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8660 change:+1.05% volume:3098222
+2026-08-05 09:45:49,584 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:488.6000 change:+0.21% volume:1170182
+2026-08-05 09:45:49,584 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:127.5000 change:+1.35% volume:6218062
+2026-08-05 09:45:49,585 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.6700 change:+4.69% volume:17179350
+2026-08-05 09:45:49,585 [INFO] src.monitor: No alerts triggered
+2026-08-05 09:45:49,586 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 09:55:47 CST)" executed successfully
+2026-08-05 09:55:47,954 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 10:05:47 CST)" (scheduled at 2026-08-05 09:55:47.949753+08:00)
+2026-08-05 09:55:47,996 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 09:55:48,022 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-05 09:55:48,673 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-05 09:55:48,673 [INFO] src.monitor: Fetching quotes for 6/10 stocks in open markets...
+2026-08-05 09:55:48,763 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1360 change:+3.74% volume:4502187
+2026-08-05 09:55:48,764 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:0.9990 change:+0.91% volume:2065261
+2026-08-05 09:55:48,764 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8600 change:+0.35% volume:4561677
+2026-08-05 09:55:48,765 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:484.0000 change:-0.74% volume:2233690
+2026-08-05 09:55:48,765 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:126.1000 change:+0.24% volume:12696116
+2026-08-05 09:55:48,766 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.6690 change:+4.53% volume:21771171
+2026-08-05 09:55:48,766 [INFO] src.monitor: No alerts triggered
+2026-08-05 09:55:48,767 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 10:05:47 CST)" executed successfully
+2026-08-05 10:05:47,959 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 10:15:47 CST)" (scheduled at 2026-08-05 10:05:47.949753+08:00)
+2026-08-05 10:05:47,995 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-05 10:05:48,009 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-05 10:05:48,480 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-05 10:05:48,480 [INFO] src.monitor: Fetching quotes for 6/11 stocks in open markets...
+2026-08-05 10:05:48,512 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1360 change:+3.74% volume:4988176
+2026-08-05 10:05:48,513 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0070 change:+1.72% volume:2506718
+2026-08-05 10:05:48,513 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8570 change:+0.00% volume:5171916
+2026-08-05 10:05:48,513 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:484.0000 change:-0.74% volume:3550821
+2026-08-05 10:05:48,514 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:126.2000 change:+0.32% volume:17892575
+2026-08-05 10:05:48,515 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.6710 change:+4.84% volume:24704080
+2026-08-05 10:05:48,515 [INFO] src.monitor: No alerts triggered
+2026-08-05 10:05:48,516 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-05 10:15:47 CST)" executed successfully
