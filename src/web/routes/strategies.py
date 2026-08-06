@@ -64,6 +64,9 @@ async def create(
     trigger_field: str = Form(""),
     trigger_op: str = Form(""),
     trigger_value: str = Form(""),
+    sizing_amount: str = Form("1000"),
+    sizing_currency: str = Form("USD"),
+    sizing_lot_size: str = Form("1"),
     extra_config: str = Form(""),
 ):
     item = {
@@ -71,6 +74,13 @@ async def create(
         "type": strategy_type,
         "action": action,
         "enabled": enabled in {"1", "on", "true", "yes"},
+        "sizing": {
+            "type": "fixed_amount",
+            "amount": float(sizing_amount),
+            "currency": sizing_currency.strip() or "USD",
+            "lot_size": int(float(sizing_lot_size or 1)),
+        },
+        "constraints": {"cooldown_minutes": 0},
     }
     if strategy_type == "threshold":
         if trigger_field and trigger_op and trigger_value:

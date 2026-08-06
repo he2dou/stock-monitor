@@ -7692,3 +7692,36 @@ sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in
 2026-08-06 17:24:12,841 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
 2026-08-06 17:24:12,843 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
 2026-08-06 17:24:12,843 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 17:34:12 CST)" executed successfully
+2026-08-06 17:34:12,825 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 17:44:12 CST)" (scheduled at 2026-08-06 17:34:12.820512+08:00)
+2026-08-06 17:34:12,832 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 17:34:12,834 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 17:34:12,834 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 17:44:12 CST)" executed successfully
+2026-08-06 17:44:12,829 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 17:54:12 CST)" (scheduled at 2026-08-06 17:44:12.820512+08:00)
+2026-08-06 17:44:12,833 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 17:44:12,835 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 17:44:12,836 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 17:54:12 CST)" executed successfully
+2026-08-06 17:51:00,080 [INFO] __main__: ============================================================
+2026-08-06 17:51:00,080 [INFO] __main__: Stock Price Monitor starting...
+2026-08-06 17:51:00,080 [INFO] __main__: ============================================================
+2026-08-06 17:51:00,105 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 17:51:00,107 [INFO] __main__: Running initial fetch...
+2026-08-06 17:51:00,110 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 17:51:00,113 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 17:51:00,115 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-06 17:51:00,115 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-06 17:51:00,115 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-06 17:51:00,116 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-06 17:51:00,168 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-06 17:57:48,814 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-06 17:57:51,420 [INFO] __main__: ============================================================
+2026-08-06 17:57:51,421 [INFO] __main__: Stock Price Monitor starting...
+2026-08-06 17:57:51,421 [INFO] __main__: ============================================================
+2026-08-06 17:57:51,450 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 17:57:51,452 [INFO] __main__: Running initial fetch...
+2026-08-06 17:57:51,455 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 17:57:51,457 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 17:57:51,459 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-06 17:57:51,460 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-06 17:57:51,460 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-06 17:57:51,460 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-06 17:57:51,510 [INFO] __main__: Web admin running at http://127.0.0.1:8000

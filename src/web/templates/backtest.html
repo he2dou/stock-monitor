@@ -3,7 +3,7 @@
 <section>
   <h2>回测</h2>
   <form class="grid-form" method="post" action="/backtest/run">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <label>策略<select name="strategy_id"><option value="">全部</option>{% for id in strategy_ids %}<option>{{ id }}</option>{% endfor %}</select></label>
     <label>代码（可选）<input name="symbol" placeholder="如 SOXL"></label>
     <label>开始<input name="start" placeholder="YYYY-MM-DD"></label>
@@ -17,7 +17,7 @@
 {% if result %}
 <section>
   <h2>回测结果</h2>
-  <div class="stats">
+  {% if result.fills == 0 %}<div class="flash err">未产生成交。请确认策略已在策略页面绑定股票，且所选区间内有对应行情数据。</div>{% endif %}  <div class="stats">
     <div class="stat"><span class="k">总收益</span><span class="v{% if result.total_return_pct >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(result.total_return_pct) }}%</span></div>
     <div class="stat"><span class="k">最大回撤</span><span class="v down">{{ "%.2f"|format(result.max_drawdown_pct) }}%</span></div>
     <div class="stat"><span class="k">胜率</span><span class="v">{{ "%.1f"|format(result.sell_win_rate_pct or 0) }}%</span></div>
@@ -33,4 +33,26 @@
   </table>
 </section>
 {% endif %}
+<section>
+  <div class="section-head"><h2>回测历史</h2><span class="hint">共 {{ history|length }} 条</span></div>
+  <table>
+    <tr><th>时间</th><th>策略</th><th>代码</th><th>区间</th><th>数据源</th><th>选项</th><th class="num">总收益</th><th class="num">最大回撤</th><th class="num">胜率</th><th class="num">Sharpe</th><th class="num">成交</th><th>操作</th></tr>
+    {% for h in history %}
+    <tr>
+      <td class="mono sm">{{ h.run_at }}</td>
+      <td class="mono">{{ h.strategy_id or '全部' }}</td>
+      <td>{{ h.symbol or '全部' }}</td>
+      <td class="sm">{{ h.start_date or '?' }} ~ {{ h.end_date or '?' }}</td>
+      <td class="sm">{{ h.source }}</td>
+      <td class="sm">{% if h.next_bar %}次bar{% endif %}{% if h.apply_costs %}{% if h.next_bar %}·{% endif %}成本{% endif %}{% if not h.next_bar and not h.apply_costs %}-{% endif %}</td>
+      <td class="num{% if h.total_return_pct and h.total_return_pct >= 0 %} up{% elif h.total_return_pct %} down{% endif %}">{{ "%.2f"|format(h.total_return_pct or 0) }}%</td>
+      <td class="num down">{{ "%.2f"|format(h.max_drawdown_pct or 0) }}%</td>
+      <td class="num">{{ "%.1f"|format(h.sell_win_rate_pct or 0) }}%</td>
+      <td class="num">{{ "%.2f"|format(h.sharpe_ratio or 0) }}</td>
+      <td class="num">{{ h.fills }}</td>
+      <td><form method="post" action="/backtest/delete" onsubmit="return confirm('删除该回测记录？')"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="run_id" value="{{ h.id }}"><button class="btn sm danger" type="submit">删除</button></form></td>
+    </tr>
+    {% else %}<tr><td colspan="12" class="empty">暂无回测记录</td></tr>{% endfor %}
+  </table>
+</section>
 {% endblock %}

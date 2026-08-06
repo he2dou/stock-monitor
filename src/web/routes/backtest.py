@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Form, Request
+from fastapi.responses import RedirectResponse
 
 from src.web.auth import ensure_login
-from src.web.deps import get_store, pop_flash, render, resolve_path
+from src.web.deps import get_store, pop_flash, render, resolve_path, set_flash
 from src.backtest import run_backtest
 
 router = APIRouter(prefix="/backtest", dependencies=[Depends(ensure_login)])
@@ -11,17 +12,22 @@ router = APIRouter(prefix="/backtest", dependencies=[Depends(ensure_login)])
 _TRUTHY = {"1", "on", "true", "yes"}
 
 
-def _strategies(request: Request) -> list[dict]:
-    return get_store(request).load_strategies()
+def _strategy_ids(request: Request) -> list[str]:
+    """Unique strategy template IDs for the dropdown."""
+    strategies = get_store(request).load_strategies()
+    return sorted({s.get("id") for s in strategies if s.get("id")})
+
+
+def _history(request: Request, limit: int = 50):
+    return get_store(request).load_backtest_runs(limit)
 
 
 @router.get("")
 async def page(request: Request):
-    strategies = _strategies(request)
-    ids = [s.get("id") for s in strategies if s.get("id")]
     return render(
         request, "backtest.html", "回测",
-        strategy_ids=ids, result=None, trades=None, flash=pop_flash(request),
+        strategy_ids=_strategy_ids(request), result=None, trades=None,
+        history=_history(request), flash=pop_flash(request),
     )
 
 
@@ -36,7 +42,11 @@ async def run(
     next_bar: str = Form("0"),
     apply_costs: str = Form("0"),
 ):
-    strategies = _strategies(request)
+    store = get_store(request)
+    # Use runtime strategies (expanded with symbol from bindings) so the
+    # engine can actually match quotes.  Without a symbol the strategy
+    # never triggers and the backtest produces zero trades.
+    strategies = store.load_runtime_strategies()
     app_config = request.app.state.app_config
     paper = app_config.get("paper_trading", {}) or {}
     accounts = paper.get("accounts") or {"CNY": 100000, "HKD": 100000, "USD": 50000}
@@ -50,9 +60,28 @@ async def run(
         apply_costs=apply_costs.lower() in _TRUTHY,
     )
     summary.pop("equity_curve", None)
-    ids = [s.get("id") for s in strategies if s.get("id")]
+    store.save_backtest_run(
+        {
+            "strategy_id": strategy_id,
+            "symbol": symbol,
+            "start": summary.get("from") or start,
+            "end": summary.get("to") or end,
+            "source": source,
+            "next_bar": next_bar.lower() in _TRUTHY,
+            "apply_costs": apply_costs.lower() in _TRUTHY,
+        },
+        summary,
+    )
     trades = (summary.get("trades") or [])[:50]
     return render(
         request, "backtest.html", "回测",
-        strategy_ids=ids, result=summary, trades=trades, flash=None,
+        strategy_ids=_strategy_ids(request), result=summary, trades=trades,
+        history=_history(request), flash=None,
     )
+
+
+@router.post("/delete")
+async def delete_run(request: Request, run_id: int = Form(...)):
+    get_store(request).delete_backtest_run(run_id)
+    set_flash(request, "回测记录已删除")
+    return RedirectResponse("/backtest", status_code=303)

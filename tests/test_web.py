@@ -127,6 +127,104 @@ def test_strategies_save_valid_and_invalid(tmp_path):
     store.close()
 
 
+def test_strategies_create_bind_unbind(tmp_path):
+    app, store = _make_app(tmp_path)
+    client = TestClient(app)
+
+    # Create a threshold strategy via structured form fields
+    r = client.post("/strategies/create", data={
+        "strategy_id": "test_thr", "strategy_type": "threshold",
+        "action": "buy", "enabled": "1",
+        "trigger_field": "price", "trigger_op": "above", "trigger_value": "100",
+    }, follow_redirects=False)
+    assert r.status_code == 303
+    items = [s for s in store.load_strategies() if s.get("id") == "test_thr"]
+    assert items and items[0]["type"] == "threshold"
+
+    # Bind the strategy to SOXL (which is in the watchlist)
+    r = client.post("/strategies/bind", data={
+        "strategy_id": "test_thr", "symbol": "SOXL",
+    }, follow_redirects=False)
+    assert r.status_code == 303
+    runtime = store.load_runtime_strategies()
+    assert any(rt["id"] == "test_thr" and rt["symbol"] == "SOXL" for rt in runtime)
+
+    # Unbind
+    r = client.post("/strategies/unbind", data={
+        "strategy_id": "test_thr", "symbol": "SOXL",
+    }, follow_redirects=False)
+    assert r.status_code == 303
+    runtime = store.load_runtime_strategies()
+    assert not any(rt["id"] == "test_thr" for rt in runtime)
+
+    # Delete
+    r = client.post("/strategies/delete", data={"strategy_id": "test_thr"},
+                    follow_redirects=False)
+    assert r.status_code == 303
+    assert not any(s.get("id") == "test_thr" for s in store.load_strategies())
+    store.close()
+
+
+def test_strategies_bind_unknown_symbol_rejected(tmp_path):
+    app, store = _make_app(tmp_path)
+    client = TestClient(app)
+    client.post("/strategies/create", data={
+        "strategy_id": "t2", "strategy_type": "threshold",
+        "action": "buy", "enabled": "1",
+        "trigger_field": "price", "trigger_op": "above", "trigger_value": "100",
+    })
+    r = client.post("/strategies/bind", data={
+        "strategy_id": "t2", "symbol": "ZZZZZ",
+    }, follow_redirects=False)
+    assert r.status_code == 303
+    assert not store.load_strategy_bindings()
+    store.close()
+
+def test_backtest_history_saved_and_listed(tmp_path):
+    app, store = _make_app(tmp_path)
+    client = TestClient(app)
+
+    # Directly save two backtest runs via the store
+    store.save_backtest_run(
+        {"strategy_id": "s1", "symbol": "SOXL", "start": "2026-01-01",
+         "end": "2026-06-01", "source": "quote-snapshots",
+         "next_bar": True, "apply_costs": False},
+        {"total_return_pct": 12.5, "max_drawdown_pct": -5.0,
+         "sell_win_rate_pct": 60.0, "sharpe_ratio": 1.2, "fills": 10,
+         "avg_r_multiple": 1.5, "realized_pnl": 500.0,
+         "starting_equity": 10000.0, "ending_total_equity": 11250.0},
+    )
+    store.save_backtest_run(
+        {"strategy_id": "", "symbol": "", "start": "",
+         "end": "", "source": "daily-bars",
+         "next_bar": False, "apply_costs": True},
+        {"total_return_pct": -3.0, "max_drawdown_pct": -8.0,
+         "sell_win_rate_pct": None, "sharpe_ratio": None, "fills": 2,
+         "avg_r_multiple": None, "realized_pnl": -150.0,
+         "starting_equity": 10000.0, "ending_total_equity": 9850.0},
+    )
+
+    runs = store.load_backtest_runs()
+    assert len(runs) == 2
+    # Newest first
+    assert runs[0]["source"] == "daily-bars"
+    assert runs[1]["strategy_id"] == "s1"
+    assert runs[1]["total_return_pct"] == 12.5
+
+    # History shows up on the page
+    r = client.get("/backtest")
+    assert r.status_code == 200
+    assert "s1" in r.text
+    assert "daily-bars" in r.text
+
+    # Delete the first (newest) run
+    rid = runs[0]["id"]
+    r = client.post("/backtest/delete", data={"run_id": str(rid)},
+                    follow_redirects=False)
+    assert r.status_code == 303
+    assert len(store.load_backtest_runs()) == 1
+    store.close()
+
 def test_auth_redirect_and_login(tmp_path):
     app, store = _make_app(tmp_path, password="secret")
     client = TestClient(app)

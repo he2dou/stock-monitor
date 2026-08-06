@@ -200,7 +200,26 @@ class TradingStore:
                 updated_at TEXT NOT NULL,
                 PRIMARY KEY (strategy_id, symbol)
             );
-            CREATE TABLE IF NOT EXISTS watchlist_items (
+            CREATE TABLE IF NOT EXISTS backtest_runs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                run_at TEXT NOT NULL,
+                strategy_id TEXT,
+                symbol TEXT,
+                start_date TEXT,
+                end_date TEXT,
+                source TEXT,
+                next_bar INTEGER NOT NULL DEFAULT 0,
+                apply_costs INTEGER NOT NULL DEFAULT 0,
+                total_return_pct REAL,
+                max_drawdown_pct REAL,
+                sell_win_rate_pct REAL,
+                sharpe_ratio REAL,
+                fills INTEGER NOT NULL DEFAULT 0,
+                avg_r_multiple REAL,
+                realized_pnl REAL,
+                starting_equity REAL,
+                ending_equity REAL
+            );            CREATE TABLE IF NOT EXISTS watchlist_items (
                 symbol TEXT PRIMARY KEY,
                 name TEXT NOT NULL,
                 market TEXT NOT NULL,
@@ -449,6 +468,57 @@ class TradingStore:
             self.upsert_strategy(config)
         return len(strategies)
 
+    def save_backtest_run(self, params: dict, summary: dict) -> None:
+        self.conn.execute(
+            """
+            INSERT INTO backtest_runs
+            (run_at, strategy_id, symbol, start_date, end_date, source,
+             next_bar, apply_costs, total_return_pct, max_drawdown_pct,
+             sell_win_rate_pct, sharpe_ratio, fills, avg_r_multiple,
+             realized_pnl, starting_equity, ending_equity)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                utc_now(),
+                params.get("strategy_id") or "",
+                params.get("symbol") or "",
+                params.get("start") or "",
+                params.get("end") or "",
+                params.get("source") or "",
+                int(bool(params.get("next_bar"))),
+                int(bool(params.get("apply_costs"))),
+                summary.get("total_return_pct"),
+                summary.get("max_drawdown_pct"),
+                summary.get("sell_win_rate_pct"),
+                summary.get("sharpe_ratio"),
+                summary.get("fills", 0),
+                summary.get("avg_r_multiple"),
+                summary.get("realized_pnl"),
+                summary.get("starting_equity"),
+                summary.get("ending_total_equity"),
+            ),
+        )
+        self.conn.commit()
+
+    def load_backtest_runs(self, limit: int = 50) -> list[dict]:
+        rows = self.conn.execute(
+            """
+            SELECT id, run_at, strategy_id, symbol, start_date, end_date,
+                   source, next_bar, apply_costs, total_return_pct,
+                   max_drawdown_pct, sell_win_rate_pct, sharpe_ratio,
+                   fills, avg_r_multiple, realized_pnl, starting_equity,
+                   ending_equity
+            FROM backtest_runs
+            ORDER BY id DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+        return [dict(row) for row in rows]
+
+    def delete_backtest_run(self, run_id: int) -> None:
+        self.conn.execute("DELETE FROM backtest_runs WHERE id = ?", (run_id,))
+        self.conn.commit()
     def save_quote_snapshots(self, quotes: list[Quote]) -> None:
         with self.conn:
             self.conn.executemany(
