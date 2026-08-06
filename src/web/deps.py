@@ -14,7 +14,7 @@ CONFIG_DIR = BASE_DIR / "config"
 NAV = [
     ("监控", [
         ("概览", "/", "dashboard"),
-        ("股票", "/watchlist", "eye"),
+        ("股票池", "/watchlist", "eye"),
         ("预警", "/alerts", "bell"),
         ("行情", "/markets", "trending"),
     ]),

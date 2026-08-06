@@ -37,9 +37,16 @@ async def add_position(
 ):
     store = get_store(request)
     symbol = symbol.strip()
+    name = name.strip()
     if symbol and market in _MARKETS and currency in _CURRENCIES:
-        store.upsert_position(market, symbol, name.strip(), currency, quantity, avg_cost, realized_pnl)
-        set_flash(request, f"已新增 {symbol}")
+        store.upsert_position(market, symbol, name, currency, quantity, avg_cost, realized_pnl)
+        # Auto-add to watchlist if not already present
+        watchlist = {s["symbol"] for s in store.load_watchlist(include_disabled=True)}
+        if symbol not in watchlist:
+            store.add_stock(symbol, name, market, enabled=True)
+            set_flash(request, f"已新增 {symbol}（已自动加入股票池）")
+        else:
+            set_flash(request, f"已新增 {symbol}")
     return RedirectResponse("/portfolio", status_code=303)
 
 
