@@ -3,46 +3,87 @@
 <section>
   <h2>账户余额</h2>
   <table>
-    <tr><th>币种</th><th class="num">现金</th><th class="num">预留</th><th>更新时间</th></tr>
-    {% for b in balances %}
-    <tr><td>{{ b.currency }}</td><td class="num">{{ "%.2f"|format(b.cash) }}</td><td class="num">{{ "%.2f"|format(b.reserved_cash) }}</td><td class="mono sm">{{ b.updated_at }}</td></tr>
-    {% else %}<tr><td colspan="4" class="empty">暂无账户</td></tr>{% endfor %}
+  <tr><th>币种</th><th class="num">现金</th><th class="num">预留</th><th>更新时间</th></tr>
+  {% for b in balances %}
+  <tr><td>{{ b.currency }}</td><td class="num">{{ "%.2f"|format(b.cash) }}</td><td class="num">{{ "%.2f"|format(b.reserved_cash) }}</td><td class="mono sm">{{ b.updated_at }}</td></tr>
+  {% else %}<tr><td colspan="4" class="empty">无账户</td></tr>{% endfor %}
   </table>
 </section>
 <section>
-  <h2>持仓</h2>
-  <table>
-    <tr><th>市场</th><th>代码</th><th>名称</th><th>币种</th><th class="num">数量</th><th class="num">均价</th><th class="num">已实现</th></tr>
-    {% for p in positions %}
-    <tr><td>{{ p.market }}</td><td>{{ p.symbol }}</td><td>{{ p.name }}</td><td>{{ p.currency }}</td><td class="num">{{ p.quantity }}</td><td class="num">{{ "%.4f"|format(p.avg_cost) }}</td><td class="num{% if p.realized_pnl >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(p.realized_pnl) }}</td></tr>
-    {% else %}<tr><td colspan="7" class="empty">无持仓</td></tr>{% endfor %}
-  </table>
+  <h2>新增持仓</h2>
+  <form class="row-form" method="post" action="/portfolio/add">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <select name="market" required>
+      <option value="A股">A股</option>
+      <option value="港股">港股</option>
+      <option value="美股">美股</option>
+    </select>
+    <input type="text" name="symbol" placeholder="代码" required>
+    <input type="text" name="name" placeholder="名称" required>
+    <select name="currency">
+      <option value="CNY">CNY</option><option value="HKD">HKD</option><option value="USD">USD</option>
+    </select>
+    <input type="number" name="quantity" placeholder="数量" step="1" required>
+    <input type="number" name="avg_cost" placeholder="成本价" step="0.0001" required>
+    <button class="btn primary sm" type="submit">新增</button>
+  </form>
 </section>
 <section>
-  <h2>订单</h2>
+  <h2>持仓列表</h2>
   <table>
-    <tr><th>时间</th><th>策略</th><th>代码</th><th>方向</th><th class="num">数量</th><th class="num">价格</th><th>状态</th><th>原因</th></tr>
-    {% for o in orders %}
-    <tr><td class="mono sm">{{ o.created_at }}</td><td class="mono">{{ o.strategy_id }}</td><td>{{ o.symbol }}</td><td>{{ o.side }}</td><td class="num">{{ o.quantity }}</td><td class="num">{{ o.price }}</td><td>{% if o.status == "FILLED" %}<span class="badge ok">成交</span>{% else %}<span class="badge off">拒绝</span>{% endif %}</td><td>{{ o.reason }}</td></tr>
-    {% else %}<tr><td colspan="8" class="empty">无订单</td></tr>{% endfor %}
+  <tr><th>市场</th><th>代码</th><th>名称</th><th>币种</th><th class="num">数量</th><th class="num">成本价</th><th class="num">当前价</th><th class="num">涨跌幅</th><th class="num">浮动盈亏</th><th class="num">PnL%</th><th>操作</th></tr>
+  {% for p in positions %}
+  <tr id="pos-{{ p.market }}-{{ p.symbol }}">
+    <td>{{ p.market }}</td><td class="mono">{{ p.symbol }}</td><td>{{ p.name }}</td><td>{{ p.currency }}</td>
+    <td class="num">{{ p.quantity }}</td><td class="num">{{ "%.4f"|format(p.avg_cost) }}</td>
+    <td class="num">{% if p.current_price %}{{ "%.4f"|format(p.current_price) }}{% else %}-{% endif %}</td>
+    <td class="num{% if p.change_pct and p.change_pct >= 0 %} up{% elif p.change_pct %} down{% endif %}">{% if p.change_pct is not none %}{{ "%.2f"|format(p.change_pct) }}%{% else %}-{% endif %}</td>
+    <td class="num{% if p.unrealized_pnl and p.unrealized_pnl >= 0 %} up{% elif p.unrealized_pnl %} down{% endif %}">{% if p.unrealized_pnl is not none %}{{ "%.2f"|format(p.unrealized_pnl) }}{% else %}-{% endif %}</td>
+    <td class="num{% if p.pnl_pct and p.pnl_pct >= 0 %} up{% elif p.pnl_pct %} down{% endif %}">{% if p.pnl_pct is not none %}{{ "%.2f"|format(p.pnl_pct) }}%{% else %}-{% endif %}</td>
+    
+    <td>
+      <div class="actions">
+        <button class="btn sm" onclick="toggleEdit('{{ p.market }}','{{ p.symbol }}')">编辑</button>
+        <form method="post" action="/portfolio/delete" onsubmit="return confirm('删除 {{ p.symbol }}?')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="market" value="{{ p.market }}">
+          <input type="hidden" name="symbol" value="{{ p.symbol }}">
+          <button class="btn sm danger" type="submit">刪除</button>
+        </form>
+      </div>
+    </td>
+  </tr>
+  <tr class="edit-row" id="edit-{{ p.market }}-{{ p.symbol }}" style="display:none;">
+    <td colspan="11">
+      <form class="row-form" method="post" action="/portfolio/edit">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="market" value="{{ p.market }}">
+        <input type="hidden" name="old_symbol" value="{{ p.symbol }}">
+        <input type="text" name="symbol" value="{{ p.symbol }}" placeholder="代码" required>
+        <input type="text" name="name" value="{{ p.name }}" placeholder="名称" required>
+        <select name="currency">
+          {% set _c %}{{ p.currency }}{% endset %}
+          <option value="CNY"{{ " selected" if p.currency == "CNY" else "" }}>CNY</option>
+          <option value="HKD"{{ " selected" if p.currency == "HKD" else "" }}>HKD</option>
+          <option value="USD"{{ " selected" if p.currency == "USD" else "" }}>USD</option>
+        </select>
+        <input type="number" name="quantity" value="{{ p.quantity }}" step="1" placeholder="数量" required>
+        <input type="number" name="avg_cost" value="{{ "%.4f"|format(p.avg_cost) }}" step="0.0001" placeholder="成本价" required>
+        <button class="btn primary sm" type="submit">保存</button>
+        <button class="btn sm" type="button" onclick="toggleEdit('{{ p.market }}','{{ p.symbol }}')">取消</button>
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="11" class="empty">无持仓</td></tr>
+  {% endfor %}
   </table>
 </section>
-<section>
-  <h2>成交</h2>
-  <table>
-    <tr><th>时间</th><th>代码</th><th>方向</th><th class="num">数量</th><th class="num">成交价</th><th class="num">金额</th><th class="num">费用</th></tr>
-    {% for f in fills %}
-    <tr><td class="mono sm">{{ f.filled_at }}</td><td>{{ f.symbol }}</td><td>{{ f.side }}</td><td class="num">{{ f.quantity }}</td><td class="num">{{ f.fill_price }}</td><td class="num">{{ "%.2f"|format(f.amount) }}</td><td class="num">{{ f.fee }}</td></tr>
-    {% else %}<tr><td colspan="7" class="empty">无成交</td></tr>{% endfor %}
-  </table>
-</section>
-<section>
-  <h2>策略信号</h2>
-  <table>
-    <tr><th>时间</th><th>策略</th><th>代码</th><th>动作</th><th class="num">触发值</th><th class="num">当前值</th><th class="num">报价</th></tr>
-    {% for s in signals %}
-    <tr><td class="mono sm">{{ s.timestamp }}</td><td class="mono">{{ s.strategy_id }}</td><td>{{ s.symbol }}</td><td>{{ s.action }}</td><td class="num">{{ s.trigger_value }}</td><td class="num">{{ s.current_value }}</td><td class="num">{{ s.quote_price }}</td></tr>
-    {% else %}<tr><td colspan="7" class="empty">无信号</td></tr>{% endfor %}
-  </table>
-</section>
+
+<script>
+function toggleEdit(market, symbol) {
+  var row = document.getElementById("edit-" + market + "-" + symbol);
+  if (row) { row.style.display = (row.style.display === "none") ? "table-row" : "none"; }
+}
+</script>
 {% endblock %}

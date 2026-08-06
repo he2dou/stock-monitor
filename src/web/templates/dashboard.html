@@ -5,7 +5,7 @@
   <div class="stat"><span class="k">预警规则</span><span class="v">{{ counts.alerts }}</span></div>
   <div class="stat"><span class="k">订单</span><span class="v">{{ counts.orders }}</span></div>
   <div class="stat"><span class="k">成交</span><span class="v">{{ counts.fills }}</span></div>
-  <div class="stat"><span class="k">已实现盈亏</span><span class="v{% if counts.realized_pnl >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(counts.realized_pnl) }}</span></div>
+  <div class="stat"><span class="k">浮动盈亏</span><span class="v{% if counts.unrealized_pnl >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(counts.unrealized_pnl) }}</span></div>
 </div>
 <section>
   <h2>账户余额</h2>
@@ -19,9 +19,9 @@
 <section>
   <h2>持仓</h2>
   <table>
-    <tr><th>市场</th><th>代码</th><th>名称</th><th>币种</th><th class="num">数量</th><th class="num">均价</th><th class="num">已实现</th></tr>
+    <tr><th>市场</th><th>代码</th><th>名称</th><th>币种</th><th class="num">数量</th><th class="num">均价</th><th class="num">浮动盈亏</th></tr>
     {% for p in positions %}
-    <tr><td>{{ p.market }}</td><td>{{ p.symbol }}</td><td>{{ p.name }}</td><td>{{ p.currency }}</td><td class="num">{{ p.quantity }}</td><td class="num">{{ "%.4f"|format(p.avg_cost) }}</td><td class="num{% if p.realized_pnl >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(p.realized_pnl) }}</td></tr>
+    <tr><td>{{ p.market }}</td><td>{{ p.symbol }}</td><td>{{ p.name }}</td><td>{{ p.currency }}</td><td class="num">{{ p.quantity }}</td><td class="num">{{ "%.4f"|format(p.avg_cost) }}</td><td class="num{% if p.unrealized_pnl and p.unrealized_pnl >= 0 %} up{% elif p.unrealized_pnl %} down{% endif %}">{% if p.unrealized_pnl is not none %}{{ "%.2f"|format(p.unrealized_pnl) }}{% else %}-{% endif %}</td></tr>
     {% else %}<tr><td colspan="7" class="empty">无持仓</td></tr>{% endfor %}
   </table>
 </section>

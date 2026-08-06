@@ -13,7 +13,7 @@ from src.web.auth import router as auth_router, _is_auth_enabled
 from src.web.csrf_middleware import CSRFMiddleware
 from src.web.auth_middleware import AuthMiddleware
 from src.web.routes import (
-    alerts, backtest, dashboard, markets, ops, portfolio, strategies, watchlist,
+    alerts, backtest, dashboard, markets, ops, orders, portfolio, strategies, watchlist,
 )
 
 
@@ -43,6 +43,7 @@ def create_app(store=None, config_dir: Path | None = None):
     app.include_router(alerts.router)
     app.include_router(markets.router)
     app.include_router(portfolio.router)
+    app.include_router(orders.router)
     app.include_router(strategies.router)
     app.include_router(backtest.router)
     app.include_router(ops.router)

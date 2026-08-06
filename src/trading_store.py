@@ -522,6 +522,15 @@ class TradingStore:
                  float(realized_pnl), utc_now()),
             )
 
+    def delete_position(self, market: str, symbol: str) -> int:
+        """Delete a position row. Returns rows affected (0/1)."""
+        with self.conn:
+            cursor = self.conn.execute(
+                "DELETE FROM positions WHERE market = ? AND symbol = ?",
+                (market, symbol),
+            )
+            return int(cursor.rowcount)
+
     def record_signal(self, signal) -> str:
         signal_id = str(uuid.uuid4())
         with self.conn:

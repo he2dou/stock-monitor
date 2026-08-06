@@ -11,8 +11,21 @@ def counts(store) -> dict:
         "alerts": store.alert_rule_count(),
         "orders": store.order_count(),
         "fills": store.fill_count(),
-        "realized_pnl": store.realized_pnl(),
+        "unrealized_pnl": _unrealized_pnl(store),
     }
+
+
+def _unrealized_pnl(store) -> float:
+    sql = (
+        "SELECT COALESCE(SUM((q.price - p.avg_cost) * p.quantity), 0) AS pnl " 
+        "FROM positions p " 
+        "INNER JOIN (SELECT symbol, price, change_pct FROM quote_snapshots qs " 
+        "  INNER JOIN (SELECT symbol AS s2, MAX(timestamp) AS mx FROM quote_snapshots GROUP BY symbol) m " 
+        "  ON qs.symbol = m.s2 AND qs.timestamp = m.mx) q ON q.symbol = p.symbol " 
+        "WHERE p.quantity > 0"
+    )
+    row = store.conn.execute(sql).fetchone()
+    return float(row["pnl"]) if row else 0.0
 
 
 def account_balances(store) -> list[dict]:
@@ -25,13 +38,32 @@ def account_balances(store) -> list[dict]:
 
 def positions(store, include_zero: bool = False) -> list[dict]:
     sql = (
-        "SELECT market, symbol, name, currency, quantity, avg_cost, realized_pnl, updated_at "
-        "FROM positions"
+        "SELECT p.market, p.symbol, p.name, p.currency, p.quantity, " 
+        "p.avg_cost, p.realized_pnl, p.updated_at, " 
+        "q.price AS current_price, q.change_pct AS change_pct " 
+        "FROM positions p " 
+        "LEFT JOIN (" 
+        "  SELECT symbol, price, change_pct FROM quote_snapshots qs " 
+        "  INNER JOIN (" 
+        "    SELECT symbol AS s2, MAX(timestamp) AS mx " 
+        "    FROM quote_snapshots GROUP BY symbol" 
+        "  ) m ON qs.symbol = m.s2 AND qs.timestamp = m.mx " 
+        ") q ON q.symbol = p.symbol"
     )
     if not include_zero:
-        sql += " WHERE quantity > 0"
-    sql += " ORDER BY market, symbol"
-    return _rows(store, sql)
+        sql += " WHERE p.quantity > 0"
+    sql += " ORDER BY p.market, p.symbol"
+    rows = _rows(store, sql)
+    # Compute unrealized PnL from current price
+    for r in rows:
+        cp = r.get("current_price")
+        if cp and r["quantity"] and r["avg_cost"]:
+            r["unrealized_pnl"] = round((cp - r["avg_cost"]) * r["quantity"], 2)
+            r["pnl_pct"] = round((cp / r["avg_cost"] - 1) * 100, 2) if r["avg_cost"] else 0.0
+        else:
+            r["unrealized_pnl"] = None
+            r["pnl_pct"] = None
+    return rows
 
 
 def orders(store, limit: int = 200) -> list[dict]:

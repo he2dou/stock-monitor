@@ -14,12 +14,13 @@ CONFIG_DIR = BASE_DIR / "config"
 NAV = [
     ("监控", [
         ("概览", "/", "dashboard"),
-        ("股票池", "/watchlist", "eye"),
+        ("股票", "/watchlist", "eye"),
         ("预警", "/alerts", "bell"),
         ("行情", "/markets", "trending"),
     ]),
     ("交易", [
         ("持仓", "/portfolio", "briefcase"),
+        ("委托", "/orders", "list"),
         ("策略", "/strategies", "target"),
         ("回测", "/backtest", "history"),
     ]),
@@ -41,6 +42,7 @@ ICONS = {
     "target": '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
     "history": '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
     "terminal": '<polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/>',
+    "list": '<line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/>',
     "logout": '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>',
 }
 

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>订单列表</h2>
+  <table>
+  <tr><th>时间</th><th>策略</th><th>代码</th><th>方向</th><th class="num">数量</th><th class="num">价格</th><th>状态</th><th>原因</th></tr>
+  {% for o in orders %}
+  <tr><td class="mono sm">{{ o.created_at }}</td><td class="mono">{{ o.strategy_id }}</td><td>{{ o.symbol }}</td><td>{{ o.side }}</td><td class="num">{{ o.quantity }}</td><td class="num">{{ o.price }}</td><td>{% if o.status == "FILLED" %}<span class="badge ok">已成交</span>{% else %}<span class="badge off">已拒绝</span>{% endif %}</td><td>{{ o.reason }}</td></tr>
+  {% else %}<tr><td colspan="8" class="empty">无订单</td></tr>{% endfor %}
+  </table>
+</section>
+<section>
+  <h2>成交明细</h2>
+  <table>
+  <tr><th>时间</th><th>代码</th><th>方向</th><th class="num">数量</th><th class="num">成交价</th><th class="num">金额</th><th class="num">手续费</th></tr>
+  {% for f in fills %}
+  <tr><td class="mono sm">{{ f.filled_at }}</td><td>{{ f.symbol }}</td><td>{{ f.side }}</td><td class="num">{{ f.quantity }}</td><td class="num">{{ f.fill_price }}</td><td class="num">{{ "%.2f"|format(f.amount) }}</td><td class="num">{{ f.fee }}</td></tr>
+  {% else %}<tr><td colspan="7" class="empty">无成交</td></tr>{% endfor %}
+  </table>
+</section>
+<section>
+  <h2>策略信号</h2>
+  <table>
+  <tr><th>时间</th><th>策略</th><th>代码</th><th>方向</th><th class="num">触发值</th><th class="num">当前值</th><th class="num">行情</th></tr>
+  {% for s in signals %}
+  <tr><td class="mono sm">{{ s.timestamp }}</td><td class="mono">{{ s.strategy_id }}</td><td>{{ s.symbol }}</td><td>{{ s.action }}</td><td class="num">{{ s.trigger_value }}</td><td class="num">{{ s.current_value }}</td><td class="num">{{ s.quote_price }}</td></tr>
+  {% else %}<tr><td colspan="7" class="empty">无信号</td></tr>{% endfor %}
+  </table>
+</section>
+{% endblock %}
