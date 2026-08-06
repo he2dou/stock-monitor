@@ -7751,3 +7751,7 @@ sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in
 2026-08-06 18:13:50,107 [INFO] apscheduler.scheduler: Scheduler started
 2026-08-06 18:13:50,108 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
 2026-08-06 18:13:50,163 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-06 18:23:50,112 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 18:33:50 CST)" (scheduled at 2026-08-06 18:23:50.107483+08:00)
+2026-08-06 18:23:50,116 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 18:23:50,117 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 18:23:50,118 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 18:33:50 CST)" executed successfully

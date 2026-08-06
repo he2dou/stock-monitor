@@ -77,7 +77,7 @@ async def run(
     symbol: str = Form(""),
     start: str = Form(""),
     end: str = Form(""),
-    source: str = Form("quote-snapshots"),
+    source: str = Form("daily-bars"),
     next_bar: str = Form("0"),
     apply_costs: str = Form("0"),
 ):
