@@ -134,3 +134,21 @@ td.num,th.num{text-align:right}
 .side.collapsed .nav-toggle{position:fixed;top:14px;left:10px;z-index:100}
 .strategy-item{border-top:1px solid var(--line);padding:12px 0}.strategy-item:first-of-type{border-top:0}.strategy-item .section-head{margin-bottom:8px}.strategy-item form{margin-top:8px}
 .inline{display:inline;margin:0}.link-btn{border:0;background:none;color:var(--accent);cursor:pointer;padding:0 3px}.badge{margin-right:4px}
+
+/* right-side drawer */
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;opacity:0;transition:opacity .2s}
+.drawer-overlay.open{display:block;opacity:1}
+.bt-drawer{position:fixed;top:0;right:0;width:780px;max-width:95vw;height:100vh;background:var(--panel);border-left:1px solid var(--line);box-shadow:-4px 0 24px rgba(0,0,0,.1);z-index:201;transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column}
+.bt-drawer.open{transform:translateX(0)}
+.bt-drawer-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);flex:0 0 auto}
+.bt-drawer-head h3{margin:0;font-size:14px;font-weight:600}
+.bt-drawer-close{border:0;background:none;font-size:22px;cursor:pointer;color:var(--muted);padding:0 4px;line-height:1}
+.bt-drawer-close:hover{color:var(--ink)}
+.bt-drawer-body{flex:1 1 auto;overflow-y:auto;padding:16px 18px}
+.bt-drawer-body .stats{gap:8px}
+.bt-drawer-body .stat{padding:8px 10px}
+.bt-drawer-body .stat .v{font-size:15px}
+.bt-drawer-body .hint{margin-bottom:12px}
+.bt-drawer-body h3{margin:16px 0 8px;font-size:13px}
+.bt-drawer-body table{font-size:12px}
+.bt-drawer-loading{padding:40px;text-align:center;color:var(--muted)}

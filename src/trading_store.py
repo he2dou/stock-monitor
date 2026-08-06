@@ -218,7 +218,8 @@ class TradingStore:
                 avg_r_multiple REAL,
                 realized_pnl REAL,
                 starting_equity REAL,
-                ending_equity REAL
+                ending_equity REAL,
+                summary_json TEXT
             );            CREATE TABLE IF NOT EXISTS watchlist_items (
                 symbol TEXT PRIMARY KEY,
                 name TEXT NOT NULL,
@@ -297,6 +298,12 @@ class TradingStore:
         if "initial_cash" not in balance_columns:
             self.conn.execute("ALTER TABLE account_balances ADD COLUMN initial_cash REAL")
             self.conn.execute("UPDATE account_balances SET initial_cash = cash WHERE initial_cash IS NULL")
+
+        backtest_columns = {
+            row["name"] for row in self.conn.execute("PRAGMA table_info(backtest_runs)").fetchall()
+        }
+        if "summary_json" not in backtest_columns:
+            self.conn.execute("ALTER TABLE backtest_runs ADD COLUMN summary_json TEXT")
 
         # Convert legacy per-strategy symbols into explicit bindings once.
         for row in self.conn.execute(
@@ -468,15 +475,18 @@ class TradingStore:
             self.upsert_strategy(config)
         return len(strategies)
 
-    def save_backtest_run(self, params: dict, summary: dict) -> None:
-        self.conn.execute(
+    def save_backtest_run(self, params: dict, summary: dict) -> int:
+        full = dict(summary)
+        full.pop("equity_curve", None)
+        summary_text = json.dumps(full, ensure_ascii=False, default=str)
+        cursor = self.conn.execute(
             """
             INSERT INTO backtest_runs
             (run_at, strategy_id, symbol, start_date, end_date, source,
              next_bar, apply_costs, total_return_pct, max_drawdown_pct,
              sell_win_rate_pct, sharpe_ratio, fills, avg_r_multiple,
-             realized_pnl, starting_equity, ending_equity)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             realized_pnl, starting_equity, ending_equity, summary_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 utc_now(),
@@ -496,9 +506,26 @@ class TradingStore:
                 summary.get("realized_pnl"),
                 summary.get("starting_equity"),
                 summary.get("ending_total_equity"),
+                summary_text,
             ),
         )
         self.conn.commit()
+        return cursor.lastrowid
+
+    def get_backtest_run(self, run_id: int) -> dict | None:
+        row = self.conn.execute(
+            """
+            SELECT id, run_at, strategy_id, symbol, start_date, end_date,
+                   source, next_bar, apply_costs, total_return_pct,
+                   max_drawdown_pct, sell_win_rate_pct, sharpe_ratio,
+                   fills, avg_r_multiple, realized_pnl, starting_equity,
+                   ending_equity, summary_json
+            FROM backtest_runs
+            WHERE id = ?
+            """,
+            (run_id,),
+        ).fetchone()
+        return dict(row) if row else None
 
     def load_backtest_runs(self, limit: int = 50) -> list[dict]:
         rows = self.conn.execute(

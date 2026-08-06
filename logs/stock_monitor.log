@@ -7725,3 +7725,29 @@ sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in
 2026-08-06 17:57:51,460 [INFO] apscheduler.scheduler: Scheduler started
 2026-08-06 17:57:51,460 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
 2026-08-06 17:57:51,510 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-06 18:06:16,008 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-06 18:06:18,648 [INFO] __main__: ============================================================
+2026-08-06 18:06:18,648 [INFO] __main__: Stock Price Monitor starting...
+2026-08-06 18:06:18,648 [INFO] __main__: ============================================================
+2026-08-06 18:06:18,673 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 18:06:18,675 [INFO] __main__: Running initial fetch...
+2026-08-06 18:06:18,678 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 18:06:18,680 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 18:06:18,683 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-06 18:06:18,683 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-06 18:06:18,683 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-06 18:06:18,684 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-06 18:06:18,733 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-06 18:13:46,905 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-06 18:13:50,069 [INFO] __main__: ============================================================
+2026-08-06 18:13:50,069 [INFO] __main__: Stock Price Monitor starting...
+2026-08-06 18:13:50,070 [INFO] __main__: ============================================================
+2026-08-06 18:13:50,096 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 18:13:50,098 [INFO] __main__: Running initial fetch...
+2026-08-06 18:13:50,101 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 18:13:50,103 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 18:13:50,107 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-06 18:13:50,107 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-06 18:13:50,107 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-06 18:13:50,108 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-06 18:13:50,163 [INFO] __main__: Web admin running at http://127.0.0.1:8000

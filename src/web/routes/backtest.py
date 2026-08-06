@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
+
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 
 from src.web.auth import ensure_login
 from src.web.deps import get_store, pop_flash, render, resolve_path, set_flash
@@ -27,8 +29,45 @@ async def page(request: Request):
     return render(
         request, "backtest.html", "回测",
         strategy_ids=_strategy_ids(request), result=None, trades=None,
+        detail=None, history=_history(request), flash=pop_flash(request),
+    )
+
+
+@router.get("/detail/{run_id}")
+async def detail(request: Request, run_id: int):
+    store = get_store(request)
+    run = store.get_backtest_run(run_id)
+    if not run:
+        set_flash(request, "回测记录不存在")
+        return RedirectResponse("/backtest", status_code=303)
+    parsed = None
+    if run.get("summary_json"):
+        try:
+            parsed = json.loads(run["summary_json"])
+        except (TypeError, json.JSONDecodeError):
+            parsed = None
+    return render(
+        request, "backtest.html", "回测",
+        strategy_ids=_strategy_ids(request), result=None, trades=None,
+        detail={"run": run, "summary": parsed},
         history=_history(request), flash=pop_flash(request),
     )
+
+
+
+@router.get("/api/detail/{run_id}")
+async def api_detail(request: Request, run_id: int):
+    store = get_store(request)
+    run = store.get_backtest_run(run_id)
+    if not run:
+        return JSONResponse({"error": "记录不存在"}, status_code=404)
+    parsed = None
+    if run.get("summary_json"):
+        try:
+            parsed = json.loads(run["summary_json"])
+        except (TypeError, json.JSONDecodeError):
+            parsed = None
+    return JSONResponse({"run": run, "summary": parsed})
 
 
 @router.post("/run")
@@ -43,9 +82,6 @@ async def run(
     apply_costs: str = Form("0"),
 ):
     store = get_store(request)
-    # Use runtime strategies (expanded with symbol from bindings) so the
-    # engine can actually match quotes.  Without a symbol the strategy
-    # never triggers and the backtest produces zero trades.
     strategies = store.load_runtime_strategies()
     app_config = request.app.state.app_config
     paper = app_config.get("paper_trading", {}) or {}
@@ -76,7 +112,7 @@ async def run(
     return render(
         request, "backtest.html", "回测",
         strategy_ids=_strategy_ids(request), result=summary, trades=trades,
-        history=_history(request), flash=None,
+        detail=None, history=_history(request), flash=None,
     )
 
 

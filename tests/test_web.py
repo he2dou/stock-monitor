@@ -225,6 +225,52 @@ def test_backtest_history_saved_and_listed(tmp_path):
     assert len(store.load_backtest_runs()) == 1
     store.close()
 
+def test_backtest_detail_shows_full_report(tmp_path):
+    app, store = _make_app(tmp_path)
+    client = TestClient(app)
+    store.save_backtest_run(
+        {"strategy_id": "s1", "symbol": "SOXL", "start": "2026-01-01",
+         "end": "2026-06-01", "source": "daily-bars",
+         "next_bar": True, "apply_costs": True},
+        {"total_return_pct": 12.5, "max_drawdown_pct": -5.0,
+         "sell_win_rate_pct": 60.0, "sharpe_ratio": 1.2,
+         "sortino_ratio": 1.5, "calmar_ratio": 2.0,
+         "fills": 3, "avg_r_multiple": 1.5, "profit_factor": 2.1,
+         "expectancy_per_trade": 50.0, "realized_pnl": 500.0,
+         "starting_equity": 10000.0, "ending_total_equity": 11250.0,
+         "buy_hold_return_pct": 8.0, "avg_give_back_pct": 10.0,
+         "trades": [
+             {"date": "2026-01-05", "strategy_id": "s1", "symbol": "SOXL",
+              "side": "buy", "status": "FILLED", "quantity": 100,
+              "price": 10.0, "amount": 1000.0, "reason": ""},
+             {"date": "2026-03-01", "strategy_id": "s1", "symbol": "SOXL",
+              "side": "sell", "status": "FILLED", "quantity": 100,
+              "price": 12.5, "amount": 1250.0, "reason": ""},
+         ],
+         "open_positions": []},
+    )
+    runs = store.load_backtest_runs()
+    rid = runs[0]["id"]
+
+    # JSON API returns full detail for the drawer
+    r = client.get(f"/backtest/api/detail/{rid}")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["run"]["strategy_id"] == "s1"
+    assert data["summary"]["fills"] == 3
+    assert data["summary"]["sortino_ratio"] == 1.5
+    trades = data["summary"]["trades"]
+    assert len(trades) == 2
+    assert trades[0]["date"] == "2026-01-05"
+    assert trades[1]["date"] == "2026-03-01"
+
+    # Non-existent run returns 404
+    r = client.get("/backtest/api/detail/9999")
+    assert r.status_code == 404
+    store.close()
+
+
+
 def test_auth_redirect_and_login(tmp_path):
     app, store = _make_app(tmp_path, password="secret")
     client = TestClient(app)
