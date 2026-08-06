@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sqlite3
+import json
 import threading
 import uuid
 from pathlib import Path
@@ -180,10 +181,25 @@ class TradingStore:
             CREATE TABLE IF NOT EXISTS account_balances (
                 currency TEXT PRIMARY KEY,
                 cash REAL NOT NULL,
+                initial_cash REAL NOT NULL,
                 reserved_cash REAL NOT NULL DEFAULT 0,
                 updated_at TEXT NOT NULL
             );
 
+            CREATE TABLE IF NOT EXISTS strategy_items (
+                strategy_id TEXT PRIMARY KEY,
+                config_json TEXT NOT NULL,
+                enabled INTEGER NOT NULL DEFAULT 1,
+                updated_at TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS strategy_bindings (
+                strategy_id TEXT NOT NULL,
+                symbol TEXT NOT NULL,
+                enabled INTEGER NOT NULL DEFAULT 1,
+                updated_at TEXT NOT NULL,
+                PRIMARY KEY (strategy_id, symbol)
+            );
             CREATE TABLE IF NOT EXISTS watchlist_items (
                 symbol TEXT PRIMARY KEY,
                 name TEXT NOT NULL,
@@ -239,6 +255,48 @@ class TradingStore:
             """
         )
 
+        strategy_tables = {
+            row["name"] for row in self.conn.execute(
+                "SELECT name FROM sqlite_master WHERE type = 'table'"
+            ).fetchall()
+        }
+        if "strategy_configs" in strategy_tables and "strategy_items" not in strategy_tables:
+            self.conn.execute("ALTER TABLE strategy_configs RENAME TO strategy_items")
+        elif "strategy_configs" in strategy_tables and "strategy_items" in strategy_tables:
+            self.conn.execute(
+                """
+                INSERT OR IGNORE INTO strategy_items
+                (strategy_id, config_json, enabled, updated_at)
+                SELECT strategy_id, config_json, enabled, updated_at
+                FROM strategy_configs
+                """
+            )
+            self.conn.execute("DROP TABLE strategy_configs")
+        balance_columns = {
+            row["name"] for row in self.conn.execute("PRAGMA table_info(account_balances)").fetchall()
+        }
+        if "initial_cash" not in balance_columns:
+            self.conn.execute("ALTER TABLE account_balances ADD COLUMN initial_cash REAL")
+            self.conn.execute("UPDATE account_balances SET initial_cash = cash WHERE initial_cash IS NULL")
+
+        # Convert legacy per-strategy symbols into explicit bindings once.
+        for row in self.conn.execute(
+            "SELECT strategy_id, config_json FROM strategy_items"
+        ).fetchall():
+            try:
+                config = json.loads(row["config_json"])
+            except (TypeError, json.JSONDecodeError):
+                continue
+            symbol = str(config.get("symbol", "") or "").strip()
+            if symbol:
+                self.conn.execute(
+                    """
+                    INSERT OR IGNORE INTO strategy_bindings
+                    (strategy_id, symbol, enabled, updated_at)
+                    VALUES (?, ?, ?, ?)
+                    """,
+                    (row["strategy_id"], symbol, int(bool(config.get("enabled", True))), utc_now()),
+                )
         signal_columns = {
             row["name"] for row in self.conn.execute("PRAGMA table_info(strategy_signals)").fetchall()
         }
@@ -299,11 +357,97 @@ class TradingStore:
                 self.conn.execute(
                     """
                     INSERT OR IGNORE INTO account_balances
-                    (currency, cash, reserved_cash, updated_at)
-                    VALUES (?, ?, 0, ?)
+                    (currency, cash, initial_cash, reserved_cash, updated_at)
+                    VALUES (?, ?, ?, 0, ?)
                     """,
-                    (currency, float(cash), now),
+                    (currency, float(cash), float(cash), now),
                 )
+
+    def load_strategies(self) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT config_json FROM strategy_items ORDER BY strategy_id"
+        ).fetchall()
+        return [json.loads(row["config_json"]) for row in rows]
+
+    def upsert_strategy(self, config: dict) -> None:
+        strategy_id = str(config.get("id", "")).strip()
+        if not strategy_id:
+            raise ValueError("Strategy missing id")
+        now = utc_now()
+        stored_config = dict(config)
+        legacy_symbol = str(stored_config.pop("symbol", "") or "").strip()
+        with self.conn:
+            self.conn.execute(
+                """INSERT INTO strategy_items
+                (strategy_id, config_json, enabled, updated_at) VALUES (?, ?, ?, ?)
+                ON CONFLICT(strategy_id) DO UPDATE SET
+                config_json=excluded.config_json, enabled=excluded.enabled, updated_at=excluded.updated_at""",
+                (strategy_id, json.dumps(stored_config, ensure_ascii=False), int(bool(config.get("enabled", True))), now),
+            )
+            if legacy_symbol:
+                self.conn.execute(
+                    """INSERT INTO strategy_bindings (strategy_id, symbol, enabled, updated_at)
+                    VALUES (?, ?, ?, ?)
+                    ON CONFLICT(strategy_id, symbol) DO UPDATE SET enabled=excluded.enabled, updated_at=excluded.updated_at""",
+                    (strategy_id, legacy_symbol, int(bool(config.get("enabled", True))), now),
+                )
+    def delete_strategy(self, strategy_id: str) -> bool:
+        with self.conn:
+            cursor = self.conn.execute("DELETE FROM strategy_items WHERE strategy_id = ?", (strategy_id,))
+            self.conn.execute("DELETE FROM strategy_bindings WHERE strategy_id = ?", (strategy_id,))
+        return cursor.rowcount > 0
+
+    def load_strategy_bindings(self, strategy_id: str | None = None, include_disabled: bool = True) -> list[dict]:
+        sql = "SELECT strategy_id, symbol, enabled, updated_at FROM strategy_bindings"
+        params: list = []
+        clauses = []
+        if strategy_id is not None:
+            clauses.append("strategy_id = ?")
+            params.append(strategy_id)
+        if not include_disabled:
+            clauses.append("enabled = 1")
+        if clauses:
+            sql += " WHERE " + " AND ".join(clauses)
+        sql += " ORDER BY strategy_id, symbol"
+        return [dict(row) for row in self.conn.execute(sql, params).fetchall()]
+
+    def upsert_strategy_binding(self, strategy_id: str, symbol: str, enabled: bool = True) -> None:
+        strategy_id, symbol = str(strategy_id).strip(), str(symbol).strip()
+        if not strategy_id or not symbol:
+            raise ValueError("Strategy binding requires strategy_id and symbol")
+        with self.conn:
+            self.conn.execute(
+                """INSERT INTO strategy_bindings (strategy_id, symbol, enabled, updated_at)
+                VALUES (?, ?, ?, ?)
+                ON CONFLICT(strategy_id, symbol) DO UPDATE SET enabled=excluded.enabled, updated_at=excluded.updated_at""",
+                (strategy_id, symbol, int(bool(enabled)), utc_now()),
+            )
+
+    def delete_strategy_binding(self, strategy_id: str, symbol: str) -> bool:
+        with self.conn:
+            cursor = self.conn.execute(
+                "DELETE FROM strategy_bindings WHERE strategy_id = ? AND symbol = ?",
+                (strategy_id, symbol),
+            )
+        return cursor.rowcount > 0
+
+    def load_runtime_strategies(self) -> list[dict]:
+        configs = {item.get("id"): item for item in self.load_strategies() if item.get("id")}
+        result = []
+        for binding in self.load_strategy_bindings(include_disabled=False):
+            config = configs.get(binding["strategy_id"])
+            if not config or not config.get("enabled", True):
+                continue
+            item = dict(config)
+            item["symbol"] = binding["symbol"]
+            result.append(item)
+        return result
+    def seed_strategies(self, strategies: list[dict]) -> int:
+        if self.conn.execute("SELECT 1 FROM strategy_items LIMIT 1").fetchone():
+            return 0
+        for config in strategies:
+            self.upsert_strategy(config)
+        return len(strategies)
 
     def save_quote_snapshots(self, quotes: list[Quote]) -> None:
         with self.conn:
@@ -483,12 +627,34 @@ class TradingStore:
         with self.conn:
             self.conn.execute(
                 """
-                INSERT INTO account_balances (currency, cash, reserved_cash, updated_at)
-                VALUES (?, ?, 0, ?)
+                INSERT INTO account_balances (currency, cash, initial_cash, reserved_cash, updated_at)
+                    VALUES (?, ?, ?, 0, ?)
                 ON CONFLICT(currency) DO UPDATE SET cash=excluded.cash, updated_at=excluded.updated_at
                 """,
-                (currency, float(cash), utc_now()),
+                (currency, float(cash), float(cash), utc_now()),
             )
+
+    def upsert_account_balance(self, currency: str, initial_cash: float, cash: float, reserved_cash: float = 0.0) -> None:
+        now = utc_now()
+        with self.conn:
+            self.conn.execute(
+                """
+                INSERT INTO account_balances
+                (currency, cash, initial_cash, reserved_cash, updated_at)
+                VALUES (?, ?, ?, ?, ?)
+                ON CONFLICT(currency) DO UPDATE SET
+                    cash=excluded.cash, initial_cash=excluded.initial_cash,
+                    reserved_cash=excluded.reserved_cash, updated_at=excluded.updated_at
+                """,
+                (currency, float(cash), float(initial_cash), float(reserved_cash), now),
+            )
+
+    def delete_account_balance(self, currency: str) -> bool:
+        with self.conn:
+            cursor = self.conn.execute(
+                "DELETE FROM account_balances WHERE currency = ?", (currency,)
+            )
+        return cursor.rowcount > 0
 
     def get_position(self, market: str, symbol: str) -> dict:
         row = self.conn.execute(

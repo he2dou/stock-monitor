@@ -29,12 +29,27 @@ def _unrealized_pnl(store) -> float:
 
 
 def account_balances(store) -> list[dict]:
-    return _rows(
+    rows = _rows(
         store,
-        "SELECT currency, cash, reserved_cash, updated_at "
+        "SELECT currency, cash, initial_cash, reserved_cash, updated_at "
         "FROM account_balances ORDER BY currency",
     )
-
+    position_rows = positions(store)
+    values_by_currency: dict[str, dict[str, float]] = {}
+    for position in position_rows:
+        currency = position["currency"]
+        values = values_by_currency.setdefault(currency, {"market_value": 0.0, "unrealized_pnl": 0.0})
+        if position.get("current_price") is not None:
+            values["market_value"] += position["current_price"] * position["quantity"]
+        if position.get("unrealized_pnl") is not None:
+            values["unrealized_pnl"] += position["unrealized_pnl"]
+    for row in rows:
+        values = values_by_currency.get(row["currency"], {"market_value": 0.0, "unrealized_pnl": 0.0})
+        row["available"] = row["cash"] - row["reserved_cash"]
+        row["market_value"] = values["market_value"]
+        row["unrealized_pnl"] = values["unrealized_pnl"]
+        row["total_assets"] = row["cash"] + row["market_value"]
+    return rows
 
 def positions(store, include_zero: bool = False) -> list[dict]:
     sql = (

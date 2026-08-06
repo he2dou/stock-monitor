@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <section>
-  <h2>大盘指数</h2>
+  <div class="section-head"><h2>大盘指数</h2><form method="post" action="/markets/update-snapshots"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="target" value="index"><button class="icon-btn" type="submit" aria-label="刷新大盘指数" title="刷新大盘指数"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8.1 8.1 0 0 0-14.8-4L3 10"/><path d="M3 4v6h6"/><path d="M4 13a8.1 8.1 0 0 0 14.8 4L21 14"/><path d="M21 20v-6h-6"/></svg></button></form></div>
   <table>
     <tr><th>市场</th><th>代码</th><th>名称</th><th class="num">点位</th><th class="num">涨跌%</th><th>快照日</th></tr>
     {% for i in indices %}
@@ -10,7 +10,7 @@
   </table>
 </section>
 <section>
-  <h2>股票最新行情</h2>
+  <div class="section-head"><h2>股票行情</h2><form method="post" action="/markets/update-snapshots"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="target" value="stock"><button class="icon-btn" type="submit" aria-label="刷新股票行情" title="刷新股票行情"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8.1 8.1 0 0 0-14.8-4L3 10"/><path d="M3 4v6h6"/><path d="M4 13a8.1 8.1 0 0 0 14.8 4L21 14"/><path d="M21 20v-6h-6"/></svg></button></form></div>
   <table>
     <tr><th>市场</th><th>代码</th><th>名称</th><th class="num">现价</th><th class="num">涨跌%</th><th class="num">成交量</th><th>快照日</th><th>时间</th></tr>
     {% for q in quotes %}

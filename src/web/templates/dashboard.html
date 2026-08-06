@@ -10,10 +10,10 @@
 <section>
   <h2>账户余额</h2>
   <table>
-    <tr><th>币种</th><th class="num">现金</th><th class="num">预留</th></tr>
+    <tr><th>币种</th><th class="num">初始资金</th><th class="num">总资产</th><th class="num">可用</th><th class="num">证券市值</th><th class="num">持仓盈亏</th></tr>
     {% for b in balances %}
-    <tr><td>{{ b.currency }}</td><td class="num">{{ "%.2f"|format(b.cash) }}</td><td class="num">{{ "%.2f"|format(b.reserved_cash) }}</td></tr>
-    {% else %}<tr><td colspan="3" class="empty">暂无账户</td></tr>{% endfor %}
+    <tr><td>{{ b.currency }}</td><td class="num">{{ "%.2f"|format(b.initial_cash) }}</td><td class="num">{{ "%.2f"|format(b.total_assets) }}</td><td class="num">{{ "%.2f"|format(b.available) }}</td><td class="num">{{ "%.2f"|format(b.market_value) }}</td><td class="num{% if b.unrealized_pnl >= 0 %} up{% else %} down{% endif %}">{{ "%.2f"|format(b.unrealized_pnl) }}</td></tr>
+    {% else %}<tr><td colspan="6" class="empty">暂无账户</td></tr>{% endfor %}
   </table>
 </section>
 <section>

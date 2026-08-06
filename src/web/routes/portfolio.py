@@ -24,6 +24,42 @@ async def portfolio_page(request: Request):
     )
 
 
+@router.post("/balance/add")
+async def add_balance(
+    request: Request,
+    currency: str = Form(...),
+    initial_cash: float = Form(...),
+    cash: float = Form(...),
+    reserved_cash: float = Form(0.0),
+):
+    store = get_store(request)
+    currency = currency.strip().upper()
+    if currency and initial_cash >= 0 and cash >= 0 and reserved_cash >= 0:
+        store.upsert_account_balance(currency, initial_cash, cash, reserved_cash)
+        set_flash(request, f"已新增账户 {currency}")
+    return RedirectResponse("/portfolio", status_code=303)
+
+@router.post("/balance/edit")
+async def edit_balance(
+    request: Request,
+    currency: str = Form(...),
+    initial_cash: float = Form(...),
+    cash: float = Form(...),
+    reserved_cash: float = Form(0.0),
+):
+    store = get_store(request)
+    if initial_cash >= 0 and cash >= 0 and reserved_cash >= 0:
+        store.upsert_account_balance(currency.strip().upper(), initial_cash, cash, reserved_cash)
+        set_flash(request, f"已保存账户 {currency}")
+    return RedirectResponse("/portfolio", status_code=303)
+
+@router.post("/balance/delete")
+async def delete_balance(request: Request, currency: str = Form(...)):
+    store = get_store(request)
+    deleted = store.delete_account_balance(currency.strip().upper())
+    set_flash(request, f"已删除账户 {currency}" if deleted else f"账户 {currency} 不存在")
+    return RedirectResponse("/portfolio", status_code=303)
+
 @router.post("/add")
 async def add_position(
     request: Request,

@@ -1,21 +1,100 @@
 {% extends "base.html" %}
 {% block content %}
 <section>
-  <h2>策略配置（编辑 config/strategies.yaml）</h2>
-  {% if error %}<div class="flash err">{{ error }}</div>{% endif %}
-  <form method="post" action="/strategies/save">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-    <textarea name="content" class="code" spellcheck="false">{{ content }}</textarea>
-    <div class="row-form" style="margin-top:10px"><button class="btn primary" type="submit">保存并校验</button><span class="hint">保存后下一轮监控自动生效，无需重启</span></div>
+  <div class="section-head"><h2>新增</h2></div>
+  <form class="row-form" method="post" action="/strategies/create">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <input name="strategy_id" placeholder="策略ID" required>
+    <select name="strategy_type" id="strategy_type" onchange="toggleTrigger()">
+      <option value="threshold">阈值</option>
+      <option value="breakout_pullback">突破回踩</option>
+      <option value="leveraged_breakout_pullback">杠杆突破回踩</option>
+    </select>
+    <select name="action" id="strategy_action">
+      <option value="buy">买入</option>
+      <option value="sell">卖出</option>
+    </select>
+    <select name="enabled">
+      <option value="1">启用</option>
+      <option value="0">停用</option>
+    </select>
+    <button class="btn primary sm" type="submit">新增</button>
   </form>
+  <div id="trigger_block" style="margin-top:10px">
+    <div class="hint">阈值触发条件</div>
+    <form class="row-form" method="post" action="/strategies/create" id="trigger_form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input name="strategy_id" placeholder="策略ID" required>
+      <input name="strategy_type" type="hidden" value="threshold">
+      <input name="action" type="hidden" value="buy">
+      <input name="enabled" type="hidden" value="1">
+      <select name="trigger_field"><option value="price">价格</option><option value="change_pct">涨跌幅</option></select>
+      <select name="trigger_op"><option value="above">高于</option><option value="below">低于</option></select>
+      <input name="trigger_value" type="number" step="0.01" placeholder="触发值" required>
+      <button class="btn primary sm" type="submit">新增</button>
+    </form>
+  </div>
+  <details style="margin-top:10px"><summary class="hint">进阶参数（JSON，可选）</summary>
+    <div class="hint">用于 breakout_pullback / leveraged_breakout_pullback 的 setup、sizing、constraints、costs 等嵌套配置</div>
+    <textarea name="extra_config" class="code" rows="6" placeholder='例如 {"sizing":{"type":"fixed_amount","amount":1000,"currency":"USD","lot_size":1},"constraints":{"cooldown_minutes":300}}'></textarea>
+  </details>
 </section>
 <section>
-  <h2>已加载策略（{{ strategies|length }}）</h2>
+  <div class="section-head"><h2>策略列表</h2><span class="hint">共 {{ strategies|length }} 条</span></div>
   <table>
-    <tr><th>ID</th><th>类型</th><th>代码</th><th>动作</th><th>启用</th></tr>
+    <tr><th>ID</th><th>类型</th><th>动作</th><th>状态</th><th>绑定股票</th><th>更新时间</th><th>操作</th></tr>
     {% for s in strategies %}
-    <tr><td class="mono">{{ s.id }}</td><td>{{ s.type }}</td><td>{{ s.symbol }}</td><td>{{ s.action }}</td><td>{% if s.enabled %}是{% else %}否{% endif %}</td></tr>
-    {% else %}<tr><td colspan="5" class="empty">无策略</td></tr>{% endfor %}
+    <tr>
+      <td class="mono">{{ s.id }}</td>
+      <td>{{ s.type }}</td>
+      <td>{{ s.action }}</td>
+      <td>{% if s.enabled %}<span class="badge ok">启用</span>{% else %}<span class="badge off">停用</span>{% endif %}</td>
+      <td>{% if s.bindings %}{{ s.bindings|length }} 只{% else %}<span class="hint">未绑定</span>{% endif %}</td>
+      <td class="mono sm">{{ s.updated_at or '-' }}</td>
+      <td><div class="actions">
+        <button class="btn sm" type="button" onclick="toggleStrategyRow('edit-{{ s.id }}')">编辑</button>
+        <button class="btn sm" type="button" onclick="toggleStrategyRow('bind-{{ s.id }}')">绑定</button>
+        <form method="post" action="/strategies/delete" onsubmit="return confirm('删除策略 {{ s.id }}？')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="strategy_id" value="{{ s.id }}">
+          <button class="btn sm danger" type="submit">删除</button>
+        </form>
+      </div></td>
+    </tr>
+    <tr class="edit-row" id="edit-{{ s.id }}" style="display:none"><td colspan="7">
+      <form class="row-form" method="post" action="/strategies/edit">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <textarea name="content" class="code" rows="8">{{ s|tojson(indent=2) }}</textarea>
+        <button class="btn primary sm" type="submit">保存</button><button class="btn sm" type="button" onclick="toggleStrategyRow('edit-{{ s.id }}')">取消</button>
+      </form>
+    </td></tr>
+    <tr class="edit-row" id="bind-{{ s.id }}" style="display:none"><td colspan="7">
+      <div class="hint">已绑定：{% for b in s.bindings %}<span class="badge ok">{{ b.symbol }}</span><form class="inline" method="post" action="/strategies/unbind"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="strategy_id" value="{{ s.id }}"><input type="hidden" name="symbol" value="{{ b.symbol }}"><button class="link-btn" type="submit">解除</button></form>{% else %}暂无{% endfor %}</div>
+      <form class="row-form" method="post" action="/strategies/bind">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="strategy_id" value="{{ s.id }}">
+        <select name="symbol" required><option value="">选择股票</option>{% for stock in stocks %}<option value="{{ stock.symbol }}">{{ stock.symbol }} {{ stock.name }}</option>{% endfor %}</select>
+        <button class="btn primary sm" type="submit">确认绑定</button><button class="btn sm" type="button" onclick="toggleStrategyRow('bind-{{ s.id }}')">取消</button>
+      </form>
+    </td></tr>
+    {% else %}<tr><td colspan="7" class="empty">暂无策略</td></tr>{% endfor %}
   </table>
 </section>
+<script>
+function toggleStrategyRow(id) {
+  var row = document.getElementById(id);
+  if (row) row.style.display = row.style.display === "none" ? "table-row" : "none";
+}
+function toggleTrigger() {
+  var t = document.getElementById("strategy_type");
+  var a = document.getElementById("strategy_action");
+  var block = document.getElementById("trigger_block");
+  if (t.value === "threshold") {
+    block.style.display = "";
+    a.value = "buy";
+  } else {
+    block.style.display = "none";
+    a.value = "buy";
+  }
+}
+toggleTrigger();
+</script>
 {% endblock %}

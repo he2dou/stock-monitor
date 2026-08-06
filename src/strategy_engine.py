@@ -38,8 +38,7 @@ def parse_strategy(raw: dict) -> TradingStrategy:
         raise StrategyConfigError(f"Invalid strategy action '{action}'")
     if strategy_type in {"breakout_pullback", "leveraged_breakout_pullback"} and action != "buy":
         raise StrategyConfigError(f"{strategy_type} strategy only supports buy action")
-    if "symbol" not in raw or not raw["symbol"]:
-        raise StrategyConfigError(f"Strategy {raw.get('id')} missing symbol")
+    symbol = str(raw.get("symbol", "") or "")
 
     trigger = _parse_trigger(raw) if strategy_type == "threshold" else None
     setup = _parse_breakout_pullback(raw) if strategy_type == "breakout_pullback" else None
@@ -51,7 +50,7 @@ def parse_strategy(raw: dict) -> TradingStrategy:
     return TradingStrategy(
         id=str(raw["id"]),
         enabled=bool(raw.get("enabled", True)),
-        symbol=str(raw["symbol"]),
+        symbol=symbol,
         action=action,
         trigger=trigger,
         sizing=_parse_sizing(raw),

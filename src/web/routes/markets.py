@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Form, Request
+from fastapi.responses import RedirectResponse
 
-from src.web.auth import ensure_login, ensure_csrf
-from src.web.deps import get_store, pop_flash, render
+from src.web.auth import ensure_login
+from src.web.deps import get_store, pop_flash, render, set_flash
 from src.web import queries
+from src.service import ops as svc
 
 router = APIRouter(prefix="/markets", dependencies=[Depends(ensure_login)])
 
@@ -33,6 +35,18 @@ async def markets_page(request: Request):
         flash=pop_flash(request),
     )
 
+
+@router.post("/update-snapshots")
+async def update_snapshots(request: Request, target: str = Form(...)):
+    if target not in {"stock", "index"}:
+        return RedirectResponse("/markets", status_code=303)
+
+    store = get_store(request)
+    result = svc.update_snapshots(
+        store, app_config=request.app.state.app_config, target=target, ignore_hours=True,
+    )
+    set_flash(request, f"已更新{target}快照：抓取 {result['fetched']}，保存 {result['saved']}")
+    return RedirectResponse("/markets", status_code=303)
 
 @router.get("/history/{symbol}")
 async def history(request: Request, symbol: str):

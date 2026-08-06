@@ -3,8 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, Form, Request
 
 from src.web.auth import ensure_login
-from src.web.deps import pop_flash, render, resolve_path
-from src.config_loader import load_strategies
+from src.web.deps import get_store, pop_flash, render, resolve_path
 from src.backtest import run_backtest
 
 router = APIRouter(prefix="/backtest", dependencies=[Depends(ensure_login)])
@@ -13,8 +12,7 @@ _TRUTHY = {"1", "on", "true", "yes"}
 
 
 def _strategies(request: Request) -> list[dict]:
-    path = request.app.state.config_dir / "strategies.yaml"
-    return load_strategies(str(path)) if path.exists() else []
+    return get_store(request).load_strategies()
 
 
 @router.get("")
