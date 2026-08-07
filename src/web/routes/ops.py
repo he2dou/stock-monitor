@@ -24,10 +24,17 @@ async def page(request: Request):
         lines = log.read_text(encoding="utf-8", errors="replace").splitlines()
         tail = "\n".join(lines[-200:])
     monitor = getattr(request.app.state, "monitor", None)
+    store = get_store(request)
+    # 加载自选股列表,传给模板用于下拉选择
+    watchlist = store.load_watchlist(include_disabled=False)
+    symbols = [w["symbol"] for w in watchlist]
+    # symbol → market 映射,供前端自动填充市场
+    symbol_markets = {w["symbol"]: w["market"] for w in watchlist}
     today = date.today()
     return render(
         request, "ops.html", "运维",
         log_tail=tail, has_monitor=monitor is not None, flash=pop_flash(request),
+        symbols=symbols, symbol_markets=symbol_markets,
         kline_start=(today - timedelta(days=365 * 3)).isoformat(),
         kline_end=today.isoformat(),
     )
@@ -53,10 +60,15 @@ async def fetch_kline(
     market: str = Form("美股"),
 ):
     store = get_store(request)
+    # 从自选股查真实名称(无则退化为代码本身)
+    name = symbol.strip()
+    watchlist = {w["symbol"]: w["name"] for w in store.load_watchlist(include_disabled=False)}
+    if symbol.strip() in watchlist:
+        name = watchlist[symbol.strip()]
     source = svc.make_kline_source(provider, timeout=20)
     try:
         result = svc.fetch_kline(
-            store, symbol=symbol.strip(), name=symbol.strip(), market=market,
+            store, symbol=symbol.strip(), name=name, market=market,
             start=start or None, end=end or None, years=3, source=source,
             provider=provider,
         )

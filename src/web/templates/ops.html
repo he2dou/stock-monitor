@@ -15,7 +15,10 @@
   <h2>抓取K线</h2>
   <form class="row-form" method="post" action="/ops/fetch-kline">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-    <input name="symbol" placeholder="代码（如 SOXL、09988、159326）" required>
+    <select name="symbol" id="klineSymbol">
+      <option value="">— 选择代码 —</option>
+      {% for sym in symbols %}<option value="{{ sym }}">{{ sym }}</option>{% endfor %}
+    </select>
     <select name="market" id="klineMarket">
       <option value="美股">美股</option>
       <option value="港股">港股</option>
@@ -27,20 +30,34 @@
     <button class="btn primary" type="submit">抓取</button>
   </form>
   <script>
-    // A股必须走 akshare（yahoo/nasdaq 不支持），选择 A股时自动切换并锁定 provider。
+    // 选中代码时自动填充对应市场; A股时锁定 provider 为 akshare
     (function () {
-      var market = document.getElementById('klineMarket');
-      var provider = document.getElementById('klineProvider');
+      var symbolEl = document.getElementById('klineSymbol');
+      var marketEl = document.getElementById('klineMarket');
+      var providerEl = document.getElementById('klineProvider');
+      var symbolMarkets = {{ symbol_markets | tojson }};
+
+      function updateMarket() {
+        var sym = symbolEl.value;
+        if (sym && symbolMarkets[sym]) {
+          marketEl.value = symbolMarkets[sym];
+        }
+        syncProvider();
+      }
+
       function syncProvider() {
-        if (market.value === 'A股') {
-          provider.value = 'akshare';
-          provider.disabled = true;
+        if (marketEl.value === 'A股') {
+          providerEl.value = 'akshare';
+          providerEl.disabled = true;
         } else {
-          provider.disabled = false;
+          providerEl.disabled = false;
         }
       }
-      market.addEventListener('change', syncProvider);
-      syncProvider();
+
+      symbolEl.addEventListener('change', updateMarket);
+      marketEl.addEventListener('change', syncProvider);
+      // 页面加载时如果已有预选值则同步
+      if (symbolEl.value) updateMarket();
     })();
   </script>
 </section>

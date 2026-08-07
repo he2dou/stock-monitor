@@ -9350,3 +9350,42 @@ sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in
 2026-08-07 16:42:34,914 [INFO] apscheduler.scheduler: Scheduler started
 2026-08-07 16:42:34,915 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
 2026-08-07 16:42:35,038 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 16:48:18,283 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 16:48:20,932 [INFO] __main__: ============================================================
+2026-08-07 16:48:20,932 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 16:48:20,932 [INFO] __main__: ============================================================
+2026-08-07 16:48:20,959 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 16:48:20,962 [INFO] __main__: Running initial fetch...
+2026-08-07 16:48:20,967 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 16:48:20,970 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 16:48:20,973 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 16:48:20,973 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 16:48:20,973 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 16:48:20,974 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 16:48:21,075 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 16:52:39,932 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 16:52:43,105 [INFO] __main__: ============================================================
+2026-08-07 16:52:43,105 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 16:52:43,106 [INFO] __main__: ============================================================
+2026-08-07 16:52:43,133 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 16:52:43,136 [INFO] __main__: Running initial fetch...
+2026-08-07 16:52:43,139 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 16:52:43,142 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 16:52:43,145 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 16:52:43,146 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 16:52:43,146 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 16:52:43,147 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 16:52:43,202 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 16:57:59,126 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 16:58:02,483 [INFO] __main__: ============================================================
+2026-08-07 16:58:02,483 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 16:58:02,483 [INFO] __main__: ============================================================
+2026-08-07 16:58:02,518 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 16:58:02,520 [INFO] __main__: Running initial fetch...
+2026-08-07 16:58:02,523 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 16:58:02,531 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 16:58:02,534 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 16:58:02,534 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 16:58:02,534 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 16:58:02,536 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 16:58:02,593 [INFO] __main__: Web admin running at http://127.0.0.1:8000
