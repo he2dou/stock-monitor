@@ -488,3 +488,129 @@ def test_walk_forward_with_param_grid_runs(tmp_path):
     # 验证每窗口有 train_best_params
     for w in wf["windows"]:
         assert w.get("train_best_params") is not None
+
+
+# ---------------------------------------------------------------------------
+# P2: 成本敏感性
+# ---------------------------------------------------------------------------
+
+def test_cost_sensitivity_runs(tmp_path):
+    from src.backtest import run_cost_sensitivity
+    db = tmp_path / "t.sqlite3"
+    store = TradingStore(str(db))
+    for i in range(30):
+        store.save_daily_bars([{
+            "symbol": "SOXL", "name": "SOXL", "market": "美股",
+            "date": f"2024-01-{i+1:02d}",
+            "open": 10 + i, "high": 11 + i, "low": 9 + i, "close": 10 + i,
+            "adj_close": 10 + i, "volume": 1000, "source": "test",
+        }])
+    store.close()
+    strategies = [{
+        "id": "buy_soxl", "enabled": True,
+        "symbol": "SOXL", "action": "buy",
+        "trigger": {"field": "change_pct", "op": "below", "value": -10},
+        "sizing": {"type": "fixed_amount", "amount": 1000, "currency": "USD", "lot_size": 1},
+        "constraints": {"cooldown_minutes": 0},
+        "costs": {"commission_bps": 5.0, "slippage_bps": 2.0},
+    }]
+    result = run_cost_sensitivity(
+        str(db), strategies, {"USD": 50000},
+        "2024-01-01", "2024-01-20",
+        source="daily-bars", symbols=["SOXL"],
+        strategy_ids=["buy_soxl"], enable_selected=True,
+    )
+    assert "results" in result
+    assert len(result["results"]) == 5  # 0, 1, 2, 3, 5x
+    # 成本越高收益越低
+    returns = [r["total_return_pct"] for r in result["results"]]
+    assert returns[0] >= returns[-1]  # 0x >= 5x
+
+
+# ---------------------------------------------------------------------------
+# P2: 交易级统计
+# ---------------------------------------------------------------------------
+
+def test_backtest_includes_trade_stats(tmp_path):
+    db = tmp_path / "t.sqlite3"
+    store = TradingStore(str(db))
+    store.save_daily_bars([
+        {"symbol": "SOXL", "name": "SOXL", "market": "美股", "date": "2024-01-01",
+         "open": 10, "high": 10, "low": 10, "close": 10, "adj_close": 10,
+         "volume": 1000, "source": "test"},
+    ])
+    store.close()
+    strategies = [{
+        "id": "buy_soxl", "enabled": False,
+        "symbol": "SOXL", "action": "buy",
+        "trigger": {"field": "change_pct", "op": "below", "value": -10},
+        "sizing": {"type": "fixed_amount", "amount": 1000, "currency": "USD", "lot_size": 1},
+        "constraints": {"cooldown_minutes": 0},
+    }]
+    summary = run_backtest(
+        str(db), strategies, {"USD": 50000},
+        start="2024-01-01", end="2024-01-01", source="daily-bars",
+        symbols=["SOXL"], strategy_ids=["buy_soxl"], enable_selected=True,
+    )
+    assert "trade_stats" in summary
+    assert "monthly_returns" in summary
+    assert isinstance(summary["trade_stats"], dict)
+    assert "filled_buys" in summary["trade_stats"]
+    assert "trades_per_year" in summary["trade_stats"]
+
+
+def test_backtest_warns_on_low_sample(tmp_path):
+    """卖出成交 < 30 笔时应包含警告。"""
+    db = tmp_path / "t.sqlite3"
+    store = TradingStore(str(db))
+    # 价格从 10→8 (跌 20%),触发买入; 后续持平,无卖出
+    prices = [10, 8, 8, 8, 8]
+    for i, p in enumerate(prices):
+        store.save_daily_bars([{
+            "symbol": "SOXL", "name": "SOXL", "market": "美股",
+            "date": f"2024-01-{i+1:02d}",
+            "open": p, "high": p, "low": p, "close": p, "adj_close": p,
+            "volume": 1000, "source": "test",
+        }])
+    store.close()
+    strategies = [{
+        "id": "buy_soxl", "enabled": True,
+        "symbol": "SOXL", "action": "buy",
+        "trigger": {"field": "change_pct", "op": "below", "value": -10},
+        "sizing": {"type": "fixed_amount", "amount": 1000, "currency": "USD", "lot_size": 1},
+        "constraints": {"cooldown_minutes": 100000},
+    }]
+    summary = run_backtest(
+        str(db), strategies, {"USD": 50000},
+        start="2024-01-01", end="2024-01-05", source="daily-bars",
+        symbols=["SOXL"], strategy_ids=["buy_soxl"], enable_selected=True,
+    )
+    # 有买入但没卖出,fill >= 1 确认触发成功;<=30 sells 应有警告
+    assert summary["fills"] >= 1, f"Expected at least 1 fill, got {summary['fills']}"
+    warnings = summary.get("warnings", [])
+    assert len(warnings) >= 1, f"Expected low-sample warning, got warnings={warnings}"
+
+
+def test_monthly_returns_computes_from_equity_curve():
+    from src.backtest import _monthly_returns
+    equity_curve = [
+        {"date": "2024-01-01", "total_equity": 100000},
+        {"date": "2024-01-15", "total_equity": 101000},
+        {"date": "2024-01-31", "total_equity": 102000},
+        {"date": "2024-02-01", "total_equity": 102000},
+        {"date": "2024-02-28", "total_equity": 99000},
+    ]
+    mr = _monthly_returns(equity_curve)
+    assert len(mr) == 2
+    assert mr[0]["return_pct"] == pytest.approx(2.0)
+    assert mr[1]["return_pct"] == pytest.approx(-2.94, rel=0.1)
+
+
+def test_bootstrap_confidence_intervals():
+    from src.backtest import _bootstrap_confidence
+    # 正收益序列,CI 应都为正
+    returns = [0.001] * 50 + [-0.0005] * 20 + [0.002] * 30
+    result = _bootstrap_confidence(returns, n_iter=200, ci=0.95)
+    assert result["bootstrap_iterations"] == 200
+    assert result["mean_return_pct_ci_low"] < result["mean_return_pct_ci_high"]
+    assert result["sharpe_ci_low"] < result["sharpe_ci_high"]

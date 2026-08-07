@@ -654,9 +654,280 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
         "trades": trades,
         "equity_curve": equity_curve,
     }
+    # P2: 富化交易级统计
+    _enrich_trade_stats(summary, trades, equity_curve, source)
+    # P2: 月度收益表
+    summary["monthly_returns"] = _monthly_returns(equity_curve)
+    # P2: Bootstrap 置信区间
+    if len(equity_curve) >= 2 and source == "daily-bars":
+        eq = [float(p["total_equity"]) for p in equity_curve]
+        daily_returns = [(eq[i] - eq[i - 1]) / eq[i - 1] for i in range(1, len(eq)) if eq[i - 1] > 0]
+        summary["bootstrap"] = _bootstrap_confidence(daily_returns)
+    # P2: 小样本警告
+    total_fills = summary["fills"]
+    if total_fills > 0 and (not sell_fills or len(sell_fills) < 30):
+        n_sells = len(sell_fills) if sell_fills else 0
+        summary.setdefault("warnings", []).append(
+            f"仅 {n_sells} 笔卖出成交(共 {total_fills} 笔),统计指标(胜率/Sharpe等)可靠性有限")
     source_store.close()
     test_store.close()
     return summary
+
+
+# ---------------------------------------------------------------------------
+# P2: 交易级统计
+# ---------------------------------------------------------------------------
+
+def _enrich_trade_stats(summary: dict, trades: list[dict],
+                         equity_curve: list[dict], source: str) -> None:
+    """向 summary 注入交易级统计指标(平均持仓/连续亏损/最大单笔盈亏等)。"""
+    filled = [t for t in trades if t["status"] == "FILLED"]
+    buys = [t for t in filled if t["side"] == "buy"]
+    sells = [t for t in filled if t["side"] == "sell"]
+    losses = [t for t in sells if (t.get("realized_pnl") or 0) < 0]
+    wins = [t for t in sells if (t.get("realized_pnl") or 0) > 0]
+
+    # 持仓周期: 配对 buy→sell,按 symbol+strategy 分组
+    holding_bars: list[int] = []
+    entry_dates: dict[str, int] = {}  # key = strategy_id|symbol → bar index
+    for idx, t in enumerate(filled):
+        key = f"{t['strategy_id']}|{t['symbol']}"
+        if t["side"] == "buy":
+            entry_dates[key] = idx
+        elif t["side"] == "sell" and key in entry_dates:
+            bars = idx - entry_dates.pop(key)
+            holding_bars.append(bars)
+
+    avg_hold = sum(holding_bars) / len(holding_bars) if holding_bars else None
+
+    # 连续亏损
+    max_consecutive_losses = 0
+    current_streak = 0
+    for t in sells:
+        pnl = t.get("realized_pnl") or 0
+        if pnl < 0:
+            current_streak += 1
+            max_consecutive_losses = max(max_consecutive_losses, current_streak)
+        else:
+            current_streak = 0
+
+    # 最大单笔盈亏
+    max_win = max((t.get("realized_pnl") or 0) for t in wins) if wins else None
+    max_loss = min((t.get("realized_pnl") or 0) for t in losses) if losses else None
+
+    # 收支比 (gross profit / gross loss)
+    gross_profit = sum(t.get("realized_pnl") or 0 for t in wins)
+    gross_loss = abs(sum(t.get("realized_pnl") or 0 for t in losses))
+
+    # 年化交易频率
+    n_years = (len(equity_curve) / 252.0) if source == "daily-bars" else (
+        len(equity_curve) / (252.0 * 6.5) if source == "quote-snapshots" else 1.0)
+    n_years = max(n_years, 0.01)
+    trades_per_year = len(sells) / n_years if sells else 0.0
+
+    # 亏损集中度: 最大单笔亏损 / 总亏损
+    loss_concentration = (abs(max_loss) / gross_loss) if max_loss and gross_loss > 0 else None
+
+    # 时间在市场中的占比
+    exposure_days = 0.0
+    in_position = False
+    position_count = 0
+    for t in filled:
+        if t["side"] == "buy":
+            position_count += int(t.get("quantity", 0))
+            in_position = position_count > 0
+        elif t["side"] == "sell":
+            position_count -= int(t.get("quantity", 0))
+            in_position = position_count > 0
+        if in_position:
+            exposure_days += 1.0
+    exposure_pct = (exposure_days / len(equity_curve) * 100.0) if equity_curve else 0.0
+
+    summary["trade_stats"] = {
+        "filled_buys": len(buys),
+        "filled_sells": len(sells),
+        "avg_holding_bars": avg_hold,
+        "max_consecutive_losses": max_consecutive_losses if max_consecutive_losses > 0 else None,
+        "max_single_win": max_win,
+        "max_single_loss": max_loss,
+        "gross_profit": gross_profit,
+        "gross_loss": gross_loss,
+        "trades_per_year": round(trades_per_year, 1),
+        "loss_concentration_pct": (loss_concentration * 100.0) if loss_concentration is not None else None,
+        "exposure_pct": round(exposure_pct, 1),
+    }
+
+
+# ---------------------------------------------------------------------------
+# P2: 月度收益表
+# ---------------------------------------------------------------------------
+
+def _monthly_returns(equity_curve: list[dict]) -> list[dict]:
+    """从权益曲线计算月度收益表。"""
+    if not equity_curve:
+        return []
+    # 按月份分组,取每月首尾日权益
+    monthly: dict[str, list[float]] = {}
+    for p in equity_curve:
+        month_key = p["date"][:7]  # YYYY-MM
+        monthly.setdefault(month_key, []).append(float(p["total_equity"]))
+
+    result: list[dict] = []
+    months = sorted(monthly.keys())
+    for i, m in enumerate(months):
+        equities = monthly[m]
+        start_eq = equities[0]
+        end_eq = equities[-1]
+        ret_pct = ((end_eq - start_eq) / start_eq * 100.0) if start_eq > 0 else 0.0
+        result.append({
+            "month": m,
+            "return_pct": round(ret_pct, 2),
+            "start_equity": round(start_eq, 2),
+            "end_equity": round(end_eq, 2),
+        })
+    return result
+
+
+# ---------------------------------------------------------------------------
+# P2: Bootstrap 置信区间
+# ---------------------------------------------------------------------------
+
+def _bootstrap_confidence(returns: list[float], n_iter: int = 1000,
+                           ci: float = 0.95) -> dict:
+    """对日收益序列做 bootstrap,估计平均收益和 Sharpe 的置信区间。"""
+    import random as _random
+    if len(returns) < 2:
+        return {}
+    periods_per_year = 252.0
+    _random.seed(42)
+    means: list[float] = []
+    sharpes: list[float] = []
+    n = len(returns)
+    for _ in range(n_iter):
+        sample = [_random.choice(returns) for _ in range(n)]
+        avg = sum(sample) / n
+        std = (sum((r - avg) ** 2 for r in sample) / n) ** 0.5 if n > 1 else 0.0
+        means.append(avg * 100.0)  # 百分比
+        sharpes.append((avg / std * (periods_per_year ** 0.5)) if std > 0 else 0.0)
+
+    means.sort()
+    sharpes.sort()
+    tail = int(n_iter * (1 - ci) / 2)
+    return {
+        "bootstrap_iterations": n_iter,
+        "ci_level": ci,
+        "mean_return_pct_ci_low": round(means[tail], 3),
+        "mean_return_pct_ci_high": round(means[-tail - 1], 3),
+        "sharpe_ci_low": round(sharpes[tail], 3),
+        "sharpe_ci_high": round(sharpes[-tail - 1], 3),
+    }
+
+
+# ---------------------------------------------------------------------------
+# P2: 成本敏感性分析
+# ---------------------------------------------------------------------------
+
+def run_cost_sensitivity(db_path: str, strategies: list[dict],
+                          accounts: dict[str, float],
+                          start: str, end: str,
+                          multipliers: list[float] | None = None,
+                          source: str = "daily-bars",
+                          symbols: list[str] | None = None,
+                          strategy_ids: list[str] | None = None,
+                          enable_selected: bool = False,
+                          next_bar_execution: bool = False,
+                          warmup_days: int = 0,
+                          fx_rates: dict[str, float] | None = None) -> dict:
+    """成本敏感性: 用不同佣金/滑点倍数运行回测,看策略是否在成本上升时仍盈利。
+
+    multipliers: 默认 [0, 1, 2, 3, 5] (0=无成本, 1=策略配置的成本, 2/3/5=2/3/5倍成本)
+    """
+    if multipliers is None:
+        multipliers = [0.0, 1.0, 2.0, 3.0, 5.0]
+
+    # 先读取策略自身成本
+    from src.strategy_engine import parse_strategy as _ps
+    from src.trading_models import TradingCosts as _TC
+    base_costs = None
+    for raw in strategies:
+        parsed = _ps(raw) if isinstance(raw, dict) else raw
+        if parsed.costs is not None:
+            base_costs = _TC(commission_bps=parsed.costs.commission_bps,
+                            slippage_bps=parsed.costs.slippage_bps)
+            break
+
+    results: list[dict] = []
+    for mult in multipliers:
+        variant_strategies = _copy_strategies(strategies)
+        if mult == 0:
+            # 无成本: 不设置 costs
+            for s in variant_strategies:
+                s.pop("costs", None)
+            apply = False
+        elif base_costs is not None:
+            # 设置倍数成本
+            for s in variant_strategies:
+                s["costs"] = {
+                    "commission_bps": base_costs.commission_bps * mult,
+                    "slippage_bps": base_costs.slippage_bps * mult,
+                }
+            apply = True
+        else:
+            apply = False
+
+        s = run_backtest(
+            db_path, variant_strategies, accounts, start, end,
+            source=source, symbols=symbols, strategy_ids=strategy_ids,
+            enable_selected=enable_selected, next_bar_execution=next_bar_execution,
+            apply_costs=apply, warmup_days=warmup_days, fx_rates=fx_rates,
+        )
+        results.append({
+            "cost_multiplier": mult,
+            "total_return_pct": s["total_return_pct"],
+            "max_drawdown_pct": s["max_drawdown_pct"],
+            "sharpe_ratio": s.get("sharpe_ratio"),
+            "calmar_ratio": s.get("calmar_ratio"),
+            "fills": s["fills"],
+            "trade_events": s["trade_events"],
+        })
+
+    # 盈亏平衡点: return 从正变负的倍数
+    breakeven = None
+    for i in range(1, len(results)):
+        if results[i - 1]["total_return_pct"] > 0 and results[i]["total_return_pct"] <= 0:
+            # 线性插值
+            prev_m = results[i - 1]["cost_multiplier"]
+            prev_r = results[i - 1]["total_return_pct"]
+            curr_m = results[i]["cost_multiplier"]
+            curr_r = results[i]["total_return_pct"]
+            if prev_r != curr_r:
+                breakeven = prev_m + (0 - prev_r) / (curr_r - prev_r) * (curr_m - prev_m)
+            break
+
+    return {
+        "results": results,
+        "breakeven_multiplier": round(breakeven, 2) if breakeven is not None else None,
+    }
+
+
+# ---------------------------------------------------------------------------
+# P2: 基准指数对比
+# ---------------------------------------------------------------------------
+
+def _benchmark_return(db_path: str, benchmark_symbol: str, start: str, end: str,
+                       source: str = "daily-bars") -> float | None:
+    """计算基准标的(如 QQQ/SPY)的买入持有收益率。"""
+    try:
+        store = TradingStore(db_path)
+        rows = store.load_daily_bars(
+            symbols=[benchmark_symbol], start=start, end=end)
+        store.close()
+        if not rows or len(rows) < 2:
+            return None
+        quotes, _ = _quotes_from_daily_bars(rows), rows
+        return _buy_hold_return(quotes, benchmark_symbol)
+    except Exception:
+        return None
 
 
 def _reprice_signal(signal: StrategySignal, exec_quote: Quote) -> StrategySignal:
@@ -769,6 +1040,50 @@ def write_markdown_report(summary: dict, path: str) -> None:
         lines.append("| - | - | - | - | - | - | - | - | - | No trades generated |")
 
     lines.extend(["", "## Analysis", *_analysis_lines(summary, filled, rejected)])
+    # P2: 基准对比
+    bench = summary.get("benchmark")
+    if bench:
+        lines.extend([
+            "",
+            "## Benchmark Comparison",
+            f"- Benchmark: `{bench['symbol']}` buy & hold return: {_fmt_pct(bench.get('buy_hold_return_pct'))}",
+            f"- Strategy excess return: {_fmt_pct(summary.get('excess_return_vs_benchmark_pct'))}",
+        ])
+    # P2: 交易级统计
+    ts = summary.get("trade_stats")
+    if ts:
+        lines.extend([
+            "",
+            "## Trade-Level Statistics",
+            f"- Filled buys: {ts['filled_buys']}, sells: {ts['filled_sells']}",
+            f"- Average holding bars: {_fmt_num(ts.get('avg_holding_bars'))}",
+            f"- Trades per year: {ts.get('trades_per_year', 'N/A')}",
+            f"- Max single win: {_fmt_num(ts.get('max_single_win'))}, max single loss: {_fmt_num(ts.get('max_single_loss'))}",
+            f"- Max consecutive losses: {ts.get('max_consecutive_losses', 'N/A')}",
+            f"- Loss concentration (largest / total): {_fmt_pct(ts.get('loss_concentration_pct'))}",
+            f"- Time in market (exposure): {ts.get('exposure_pct', 'N/A')}%",
+        ])
+    # P2: 月度收益
+    mr = summary.get("monthly_returns")
+    if mr:
+        lines.extend(["", "## Monthly Returns", "| Month | Return % | Start Equity | End Equity |", "|---|---:|---:|---:|"])
+        for m in mr[-12:]:  # 最近12个月
+            lines.append(f"| {m['month']} | {m['return_pct']:+.2f}% | {m['start_equity']:.2f} | {m['end_equity']:.2f} |")
+    # P2: Bootstrap
+    bs = summary.get("bootstrap")
+    if bs:
+        lines.extend([
+            "",
+            "## Bootstrap Confidence Intervals (daily returns)",
+            f"- Iterations: {bs['bootstrap_iterations']}, CI: {bs['ci_level']*100:.0f}%",
+            f"- Mean daily return: [{bs['mean_return_pct_ci_low']:.3f}%, {bs['mean_return_pct_ci_high']:.3f}%]",
+            f"- Sharpe ratio: [{bs['sharpe_ci_low']:.3f}, {bs['sharpe_ci_high']:.3f}]",
+        ])
+    # P2: 小样本警告
+    if summary.get("warnings"):
+        lines.extend(["", "## Warnings"])
+        for w in summary["warnings"]:
+            lines.append(f"- ⚠ {w}")
     output.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -1356,6 +1671,11 @@ def main() -> None:
                         help="敏感性分析参数路径,逗号分隔")
     parser.add_argument("--validate", dest="validate_only", action="store_true",
                         help="仅校验 daily_bars 数据质量")
+    # P2: 成本敏感性 & 基准
+    parser.add_argument("--cost-sensitivity", dest="cost_sensitivity", action="store_true",
+                        help="运行成本敏感性分析")
+    parser.add_argument("--benchmark", dest="benchmark_symbol", default=None,
+                        help="基准对比标的(如 QQQ/SPY),计算买入持有收益")
     args = parser.parse_args()
 
     # Parse fx_rates JSON if provided
@@ -1435,6 +1755,22 @@ def main() -> None:
         print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
         return
 
+    # P2: 成本敏感性分析
+    if args.cost_sensitivity:
+        if not args.from_date or not args.to_date:
+            parser.error("--cost-sensitivity 需要同时指定 --from 和 --to")
+        result = run_cost_sensitivity(
+            db_path, strategies, accounts, args.from_date, args.to_date,
+            source=args.source, symbols=_split_values(args.symbol),
+            strategy_ids=_split_values(args.strategy_id),
+            enable_selected=args.enable_selected,
+            next_bar_execution=args.next_bar,
+            warmup_days=args.warmup_days, fx_rates=fx_rates,
+        )
+        print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
+        return
+
+    # 普通回测 + 可选基准对比
     summary = run_backtest(
         db_path,
         strategies,
@@ -1456,6 +1792,18 @@ def main() -> None:
     if args.trades_csv:
         write_trades_csv(summary, args.trades_csv)
         summary["trades_csv_path"] = _resolve_path(args.trades_csv)
+    # P2: 基准指数对比
+    if args.benchmark_symbol and args.from_date and args.to_date:
+        bench_ret = _benchmark_return(
+            db_path, args.benchmark_symbol, args.from_date, args.to_date,
+            source=args.source)
+        if bench_ret is not None:
+            summary["benchmark"] = {
+                "symbol": args.benchmark_symbol,
+                "buy_hold_return_pct": bench_ret,
+            }
+            excess = summary["total_return_pct"] - bench_ret
+            summary["excess_return_vs_benchmark_pct"] = excess
     printable = dict(summary)
     printable.pop("equity_curve", None)
     printable.pop("trades", None)
