@@ -260,6 +260,98 @@ def signal_daily_key(signal: StrategySignal) -> str:
         exit_kind,
     ])
 
+def execute_manual_order(
+    store: TradingStore,
+    *,
+    side: str,
+    market: str,
+    symbol: str,
+    name: str,
+    quantity: int,
+    price: float,
+    currency: str,
+) -> OrderExecution:
+    """Execute an immediate manual paper-trading order."""
+    side = side.strip().lower()
+    symbol = symbol.strip()
+    name = name.strip() or symbol
+    currency = currency.strip().upper() or MARKET_CURRENCY.get(market, "CNY")
+    quantity = int(quantity)
+    price = float(price)
+    amount = quantity * price
+
+    position = store.get_position(market, symbol)
+    position_currency = str(position.get("currency") or "").strip().upper()
+    if position_currency:
+        currency = position_currency
+
+    if side == "buy":
+        cash = store.get_balance(currency)
+        if cash < amount:
+            reason = "insufficient cash"
+            store.record_order(
+                "", "manual", symbol, market, "buy", quantity, price,
+                currency, "REJECTED", reason,
+            )
+            return OrderExecution(
+                "manual", symbol, market, "buy", "REJECTED", quantity, price,
+                amount, currency, reason=reason, remaining_cash=cash,
+            )
+
+        order_id = store.record_order(
+            "", "manual", symbol, market, "buy", quantity, price,
+            currency, "FILLED",
+        )
+        store.record_fill(order_id, price, quantity)
+        new_cash = cash - amount
+        store.update_balance(currency, new_cash)
+
+        old_qty = int(position["quantity"])
+        old_cost = float(position["avg_cost"])
+        new_qty = old_qty + quantity
+        new_avg_cost = ((old_qty * old_cost) + amount) / new_qty if new_qty else 0.0
+        store.upsert_position(
+            market, symbol, name, currency, new_qty,
+            new_avg_cost, float(position["realized_pnl"]),
+        )
+        return OrderExecution(
+            "manual", symbol, market, "buy", "FILLED", quantity, price,
+            amount, currency, remaining_cash=new_cash,
+        )
+
+    cash = store.get_balance(currency)
+    held_qty = int(position["quantity"])
+    if held_qty < quantity:
+        reason = "insufficient position quantity"
+        store.record_order(
+            "", "manual", symbol, market, "sell", quantity, price,
+            currency, "REJECTED", reason,
+        )
+        return OrderExecution(
+            "manual", symbol, market, "sell", "REJECTED", quantity, price,
+            amount, currency, reason=reason, remaining_cash=cash,
+        )
+
+    order_id = store.record_order(
+        "", "manual", symbol, market, "sell", quantity, price,
+        currency, "FILLED",
+    )
+    store.record_fill(order_id, price, quantity)
+    new_cash = cash + amount
+    store.update_balance(currency, new_cash)
+
+    avg_cost = float(position["avg_cost"])
+    realized = float(position["realized_pnl"]) + (price - avg_cost) * quantity
+    new_qty = held_qty - quantity
+    store.upsert_position(
+        market, symbol, name or str(position["name"]), currency, new_qty,
+        avg_cost if new_qty else 0.0, realized,
+    )
+    return OrderExecution(
+        "manual", symbol, market, "sell", "FILLED", quantity, price,
+        amount, currency, remaining_cash=new_cash,
+    )
+
 
 class PaperTradingService:
     def __init__(self, store: TradingStore, strategy_engine: StrategyEngine,

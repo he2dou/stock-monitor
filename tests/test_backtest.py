@@ -3,6 +3,44 @@ from src.models import Quote
 from src.trading_store import TradingStore
 
 
+def test_run_backtest_evaluates_any_symbol_regardless_of_binding(tmp_path):
+    """A strategy bound to one symbol can be backtested on another symbol.
+
+    Regression test: the engine matches quotes by strategy.symbol, so without
+    retargeting a backtest on an unbound symbol silently produced 0 fills.
+    """
+    db = tmp_path / "trading.sqlite3"
+    store = TradingStore(str(db))
+    # Save a MSFT snapshot that satisfies the trigger (change_pct < -10).
+    store.save_quote_snapshots([
+        Quote("MSFT", "Microsoft", "美股", 100, -11, 1000, timestamp="2026-01-01T00:00:00Z")
+    ])
+    store.close()
+    strategies = [{
+        "id": "buy_aapl",
+        "enabled": True,
+        "symbol": "AAPL",  # bound symbol, intentionally != backtest symbol
+        "action": "buy",
+        "trigger": {"field": "change_pct", "op": "below", "value": -10},
+        "sizing": {"type": "fixed_amount", "amount": 1000, "currency": "USD", "lot_size": 1},
+        "constraints": {"cooldown_minutes": 0},
+    }]
+    summary = run_backtest(
+        str(db), strategies, {"USD": 50000},
+        source="quote-snapshots", symbols=["MSFT"],
+        strategy_ids=["buy_aapl"],
+    )
+    # Without retargeting this would be 0; the strategy must run on MSFT.
+    assert summary["quotes_replayed"] == 1
+    assert summary["orders"] == 1
+    assert summary["fills"] == 1
+
+
+
+from src.models import Quote
+from src.trading_store import TradingStore
+
+
 def test_run_backtest_replays_saved_quotes(tmp_path):
     db = tmp_path / "trading.sqlite3"
     store = TradingStore(str(db))

@@ -447,6 +447,15 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
     quotes, source_rows = _load_quotes(source_store, source, symbols, start, end,
                                         warmup_days=warmup_days)
     selected_strategies = _select_strategies(strategies, strategy_ids, enable_selected)
+    # 回测允许在任意有行情的代码上评估策略,不局限于策略在策略页绑定的代码。
+    # 指定单个 symbols 时,把所选策略的 symbol 临时指向该代码,使 StrategyEngine
+    # (它按 strategy.symbol 匹配行情) 能匹配到回测喂入的行情。仅影响回测,
+    # 不改变实盘监控里"策略只对绑定代码触发"的语义。
+    if symbols and len(symbols) == 1:
+        target_symbol = symbols[0]
+        selected_strategies = [
+            {**dict(s), "symbol": target_symbol} for s in selected_strategies
+        ]
     _warn_timeframe_mismatch(selected_strategies, source)
 
     # 若启用成本,为每个 leveraged 策略注入 PaperBroker 的全局 costs(取策略自身配置;无则0)

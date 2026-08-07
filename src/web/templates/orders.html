@@ -1,6 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
 <section>
+  <div class="section-head"><h2>手动委托</h2></div>
+  <form class="grid-form" method="post" action="/orders/submit">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>方向
+      <select name="side" required>
+        {% for value, label in side_labels.items() %}
+        <option value="{{ value }}"{{ " selected" if order_defaults.side == value else "" }}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>代码
+      <select name="symbol" required>
+        {% for item in order_defaults.symbol_options %}
+        <option value="{{ item.symbol }}"{{ " selected" if order_defaults.symbol == item.symbol else "" }}>{{ item.symbol }}{% if item.name and item.name != item.symbol %} - {{ item.name }}{% endif %}</option>
+        {% else %}
+        <option value="" disabled selected>暂无可选股票</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>数量
+      <input type="number" name="quantity" min="1" step="1" value="{{ order_defaults.quantity }}" required>
+    </label>
+    <label>价格
+      <input type="number" name="price" min="0.0001" step="0.0001" value="{{ order_defaults.price }}" required>
+    </label>
+    <button class="btn primary" type="submit">提交委托</button>
+  </form>
+  {% if order_defaults.side == "sell" and order_defaults.selected_symbol and order_defaults.selected_symbol.quantity is not none and order_defaults.selected_symbol.quantity > 0 %}
+  <table style="margin-top:12px;">
+    <tr><th>代码</th><th class="num">持仓数量</th><th class="num">成本价</th><th class="num">当前价</th><th class="num">浮动盈亏</th><th class="num">PnL%</th></tr>
+    <tr>
+      <td>{{ order_defaults.selected_symbol.symbol }}</td>
+      <td class="num">{{ order_defaults.selected_symbol.quantity }}</td>
+      <td class="num">{{ "%.4f"|format(order_defaults.selected_symbol.avg_cost) }}</td>
+      <td class="num">{% if order_defaults.selected_symbol.current_price is not none %}{{ "%.4f"|format(order_defaults.selected_symbol.current_price) }}{% else %}-{% endif %}</td>
+      <td class="num{% if order_defaults.selected_symbol.unrealized_pnl is not none and order_defaults.selected_symbol.unrealized_pnl >= 0 %} up{% elif order_defaults.selected_symbol.unrealized_pnl is not none %} down{% endif %}">{% if order_defaults.selected_symbol.unrealized_pnl is not none %}{{ "%.2f"|format(order_defaults.selected_symbol.unrealized_pnl) }}{% else %}-{% endif %}</td>
+      <td class="num{% if order_defaults.selected_symbol.pnl_pct is not none and order_defaults.selected_symbol.pnl_pct >= 0 %} up{% elif order_defaults.selected_symbol.pnl_pct is not none %} down{% endif %}">{% if order_defaults.selected_symbol.pnl_pct is not none %}{{ "%.2f"|format(order_defaults.selected_symbol.pnl_pct) }}%{% else %}-{% endif %}</td>
+    </tr>
+  </table>
+  {% endif %}
+</section>
+<section>
   <h2>订单列表</h2>
   <table>
   <tr><th>时间</th><th>策略</th><th>代码</th><th>方向</th><th class="num">数量</th><th class="num">价格</th><th>状态</th><th>原因</th></tr>
