@@ -744,6 +744,12 @@ def test_portfolio_trade_links_prefill_orders(tmp_path):
     assert "/orders?side=buy&symbol=SOXL" in r.text
     assert "/orders?side=sell&symbol=SOXL" in r.text
     assert "quantity=4" in r.text
+    assert "成本价" in r.text
+    assert "浮动盈亏" in r.text
+    assert "PnL%" in r.text
+    assert "90.0000" in r.text
+    assert "40.00" in r.text
+    assert "11.11%" in r.text
 
     r = client.get("/orders?side=sell&symbol=SOXL&quantity=4&price=100")
     assert r.status_code == 200
@@ -752,11 +758,5 @@ def test_portfolio_trade_links_prefill_orders(tmp_path):
     assert 'name="market"' not in r.text
     assert 'name="name"' not in r.text
     assert 'name="currency"' not in r.text
-    assert '成本价' in r.text
-    assert '浮动盈亏' in r.text
-    assert 'PnL%' in r.text
-    assert '90.0000' in r.text
-    assert '40.00' in r.text
-    assert '11.11%' in r.text
     assert 'name="price" min="0.0001" step="0.0001" value="100"' in r.text
     store.close()
