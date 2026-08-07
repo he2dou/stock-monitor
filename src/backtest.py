@@ -819,33 +819,351 @@ def _fmt_bars(value) -> str:
     return f"{int(value)} bars"
 
 
-def _month_windows(start: str, end: str, train_months: int, test_months: int) -> list[tuple[str, str, str]]:
-    """生成滚动 walk-forward 窗口: (train_start, train_end, test_end)。
-    每个窗口 train 段长 train_months,test 段(样本外)长 test_months,窗口每次前进 test_months。"""
-    from datetime import datetime as _dt
+def _month_windows(start: str, end: str, train_months: int, test_months: int) -> list[tuple[str, str, str, str]]:
+    """生成滚动 walk-forward 窗口: (train_start, train_end, test_start, test_end)。
+    每个窗口 train 段长 train_months,test 段长 test_months,每次前进 test_months。
+    P1-8: test 段从 train_end+1 天开始,避免与 train 段重叠一天。"""
+    from datetime import datetime as _dt, timedelta as _td
     from dateutil.relativedelta import relativedelta as _rd
     try:
         s = _dt.fromisoformat(start)
         e = _dt.fromisoformat(end)
     except (ValueError, TypeError):
         return []
-    windows: list[tuple[str, str, str]] = []
+    windows: list[tuple[str, str, str, str]] = []
     train_start = s
     while True:
         train_end = train_start + _rd(months=train_months) - _rd(days=1)
+        test_start_dt = train_end + _td(days=1)
         test_end = train_end + _rd(months=test_months)
         if train_end >= e:
             break
         if test_end > e:
             test_end = e
+        if test_start_dt >= e:
+            break
         windows.append((
             train_start.strftime("%Y-%m-%d"),
             train_end.strftime("%Y-%m-%d"),
+            test_start_dt.strftime("%Y-%m-%d"),
             test_end.strftime("%Y-%m-%d"),
         ))
         # 窗口前进 test_months
         train_start = train_start + _rd(months=test_months)
     return windows
+
+
+# ---------------------------------------------------------------------------
+# P1-10: 数据健康检查
+# ---------------------------------------------------------------------------
+
+def _validate_daily_bars(rows: list[dict]) -> list[str]:
+    """检查 daily_bars 数据质量,返回警告列表(空=健康)。"""
+    warnings: list[str] = []
+    if not rows:
+        return ["daily_bars 为空,无法回测"]
+
+    # 按 symbol 分组
+    by_symbol: dict[str, list[dict]] = {}
+    for r in rows:
+        by_symbol.setdefault(r["symbol"], []).append(r)
+
+    for symbol, bars in by_symbol.items():
+        if len(bars) < 2:
+            warnings.append(f"{symbol}: 仅有 {len(bars)} 根日线,统计可能不可靠")
+            continue
+
+        bars_sorted = sorted(bars, key=lambda b: b["date"])
+        from datetime import datetime as _dt, timedelta as _td
+
+        # 检查重复日期
+        dates = [b["date"] for b in bars_sorted]
+        dupes = {d for d in dates if dates.count(d) > 1}
+        if dupes:
+            warnings.append(f"{symbol}: 重复日期 {sorted(dupes)[:5]}{'...' if len(dupes) > 5 else ''}")
+
+        # 检查价格跳变(>30% 单日)
+        for i in range(1, len(bars_sorted)):
+            prev_c = float(bars_sorted[i - 1]["close"])
+            curr_c = float(bars_sorted[i]["close"])
+            if prev_c > 0 and abs(curr_c - prev_c) / prev_c > 0.30:
+                warnings.append(
+                    f"{symbol}: {bars_sorted[i]['date']} 价格跳变 >30% "
+                    f"({prev_c:.2f} → {curr_c:.2f})")
+                break  # 每 symbol 最多一条跳变警告
+
+        # 检查 adj_close 与 close 差异(>20% 说明复权影响大)
+        adj_close_bars = [b for b in bars_sorted
+                          if float(b.get("adj_close", 0) or 0) > 0
+                          and abs(float(b["adj_close"]) - float(b["close"])) / max(float(b["close"]), 0.01) > 0.20]
+        if adj_close_bars:
+            warnings.append(
+                f"{symbol}: adj_close 与 close 差异 >20%,共 {len(adj_close_bars)} 日")
+
+        # 检查零成交量
+        zero_vol = [b for b in bars_sorted if float(b.get("volume", 0) or 0) <= 0]
+        if len(zero_vol) > len(bars_sorted) * 0.1:
+            warnings.append(
+                f"{symbol}: {len(zero_vol)}/{len(bars_sorted)} 日成交量为零")
+
+        # 检查日期间隙(>5 个自然日)
+        for i in range(1, len(bars_sorted)):
+            try:
+                d1 = _dt.fromisoformat(bars_sorted[i - 1]["date"])
+                d2 = _dt.fromisoformat(bars_sorted[i]["date"])
+                gap = (d2 - d1).days
+                if gap > 5:
+                    warnings.append(
+                        f"{symbol}: {bars_sorted[i-1]['date']} → {bars_sorted[i]['date']} 间隔 {gap} 日")
+                    break
+            except (ValueError, TypeError):
+                pass
+
+    return warnings
+
+
+# ---------------------------------------------------------------------------
+# P1-9: 参数敏感性分析
+# ---------------------------------------------------------------------------
+
+def _deep_set(d: dict, path: str, value):
+    """Set a nested dict value by dot-path: 'a.b.c' → d['a']['b']['c'] = value."""
+    keys = path.split(".")
+    current = d
+    for key in keys[:-1]:
+        if key not in current:
+            current[key] = {}
+        current = current[key]
+    current[keys[-1]] = value
+
+
+def _deep_get(d: dict, path: str, default=None):
+    """Get a nested dict value by dot-path."""
+    keys = path.split(".")
+    current = d
+    for key in keys:
+        if not isinstance(current, dict) or key not in current:
+            return default
+        current = current[key]
+    return current
+
+
+def _param_path_strip_strat(path: str) -> str:
+    """Strip the leading strategy-id segment from a param dot-path."""
+    parts = path.split(".", 1)
+    return parts[1] if len(parts) > 1 else path
+
+
+def _copy_strategies(strategies: list[dict]) -> list[dict]:
+    """Deep copy a list of strategy dicts (only dict level, values are primitives)."""
+    import copy
+    return copy.deepcopy(strategies)
+
+
+def run_param_sensitivity(db_path: str, strategies: list[dict], accounts: dict[str, float],
+                          start: str, end: str,
+                          param_paths: list[str],
+                          perturbations: list[float] | None = None,
+                          source: str = "daily-bars", symbols: list[str] | None = None,
+                          strategy_ids: list[str] | None = None,
+                          enable_selected: bool = False,
+                          next_bar_execution: bool = False,
+                          apply_costs: bool = False,
+                          warmup_days: int = 0,
+                          fx_rates: dict[str, float] | None = None) -> dict:
+    """参数敏感性分析: 对每个参数做 ±N% 扰动,看关键指标变化。
+
+    param_paths: dot-path 列表,如
+      ['soxl.leveraged_breakout_pullback.trailing_stop_pct',
+       'soxl.leveraged_breakout_pullback.lookback_bars']
+    perturbations: 扰动比例列表,默认 [-0.2, -0.1, 0.1, 0.2]
+
+    Returns {param_path: [{perturbation, metrics_summary}, ...], baseline: {...}}
+    """
+    if perturbations is None:
+        perturbations = [-0.20, -0.10, 0.10, 0.20]
+
+    # 先跑 baseline
+    baseline = run_backtest(
+        db_path, strategies, accounts, start, end,
+        source=source, symbols=symbols, strategy_ids=strategy_ids,
+        enable_selected=enable_selected, next_bar_execution=next_bar_execution,
+        apply_costs=apply_costs, warmup_days=warmup_days, fx_rates=fx_rates,
+    )
+    base_metrics = {
+        "total_return_pct": baseline["total_return_pct"],
+        "max_drawdown_pct": baseline["max_drawdown_pct"],
+        "sharpe_ratio": baseline.get("sharpe_ratio"),
+        "calmar_ratio": baseline.get("calmar_ratio"),
+        "avg_r_multiple": baseline.get("avg_r_multiple"),
+        "sell_win_rate_pct": baseline.get("sell_win_rate_pct"),
+        "fills": baseline["fills"],
+    }
+
+    result: dict = {"baseline": base_metrics, "parameters": {}}
+    for param_path in param_paths:
+        param_results: list[dict] = []
+        base_value = _deep_get(strategies[0], _param_path_strip_strat(param_path)) if strategies else None
+        if base_value is None:
+            continue
+        if not isinstance(base_value, (int, float)):
+            continue
+
+        for pct in perturbations:
+            new_value = float(base_value) * (1.0 + pct)
+            if isinstance(base_value, int):
+                new_value = round(new_value)
+            new_value = max(new_value, 1)  # 不能为 0 或负
+
+            variant_strategies = _copy_strategies(strategies)
+            # Find strategy matching the param_path prefix (strategy_id)
+            strat_id = param_path.split(".")[0]
+            for s in variant_strategies:
+                if s.get("id") == strat_id:
+                    _deep_set(s, _param_path_strip_strat(param_path), new_value)
+                    break
+
+            s = run_backtest(
+                db_path, variant_strategies, accounts, start, end,
+                source=source, symbols=symbols, strategy_ids=strategy_ids,
+                enable_selected=enable_selected, next_bar_execution=next_bar_execution,
+                apply_costs=apply_costs, warmup_days=warmup_days, fx_rates=fx_rates,
+            )
+            param_results.append({
+                "perturbation_pct": round(pct * 100, 1),
+                "value": new_value,
+                "total_return_pct": s["total_return_pct"],
+                "max_drawdown_pct": s["max_drawdown_pct"],
+                "sharpe_ratio": s.get("sharpe_ratio"),
+                "calmar_ratio": s.get("calmar_ratio"),
+                "avg_r_multiple": s.get("avg_r_multiple"),
+                "fills": s["fills"],
+            })
+        result["parameters"][param_path] = {
+            "base_value": base_value,
+            "results": param_results,
+        }
+    return result
+
+
+def _slice_quotes_by_date(quotes: list[Quote], start: str, end: str) -> list[Quote]:
+    """Return quotes whose timestamp[:10] is in [start, end] (inclusive)."""
+    return [q for q in quotes if start <= q.timestamp[:10] <= end]
+
+
+def _walk_forward_objective(summary: dict, metric: str = "calmar") -> float:
+    """Compute optimization objective from a backtest summary.
+
+    Supported metrics:
+    - "calmar": CAGR / |max DD|
+    - "sharpe": Sharpe ratio
+    - "return_over_maxdd": total_return / |max DD|
+    - "total_return": total_return_pct
+    - "avg_r": avg R-multiple per sell
+    """
+    if metric == "calmar":
+        return summary.get("calmar_ratio") or -999.0
+    if metric == "sharpe":
+        return summary.get("sharpe_ratio") or -999.0
+    if metric == "return_over_maxdd":
+        ret = summary.get("total_return_pct") or 0.0
+        dd = abs(summary.get("max_drawdown_pct") or 1.0)
+        return ret / dd if dd > 0 else -999.0
+    if metric == "total_return":
+        return summary.get("total_return_pct") or -999.0
+    if metric == "avg_r":
+        return summary.get("avg_r_multiple") or -999.0
+    return summary.get("total_return_pct") or 0.0
+
+
+def _param_grid_search(db_path: str, strategies: list[dict], accounts: dict[str, float],
+                       param_grid: dict[str, list],
+                       train_start: str, train_end: str,
+                       source: str, symbols: list[str] | None,
+                       strategy_ids: list[str] | None,
+                       enable_selected: bool,
+                       next_bar_execution: bool, apply_costs: bool,
+                       warmup_days: int, fx_rates: dict[str, float] | None,
+                       objective: str = "calmar",
+                       max_combinations: int = 100) -> tuple[dict, list[dict]]:
+    """在 train 段做参数网格/随机搜索,返回 (最优策略配置, 各组合结果列表)。
+
+    param_grid: {"strat_id.path.to.param": [val1, val2, ...], ...}
+    max_combinations: 最大尝试组合数(超出时用随机抽样)。
+    """
+    import random
+
+    if not param_grid:
+        return strategies, []
+
+    # 展开所有组合
+    keys = list(param_grid.keys())
+    values = list(param_grid.values())
+
+    # 计算笛卡尔积大小
+    import math as _math
+    total = _math.prod(len(v) for v in values)
+
+    all_combos: list[dict[str, object]] = []
+    if total <= max_combinations:
+        # Full grid
+        def _cartesian(idx: int, current: dict):
+            if idx == len(keys):
+                all_combos.append(dict(current))
+                return
+            for val in values[idx]:
+                current[keys[idx]] = val
+                _cartesian(idx + 1, current)
+        _cartesian(0, {})
+    else:
+        # Random sampling
+        random.seed(42)
+        for _ in range(max_combinations):
+            combo = {k: random.choice(v) for k, v in param_grid.items()}
+            all_combos.append(combo)
+
+    best_score = float("-inf")
+    best_params: dict[str, object] = {}
+    combo_results: list[dict] = []
+
+    for combo in all_combos:
+        variant = _copy_strategies(strategies)
+        for path, val in combo.items():
+            strat_id = path.split(".")[0]
+            for s in variant:
+                if s.get("id") == strat_id:
+                    _deep_set(s, _param_path_strip_strat(path), val)
+                    break
+
+        s = run_backtest(
+            db_path, variant, accounts, train_start, train_end,
+            source=source, symbols=symbols, strategy_ids=strategy_ids,
+            enable_selected=enable_selected, next_bar_execution=next_bar_execution,
+            apply_costs=apply_costs, warmup_days=warmup_days, fx_rates=fx_rates,
+        )
+        score = _walk_forward_objective(s, objective)
+        combo_results.append({
+            "params": {k: v for k, v in combo.items()},
+            "score": score,
+            "return_pct": s["total_return_pct"],
+            "max_dd_pct": s["max_drawdown_pct"],
+            "sharpe": s.get("sharpe_ratio"),
+        })
+        if score > best_score:
+            best_score = score
+            best_params = dict(combo)
+
+    # Apply best params to strategies
+    best_strategies = _copy_strategies(strategies)
+    if best_params:
+        for path, val in best_params.items():
+            strat_id = path.split(".")[0]
+            for s in best_strategies:
+                if s.get("id") == strat_id:
+                    _deep_set(s, _param_path_strip_strat(path), val)
+                    break
+
+    return best_strategies, combo_results
 
 
 def run_walk_forward(db_path: str, strategies: list[dict], accounts: dict[str, float],
@@ -857,17 +1175,53 @@ def run_walk_forward(db_path: str, strategies: list[dict], accounts: dict[str, f
                      next_bar_execution: bool = False,
                      apply_costs: bool = False,
                      warmup_days: int = 0,
-                     fx_rates: dict[str, float] | None = None) -> dict:
-    """Walk-forward 验证: 把全期切成滚动 train/test 窗口,
-    在每个 test 窗口(样本外)独立回测,汇总结果以暴露过拟合。"""
+                     fx_rates: dict[str, float] | None = None,
+                     param_grid: dict[str, list] | None = None,
+                     param_objective: str = "calmar",
+                     param_max_combos: int = 100) -> dict:
+    """Walk-forward 验证。
+
+    当提供 param_grid 时 (P1-6),对每个窗口在 train 段做参数搜索,
+    用最优参数在 test 段评估,实现真正 walk-forward 防过拟合。
+
+    param_grid: {"strat_id.path.to.param": [v1, v2, ...], ...}
+    param_objective: 优化目标 (calmar/sharpe/return_over_maxdd/total_return/avg_r)
+    param_max_combos: 最大搜索组合数
+    """
     windows = _month_windows(start, end, train_months, test_months)
     results: list[dict] = []
-    for train_start, train_end, test_end in windows:
-        # 样本外(test)段独立回测,使用独立的初始资金
+
+    # P1-8: 一次性加载全部 quotes,按窗口日期切片(避免重复查库)
+    source_store = TradingStore(db_path)
+    all_quotes, _ = _load_quotes(source_store, source, symbols,
+                                  start=None, end=end, warmup_days=0)
+    source_store.close()
+
+    for train_start, train_end, test_start, test_end in windows:
+        best_strategies = strategies
+        train_params = None
+
+        # P1-6: 在 train 段做参数优化
+        if param_grid:
+            best_strategies, train_combos = _param_grid_search(
+                db_path, strategies, accounts, param_grid,
+                train_start, train_end,
+                source, symbols, strategy_ids,
+                enable_selected, next_bar_execution, apply_costs,
+                warmup_days, fx_rates,
+                objective=param_objective, max_combinations=param_max_combos,
+            )
+            # 从最佳策略中提取参数
+            train_params = {}
+            for path in param_grid:
+                val = _deep_get(best_strategies[0], path) if best_strategies else None
+                if val is not None:
+                    train_params[path] = val
+
+        # 在 test 段用最优参数回测
         test_summary = run_backtest(
-            db_path, strategies, accounts,
-            start=train_end,  # test 段从 train 结束的下一天开始(实际由数据过滤)
-            end=test_end,
+            db_path, best_strategies, accounts,
+            start=test_start, end=test_end,
             source=source, symbols=symbols,
             strategy_ids=strategy_ids, enable_selected=enable_selected,
             next_bar_execution=next_bar_execution, apply_costs=apply_costs,
@@ -876,7 +1230,8 @@ def run_walk_forward(db_path: str, strategies: list[dict], accounts: dict[str, f
         total_ret = test_summary.get("total_return_pct")
         usd_ret = (test_summary.get("return_pct_by_currency") or {}).get("USD")
         results.append({
-            "train_start": train_start, "train_end": train_end, "test_end": test_end,
+            "train_start": train_start, "train_end": train_end,
+            "test_start": test_start, "test_end": test_end,
             "test_total_return_pct": total_ret,
             "test_usd_return_pct": usd_ret,
             "test_max_drawdown_pct": test_summary.get("usd_max_drawdown_pct"),
@@ -884,18 +1239,22 @@ def run_walk_forward(db_path: str, strategies: list[dict], accounts: dict[str, f
             "test_sell_win_rate_pct": test_summary.get("sell_win_rate_pct"),
             "test_sharpe": test_summary.get("sharpe_ratio"),
             "test_avg_r": test_summary.get("avg_r_multiple"),
+            "train_best_params": train_params,
         })
-    # 汇总: 优先用 total_return(含 fx),无则用 USD
+
+    # 汇总
     oos_returns = [r.get("test_total_return_pct") or r.get("test_usd_return_pct")
                    for r in results
                    if (r.get("test_total_return_pct") is not None
                        or r.get("test_usd_return_pct") is not None)]
     positive_windows = sum(1 for r in oos_returns if r > 0) if oos_returns else 0
     summary = {
-        "method": "walk-forward",
+        "method": ("walk-forward (优化)" if param_grid else "walk-forward (固定参数)"),
         "train_months": train_months,
         "test_months": test_months,
         "start": start, "end": end,
+        "param_optimization": param_grid is not None,
+        "param_objective": param_objective if param_grid else None,
         "windows": results,
         "window_count": len(results),
         "oos_positive_windows": positive_windows,
@@ -910,32 +1269,48 @@ def run_walk_forward(db_path: str, strategies: list[dict], accounts: dict[str, f
 def write_walk_forward_report(summary: dict, path: str) -> None:
     output = Path(_resolve_path(path))
     output.parent.mkdir(parents=True, exist_ok=True)
+    method_label = summary.get("method", "walk-forward")
+    optimized = summary.get("param_optimization", False)
+    objective = summary.get("param_objective")
     lines = [
         "# Walk-Forward 验证报告",
         "",
         "## 概述",
-        f"- 方法: 滚动 walk-forward (train {summary['train_months']} 月 / test {summary['test_months']} 月)",
+        f"- 方法: {method_label} (train {summary['train_months']} 月 / test {summary['test_months']} 月)",
         f"- 全期: {summary['start']} 至 {summary['end']}",
+    ]
+    if optimized and objective:
+        lines.append(f"- 参数优化: 每窗口 train 段搜索最优参数 (目标: {objective})")
+    lines.extend([
         f"- 样本外窗口数: {summary['window_count']}",
         f"- 样本外正收益窗口: {summary['oos_positive_windows']} / 负收益: {summary['oos_negative_windows']}",
         f"- 样本外平均收益: {_fmt_pct(summary.get('oos_avg_return_pct'))}",
         f"- 样本外最差窗口: {_fmt_pct(summary.get('oos_min_return_pct'))}",
         f"- 样本外最佳窗口: {_fmt_pct(summary.get('oos_max_return_pct'))}",
         "",
-        "> 若存在多个负收益样本外窗口,说明参数可能过拟合于特定区间,实盘需谨慎。",
+    ])
+    if optimized:
+        lines.append("> 参数优化模式下,各窗口在 train 段独立搜索最优参数(无未来信息泄露)。")
+    else:
+        lines.append("> 固定参数模式下,各窗口使用同一套参数;若存在多个负收益窗口,可能过拟合。")
+    lines.extend([
         "",
         "## 各窗口明细(样本外 test 段)",
-        "| Train 起 | Train 止 | Test 止 | 样本外收益 | 最大回撤 | 成交 | 胜率 | Sharpe | 均R |",
-        "|---|---|---|---:|---:|---:|---:|---:|---:|",
-    ]
+        "| Train 起 | Train 止 | Test 起 | Test 止 | 样本外收益 | 最大回撤 | 成交 | 胜率 | Sharpe | 均R |",
+        "|---|---|---|---|---:|---:|---:|---:|---:|---:|",
+    ])
     for w in summary.get("windows", []):
         lines.append(
-            f"| {w['train_start']} | {w['train_end']} | {w['test_end']} | "
-            f"{_fmt_pct(w.get('test_usd_return_pct'))} | "
+            f"| {w['train_start']} | {w['train_end']} | {w.get('test_start', '')} | {w['test_end']} | "
+            f"{_fmt_pct(w.get('test_total_return_pct') or w.get('test_usd_return_pct'))} | "
             f"{_fmt_pct(w.get('test_max_drawdown_pct'))} | "
             f"{w.get('test_fills', 0)} | {_fmt_pct(w.get('test_sell_win_rate_pct'))} | "
             f"{_fmt_num3(w.get('test_sharpe'))} | {_fmt_num3(w.get('test_avg_r'))} |"
         )
+        if w.get("train_best_params"):
+            params_str = ", ".join(
+                f"{k.split('.')[-1]}={v}" for k, v in w["train_best_params"].items())
+            lines.append(f"| > 优化参数: {params_str} ||||||||||")
     output.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -967,6 +1342,20 @@ def main() -> None:
                         help="加载 start 之前 N 天日线预热(仅 daily-bars,建议 60+)")
     parser.add_argument("--fx-rates", dest="fx_rates", default=None,
                         help="多币种汇率 JSON: {\"USD\":7.2,\"HKD\":0.92,\"CNY\":1.0}")
+    # P1: 参数优化 & 敏感性
+    parser.add_argument("--param-grid", dest="param_grid", default=None,
+                        help="walk-forward 参数搜索网格 JSON")
+    parser.add_argument("--param-objective", dest="param_objective", default="calmar",
+                        choices=["calmar", "sharpe", "return_over_maxdd", "total_return", "avg_r"],
+                        help="参数优化目标(默认 calmar)")
+    parser.add_argument("--param-max-combos", dest="param_max_combos", type=int, default=100,
+                        help="参数搜索最大组合数(默认 100)")
+    parser.add_argument("--sensitivity", dest="sensitivity", action="store_true",
+                        help="运行参数敏感性分析")
+    parser.add_argument("--sensitivity-params", dest="sensitivity_params", default=None,
+                        help="敏感性分析参数路径,逗号分隔")
+    parser.add_argument("--validate", dest="validate_only", action="store_true",
+                        help="仅校验 daily_bars 数据质量")
     args = parser.parse_args()
 
     # Parse fx_rates JSON if provided
@@ -987,6 +1376,13 @@ def main() -> None:
     if args.walk_forward:
         if not args.from_date or not args.to_date:
             parser.error("--walk-forward 需要同时指定 --from 和 --to")
+        # Parse param_grid JSON
+        param_grid = None
+        if args.param_grid:
+            try:
+                param_grid = json.loads(args.param_grid)
+            except (json.JSONDecodeError, ValueError, TypeError):
+                parser.error("--param-grid must be valid JSON")
         summary = run_walk_forward(
             db_path, strategies, accounts, args.from_date, args.to_date,
             train_months=args.train_months, test_months=args.test_months,
@@ -995,11 +1391,48 @@ def main() -> None:
             enable_selected=args.enable_selected,
             next_bar_execution=args.next_bar, apply_costs=args.apply_costs,
             warmup_days=args.warmup_days, fx_rates=fx_rates,
+            param_grid=param_grid,
+            param_objective=args.param_objective,
+            param_max_combos=args.param_max_combos,
         )
         if args.report:
             write_walk_forward_report(summary, args.report)
             summary["report_path"] = _resolve_path(args.report)
         print(json.dumps(summary, ensure_ascii=False, indent=2, default=str))
+        return
+
+    # P1-10: 数据校验模式
+    if args.validate_only:
+        source_store = TradingStore(db_path)
+        rows = source_store.load_daily_bars(symbols=_split_values(args.symbol) or None,
+                                             start=args.from_date, end=args.to_date)
+        source_store.close()
+        warnings = _validate_daily_bars(rows)
+        if warnings:
+            print("数据质量问题:")
+            for w in warnings:
+                print(f"  ⚠ {w}")
+        else:
+            print("✓ 数据质量检查通过")
+        return
+
+    # P1-9: 参数敏感性分析
+    if args.sensitivity:
+        if not args.from_date or not args.to_date:
+            parser.error("--sensitivity 需要同时指定 --from 和 --to")
+        param_paths = _split_values(args.sensitivity_params.split(",") if args.sensitivity_params else [])
+        if not param_paths:
+            parser.error("--sensitivity 需要 --sensitivity-params")
+        result = run_param_sensitivity(
+            db_path, strategies, accounts, args.from_date, args.to_date,
+            param_paths=param_paths,
+            source=args.source, symbols=_split_values(args.symbol),
+            strategy_ids=_split_values(args.strategy_id),
+            enable_selected=args.enable_selected,
+            next_bar_execution=args.next_bar, apply_costs=args.apply_costs,
+            warmup_days=args.warmup_days, fx_rates=fx_rates,
+        )
+        print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
         return
 
     summary = run_backtest(

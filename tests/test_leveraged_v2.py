@@ -204,9 +204,10 @@ def test_buy_hold_fraction_returns_half():
 def test_month_windows_generates_rolling_periods():
     windows = _month_windows("2023-01-01", "2024-06-30", train_months=6, test_months=3)
     assert len(windows) >= 2
-    # 每个窗口 test_end > train_end
-    for ts, te, test_e in windows:
+    # 每个窗口 test_end > train_end, test_start > train_end
+    for ts, te, test_s, test_e in windows:
         assert test_e > te
+        assert test_s > te  # P1-8: test 从 train_end+1 开始
 
 
 def test_walk_forward_runs_on_real_data():
@@ -365,3 +366,125 @@ def test_fx_rates_convert_equity_to_base_currency(tmp_path):
     )
     # 50000*7.2 + 100000*1 = 360000 + 100000 = 460000
     assert s_fx["starting_equity"] == 460000.0
+
+
+# ---------------------------------------------------------------------------
+# P1-10: 数据健康检查
+# ---------------------------------------------------------------------------
+
+def test_validate_daily_bars_detects_duplicates():
+    from src.backtest import _validate_daily_bars
+    rows = [
+        {"symbol": "SOXL", "date": "2024-01-01", "close": 10, "adj_close": 10,
+         "open": 10, "high": 10, "low": 10, "volume": 1000, "name": "x", "market": "美股", "source": "t"},
+        {"symbol": "SOXL", "date": "2024-01-01", "close": 10, "adj_close": 10,
+         "open": 10, "high": 10, "low": 10, "volume": 1000, "name": "x", "market": "美股", "source": "t"},
+    ]
+    warnings = _validate_daily_bars(rows)
+    assert any("重复日期" in w for w in warnings)
+
+
+def test_validate_daily_bars_detects_price_jump():
+    from src.backtest import _validate_daily_bars
+    rows = [
+        {"symbol": "SOXL", "date": "2024-01-01", "close": 10, "adj_close": 10,
+         "open": 10, "high": 10, "low": 10, "volume": 1000, "name": "x", "market": "美股", "source": "t"},
+        {"symbol": "SOXL", "date": "2024-01-02", "close": 20, "adj_close": 20,
+         "open": 20, "high": 20, "low": 20, "volume": 1000, "name": "x", "market": "美股", "source": "t"},
+    ]
+    warnings = _validate_daily_bars(rows)
+    assert any("跳变" in w for w in warnings)
+
+
+def test_validate_daily_bars_passes_clean_data():
+    from src.backtest import _validate_daily_bars
+    rows = [
+        {"symbol": "SOXL", "date": f"2024-01-{i+1:02d}", "close": 10 + i * 0.5,
+         "adj_close": 10 + i * 0.5,
+         "open": 10 + i * 0.5, "high": 10 + i * 0.5, "low": 10 + i * 0.5,
+         "volume": 1000, "name": "x", "market": "美股", "source": "t"}
+        for i in range(30)
+    ]
+    warnings = _validate_daily_bars(rows)
+    assert len(warnings) == 0
+
+
+# ---------------------------------------------------------------------------
+# P1-9: 参数敏感性分析
+# ---------------------------------------------------------------------------
+
+def test_param_sensitivity_runs_on_daily_bars(tmp_path):
+    db = tmp_path / "t.sqlite3"
+    store = TradingStore(str(db))
+    for i in range(30):
+        store.save_daily_bars([{
+            "symbol": "SOXL", "name": "SOXL", "market": "美股",
+            "date": f"2024-01-{i+1:02d}",
+            "open": 10 + i, "high": 11 + i, "low": 9 + i, "close": 10 + i,
+            "adj_close": 10 + i, "volume": 1000, "source": "test",
+        }])
+    store.close()
+
+    from src.backtest import run_param_sensitivity
+    strategies = [{
+        "id": "buy_soxl", "enabled": True,
+        "symbol": "SOXL", "action": "buy",
+        "trigger": {"field": "change_pct", "op": "below", "value": -10},
+        "sizing": {"type": "fixed_amount", "amount": 1000, "currency": "USD", "lot_size": 1},
+        "constraints": {"cooldown_minutes": 0},
+    }]
+    result = run_param_sensitivity(
+        str(db), strategies, {"USD": 50000},
+        "2024-01-01", "2024-01-20",
+        param_paths=["buy_soxl.trigger.value"],
+        perturbations=[-0.5, 0.5],
+        source="daily-bars", symbols=["SOXL"],
+        strategy_ids=["buy_soxl"], enable_selected=True,
+    )
+    assert "baseline" in result
+    assert "parameters" in result
+    assert "buy_soxl.trigger.value" in result["parameters"]
+    assert len(result["parameters"]["buy_soxl.trigger.value"]["results"]) == 2
+
+
+# ---------------------------------------------------------------------------
+# P1-6/8: walk-forward with param optimization & window fix
+# ---------------------------------------------------------------------------
+
+def test_walk_forward_with_param_grid_runs(tmp_path):
+    db = tmp_path / "t.sqlite3"
+    store = TradingStore(str(db))
+    for i in range(60):
+        store.save_daily_bars([{
+            "symbol": "SOXL", "name": "SOXL", "market": "美股",
+            "date": f"2024-01-{i+1:02d}",
+            "open": 10 + i * 0.2, "high": 11 + i * 0.2, "low": 9 + i * 0.2,
+            "close": 10 + i * 0.2, "adj_close": 10 + i * 0.2,
+            "volume": 1000, "source": "test",
+        }])
+    store.close()
+
+    from src.backtest import run_walk_forward
+    strategies = [{
+        "id": "buy_soxl", "enabled": False,
+        "symbol": "SOXL", "action": "buy",
+        "trigger": {"field": "change_pct", "op": "below", "value": -10},
+        "sizing": {"type": "fixed_amount", "amount": 1000, "currency": "USD", "lot_size": 1},
+        "constraints": {"cooldown_minutes": 0},
+    }]
+    param_grid = {
+        "buy_soxl.trigger.value": [-5, -10, -15],
+    }
+    wf = run_walk_forward(
+        str(db), strategies, {"USD": 50000},
+        "2024-01-01", "2024-02-10", train_months=1, test_months=1,
+        source="daily-bars", symbols=["SOXL"],
+        strategy_ids=["buy_soxl"], enable_selected=True,
+        param_grid=param_grid, param_objective="sharpe", param_max_combos=5,
+    )
+    assert wf["param_optimization"] is True
+    assert wf["window_count"] >= 1
+    assert "oos_avg_return_pct" in wf
+    # 验证每窗口有 train_best_params
+    for w in wf["windows"]:
+        assert w.get("train_best_params") is not None
