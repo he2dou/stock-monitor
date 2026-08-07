@@ -50,10 +50,17 @@ def _select_strategies(strategies: list[dict], strategy_ids: list[str] | None,
 
 
 def _quotes_from_daily_bars(rows: list[dict]) -> list[Quote]:
+    """Convert daily_bars rows to Quote list with OHLC fields.
+
+    Uses adj_close as price (P0-3: 除权除息后序列不失真),
+    fell back to close when adj_close is unavailable or zero.
+    """
     previous_close: dict[str, float] = {}
     quotes: list[Quote] = []
     for row in rows:
-        close = float(row["close"])
+        adj = float(row.get("adj_close", 0) or 0)
+        raw_close = float(row["close"])
+        close = adj if adj > 0 else raw_close
         prev = previous_close.get(row["symbol"])
         change_pct = ((close - prev) / prev * 100.0) if prev else 0.0
         previous_close[row["symbol"]] = close
@@ -65,14 +72,77 @@ def _quotes_from_daily_bars(rows: list[dict]) -> list[Quote]:
             change_pct=change_pct,
             volume=float(row.get("volume", 0) or 0),
             timestamp=f"{row['date']}T22:00:00+08:00",
+            # P0-1: populate OHLC for intrabar execution model
+            open=float(row.get("open", 0) or 0) or None,
+            high=float(row.get("high", 0) or 0) or None,
+            low=float(row.get("low", 0) or 0) or None,
         ))
     return quotes
 
 
+def _quote_at_price(quote: Quote, price: float, timestamp: str | None = None) -> Quote:
+    """Return a Quote copy with the given price (used for open/stop/target fills)."""
+    return Quote(
+        symbol=quote.symbol, name=quote.name, market=quote.market,
+        price=price, change_pct=quote.change_pct, volume=quote.volume,
+        timestamp=timestamp or quote.timestamp,
+        open=quote.open, high=quote.high, low=quote.low,
+    )
+
+
+def _intrabar_fill_price(side: str, trigger_op: str, trigger_value: float,
+                          quote: Quote, costs_bps: float = 0.0) -> float | None:
+    """Determine if a signal would fill intrabar using OHLC.
+
+    Returns the estimated fill price or None if the signal does not trigger
+    intrabar (in which case it should be executed at close).
+
+    For a **long** position:
+    - Stop (trailing / initial): triggered when **low** <= stop.
+      Conservative fill: max(low, stop) — price won't be worse than the stop.
+    - Take-profit (partial): triggered when **high** >= target.
+      Fill at target (price passed through the level).
+    - All other exit kinds (time_stop): not intrabar — return None.
+    """
+    has_ohlc = quote.low is not None and quote.high is not None
+    if not has_ohlc or side != "sell":
+        return None
+
+    if trigger_op in ("trailing_or_initial_stop", "initial_stop", "stop_loss"):
+        if quote.low <= trigger_value:
+            # Fill at the stop level (conservative: cannot be better than stop)
+            # Slippage: if the bar gaps through the stop, fill at max(low, stop)
+            filled = max(float(quote.low), trigger_value)
+            return filled
+        return None
+
+    if trigger_op == "partial_take_profit":
+        if quote.high >= trigger_value:
+            return trigger_value
+        return None
+
+    # time_stop, confirmation, etc.: not an intrabar event
+    return None
+
+
 def _load_quotes(store: TradingStore, source: str, symbols: list[str] | None,
-                 start: str | None, end: str | None) -> tuple[list[Quote], list[dict]]:
+                 start: str | None, end: str | None,
+                 warmup_days: int = 0) -> tuple[list[Quote], list[dict]]:
+    """Load quotes.  When warmup_days > 0 and source is daily-bars, loads
+    extra bars before *start* for warm-up (history seeding).
+
+    Returns (quotes, source_rows).
+    """
     if source == "daily-bars":
-        rows = store.load_daily_bars(symbols=symbols or None, start=start, end=end)
+        load_start = start
+        if warmup_days > 0 and start:
+            from datetime import datetime as _dt, timedelta as _td
+            try:
+                s = _dt.fromisoformat(start)
+                load_start = (s - _td(days=warmup_days)).strftime("%Y-%m-%d")
+            except (ValueError, TypeError):
+                load_start = start
+        rows = store.load_daily_bars(symbols=symbols or None, start=load_start, end=end)
         return _quotes_from_daily_bars(rows), rows
     quotes = store.load_quote_snapshots(start, end)
     if symbols:
@@ -105,8 +175,24 @@ def _equity_by_currency(store: TradingStore, last_prices: dict[str, float]) -> d
     return equity
 
 
-def _total_equity(equity_by_currency: dict[str, float]) -> float:
-    return sum(float(value) for value in equity_by_currency.values())
+def _total_equity(equity_by_currency: dict[str, float],
+                  fx_rates: dict[str, float] | None = None) -> float:
+    """Sum multi-currency equity, optionally converting via fx_rates to a single base.
+
+    fx_rates: e.g. {"USD": 7.2, "HKD": 0.92, "CNY": 1.0} means
+    1 USD = 7.2 base-units, 1 HKD = 0.92 base-units.  When None the raw
+    sum is returned (old behaviour).
+    """
+    if not fx_rates:
+        return sum(float(value) for value in equity_by_currency.values())
+    total = 0.0
+    for currency, value in equity_by_currency.items():
+        rate = fx_rates.get(currency)
+        if rate is not None and rate > 0:
+            total += float(value) * rate
+        else:
+            total += float(value)  # fallback: treat as 1:1
+    return total
 
 
 def _max_drawdown(equity_curve: list[dict]) -> float:
@@ -343,15 +429,23 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
                  strategy_ids: list[str] | None = None,
                  enable_selected: bool = False,
                  next_bar_execution: bool = False,
-                 apply_costs: bool = False) -> dict:
+                 apply_costs: bool = False,
+                 warmup_days: int = 0,
+                 fx_rates: dict[str, float] | None = None) -> dict:
     """回测策略。
 
-    next_bar_execution: True = 信号在下一根 bar 的价格成交(更真实,推荐回测启用);
-                        False(默认) = 信号当根即成交(旧行为,保持向后兼容)。
-    apply_costs: True = 应用策略配置中的 commission_bps/slippage_bps; False(默认) = 无成本(旧行为)。
+    next_bar_execution: True = 入场信号在下一根 bar 成交(推荐回测启用)。
+                        OHLC 可用时用 open 成交,否则用 close。
+                        False(默认) = 信号当根即成交(旧行为,向后兼容)。
+    apply_costs: True = 应用策略佣金/滑点。
+    warmup_days: >0 时,额外加载 start 之前的日线用于策略预热(仅计算指标,不交易)。
+                 仅对 source=daily-bars 生效。
+    fx_rates: 多币种汇率 {"USD": 7.2, "HKD": 0.92, "CNY": 1.0} → 以 CNY 计价。
+              None 时沿用旧行为(直接求和)。
     """
     source_store = TradingStore(db_path)
-    quotes, source_rows = _load_quotes(source_store, source, symbols, start, end)
+    quotes, source_rows = _load_quotes(source_store, source, symbols, start, end,
+                                        warmup_days=warmup_days)
     selected_strategies = _select_strategies(strategies, strategy_ids, enable_selected)
     _warn_timeframe_mismatch(selected_strategies, source)
 
@@ -359,7 +453,6 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
     broker_costs = None
     if apply_costs:
         from src.trading_models import TradingCosts as _TC
-        # 取第一个带 costs 的策略作为 broker 级成本(多策略场景可后续按策略拆分)
         for raw in selected_strategies:
             from src.strategy_engine import parse_strategy as _ps
             parsed = raw if not isinstance(raw, dict) else _ps(raw)
@@ -377,17 +470,30 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
     equity_curve: list[dict] = []
     last_prices: dict[str, float] = {}
     starting_equity_by_currency = _balances(test_store)
-    starting_equity = _total_equity(starting_equity_by_currency)
+    starting_equity = _total_equity(starting_equity_by_currency, fx_rates)
 
-    # 次根成交: 挂起的买入信号(入场)延迟到下一根 bar 执行;卖出(出场)信号立即执行。
+    # 次根成交: 挂起的买入信号(入场)延迟到下一根 bar;卖出(出场)信号立即执行。
     pending_entry: list[StrategySignal] = []
 
-    def _execute_now(signal: StrategySignal, exec_quote: Quote) -> None:
-        """用 exec_quote 的价格立即执行一个信号并记录。"""
-        pre_position = test_store.get_position(signal.market, signal.symbol)
-        # 把信号重定价到执行 bar(次根成交时用下一根价格)
-        signal = _reprice_signal(signal, exec_quote)
-        execution = broker.execute(signal)
+    # --- P0-5 预热: 把 start 之前的 bar 只喂给引擎(积累 history),不交易 ---
+    warmup_quotes: list[Quote] = []
+    active_quotes: list[Quote] = []
+    if warmup_days > 0 and start and source == "daily-bars":
+        for q in quotes:
+            if q.timestamp[:10] < start:
+                warmup_quotes.append(q)
+            else:
+                active_quotes.append(q)
+    else:
+        active_quotes = list(quotes)
+
+    for wq in warmup_quotes:
+        engine.generate_signals([wq])
+
+    slippage_bps_val = broker_costs.slippage_bps if broker_costs else 0.0
+
+    def _record_trade(signal: StrategySignal, execution: OrderExecution,
+                      exec_date: str, pre_position: dict) -> None:
         realized_pnl = None
         risk_per_share = None
         if execution.status == "FILLED":
@@ -397,7 +503,7 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
                 risk_per_share = float(signal.metadata.get("risk_per_share") or 0) or None
             engine.mark_filled(signal.strategy.id, signal, execution)
         trades.append({
-            "date": exec_quote.timestamp[:10],
+            "date": exec_date,
             "strategy_id": signal.strategy.id,
             "symbol": signal.symbol,
             "side": signal.action,
@@ -413,39 +519,82 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
             "risk_per_share": risk_per_share,
         })
 
-    for quote in quotes:
+    def _execute_and_record(signal: StrategySignal, exec_quote: Quote) -> None:
+        pre_pos = test_store.get_position(signal.market, signal.symbol)
+        signal = _reprice_signal(signal, exec_quote)
+        execution = broker.execute(signal)
+        _record_trade(signal, execution, exec_quote.timestamp[:10], pre_pos)
+
+    for quote in active_quotes:
         last_prices[quote.symbol] = quote.price
-        # 1) 先用本根价格执行上一根挂起的入场信号(次根成交)
-        if next_bar_execution:
+        bar_date = quote.timestamp[:10]
+        has_ohlc = (source == "daily-bars"
+                    and quote.open is not None
+                    and quote.high is not None
+                    and quote.low is not None)
+
+        # ---- 1) OPEN 阶段: 执行上一根挂起的入场信号 ----
+        if next_bar_execution and pending_entry:
+            fill_quote = _quote_at_price(quote, float(quote.open), quote.timestamp) if has_ohlc else quote
             for sig in pending_entry:
-                _execute_now(sig, quote)
+                _execute_and_record(sig, fill_quote)
             pending_entry = []
-        # 2) 生成本根信号
+
+        # ---- 2) CLOSE 阶段: 生成本根信号 ----
         new_signals = engine.generate_signals([quote])
+
+        # ---- 3) INTRABAR 阶段: 检查出场信号是否盘中已触发 ----
+        # 将 sell 信号按 intrabar / close 分两组
+        intrabar_signals: list[tuple[StrategySignal, float]] = []
+        close_signals: list[StrategySignal] = []
+
         for signal in new_signals:
             is_entry = signal.action == "buy"
-            if next_bar_execution and is_entry:
-                # 入场延迟到下一根;但先记录一条"信号生成"事件便于审计
-                pending_entry.append(signal)
+            if is_entry:
+                # 入场信号: next_bar 模式延迟,否则立即执行
+                if next_bar_execution:
+                    pending_entry.append(signal)
+                else:
+                    # same-bar: 若 OHLC 可用,用 open 成交(模拟盘中突破入场)
+                    exec_q = (_quote_at_price(quote, float(quote.open), quote.timestamp)
+                              if (has_ohlc and signal.trigger_op not in ("above", "below"))
+                              else quote)
+                    _execute_and_record(signal, exec_q)
             else:
-                # 出场信号(卖出)立即执行,或 same-bar 模式下全部立即执行
-                _execute_now(signal, quote)
+                # 出场信号: 先检查是否在盘中触发
+                intrabar_price = _intrabar_fill_price(
+                    signal.action, signal.trigger_op, signal.trigger_value,
+                    quote, slippage_bps_val)
+                if intrabar_price is not None:
+                    intrabar_signals.append((signal, intrabar_price))
+                else:
+                    close_signals.append(signal)
+
+        # 先执行盘中触发(partial 在 stop 前,保持强趋势)
+        for signal, fill_price in intrabar_signals:
+            exec_q = _quote_at_price(quote, fill_price, quote.timestamp)
+            _execute_and_record(signal, exec_q)
+        # 再执行收盘触发(可能因盘中已平仓而被拒——engine.mark_filled 已更新状态)
+        for signal in close_signals:
+            _execute_and_record(signal, quote)
+
+        # ---- 4) 记录权益曲线 ----
         equity_by_currency = _equity_by_currency(test_store, last_prices)
         equity_curve.append({
-            "date": quote.timestamp[:10],
-            "total_equity": _total_equity(equity_by_currency),
+            "date": bar_date,
+            "total_equity": _total_equity(equity_by_currency, fx_rates),
             "equity_by_currency": equity_by_currency,
         })
 
-    # 收尾: 仍有挂起入场信号时,按最后一根价格执行(如实盘会在下一交易日成交)
-    if pending_entry and quotes:
-        last_quote = quotes[-1]
+    # 收尾: 仍有挂起入场信号时,按最后一根价格执行
+    if pending_entry and active_quotes:
+        last_quote = active_quotes[-1]
         for sig in pending_entry:
-            _execute_now(sig, last_quote)
+            _execute_and_record(sig, last_quote)
         pending_entry = []
 
     ending_equity_by_currency = _equity_by_currency(test_store, last_prices)
-    ending_total_equity = _total_equity(ending_equity_by_currency)
+    ending_total_equity = _total_equity(ending_equity_by_currency, fx_rates)
     return_pct_by_currency = {
         currency: ((ending_equity_by_currency.get(currency, 0.0) - start_value) / start_value * 100.0)
         for currency, start_value in starting_equity_by_currency.items()
@@ -453,21 +602,30 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
     }
     sell_fills = [t for t in trades if t["status"] == "FILLED" and t["side"] == "sell"]
     winning_sells = [t for t in sell_fills if (t.get("realized_pnl") or 0) > 0]
-    primary_symbol = (symbols or [quotes[0].symbol if quotes else None])[0]
+    primary_symbol = (symbols or [active_quotes[0].symbol if active_quotes else None])[0]
 
+    # Risk metrics use fx_rates for consistency
     risk_metrics = _compute_risk_metrics(
         equity_curve, trades, source, starting_equity, ending_total_equity)
 
+    active_source_rows = [r for r in (source_rows if source == "daily-bars" else [])
+                          if not start or r["date"] >= start]
+
     summary = {
         "source": source,
-        "symbols": symbols or sorted({q.symbol for q in quotes}),
+        "symbols": symbols or sorted({q.symbol for q in active_quotes}),
         "strategy_ids": [s.get("id") if isinstance(s, dict) else s.id for s in selected_strategies],
         "from": start,
         "to": end,
-        "source_rows": len(source_rows) if source == "daily-bars" else len(quotes),
-        "quotes_replayed": len(quotes),
+        "source_rows": len(active_source_rows),
+        "quotes_replayed": len(active_quotes),
+        "warmup_bars_used": len(warmup_quotes),
+        "intrabar_execution": (source == "daily-bars"
+                                and active_quotes
+                                and active_quotes[0].open is not None),
         "next_bar_execution": next_bar_execution,
         "apply_costs": apply_costs,
+        "fx_rates": fx_rates,
         "orders": test_store.order_count(),
         "fills": test_store.fill_count(),
         "trade_events": len(trades),
@@ -479,7 +637,7 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
         "ending_total_equity": ending_total_equity,
         "total_return_pct": ((ending_total_equity - starting_equity) / starting_equity * 100.0) if starting_equity else 0.0,
         "return_pct_by_currency": return_pct_by_currency,
-        "buy_hold_return_pct": _buy_hold_return(quotes, primary_symbol),
+        "buy_hold_return_pct": _buy_hold_return(active_quotes, primary_symbol),
         "max_drawdown_pct": _max_drawdown(equity_curve),
         "usd_max_drawdown_pct": _max_drawdown_for_currency(equity_curve, "USD"),
         "max_drawdown_recovery_bars": risk_metrics["max_drawdown_recovery_bars"],
@@ -491,7 +649,7 @@ def run_backtest(db_path: str, strategies: list[dict], accounts: dict[str, float
         "profit_factor": risk_metrics["profit_factor"],
         "expectancy_per_trade": risk_metrics["expectancy_per_trade"],
         "avg_give_back_pct": risk_metrics["avg_give_back_pct"],
-        "buy_hold_50pct_return_pct": _buy_hold_return(quotes, primary_symbol, fraction=0.5),
+        "buy_hold_50pct_return_pct": _buy_hold_return(active_quotes, primary_symbol, fraction=0.5),
         "open_positions": _positions(test_store),
         "trades": trades,
         "equity_curve": equity_curve,
@@ -536,16 +694,19 @@ def write_markdown_report(summary: dict, path: str) -> None:
     filled = [t for t in trades if t["status"] == "FILLED"]
     rejected = [t for t in trades if t["status"] == "REJECTED"]
     lines = [
-        "# SOXL Strategy Backtest Report",
+        "# Strategy Backtest Report",
         "",
         "## Summary",
         f"- Source: `{summary['source']}`",
         f"- Symbols: {', '.join(summary.get('symbols') or [])}",
         f"- Strategies: {', '.join(summary.get('strategy_ids') or [])}",
         f"- Period: {summary.get('from')} to {summary.get('to')}",
-        f"- Bars replayed: {summary['quotes_replayed']}",
+        f"- Bars replayed: {summary['quotes_replayed']}"
+        f"{' (+' + str(summary.get('warmup_bars_used', 0)) + ' warm-up bars)' if summary.get('warmup_bars_used') else ''}",
         f"- Execution: {'next-bar (realistic)' if summary.get('next_bar_execution') else 'same-bar'}"
-        f"{', with costs' if summary.get('apply_costs') else ', no costs'}",
+        f"{', with costs' if summary.get('apply_costs') else ', no costs'}"
+        f"{', intrabar OHLC' if summary.get('intrabar_execution') else ''}",
+        f"- FX rates: {summary.get('fx_rates') or 'none (raw sum)'}",
         f"- Orders: {summary['orders']}, fills: {summary['fills']}, rejections: {len(rejected)}",
         f"- Starting equity: {summary['starting_equity']:.2f}",
         f"- Ending total equity: {summary['ending_total_equity']:.2f}",
@@ -694,7 +855,9 @@ def run_walk_forward(db_path: str, strategies: list[dict], accounts: dict[str, f
                      strategy_ids: list[str] | None = None,
                      enable_selected: bool = False,
                      next_bar_execution: bool = False,
-                     apply_costs: bool = False) -> dict:
+                     apply_costs: bool = False,
+                     warmup_days: int = 0,
+                     fx_rates: dict[str, float] | None = None) -> dict:
     """Walk-forward 验证: 把全期切成滚动 train/test 窗口,
     在每个 test 窗口(样本外)独立回测,汇总结果以暴露过拟合。"""
     windows = _month_windows(start, end, train_months, test_months)
@@ -708,10 +871,13 @@ def run_walk_forward(db_path: str, strategies: list[dict], accounts: dict[str, f
             source=source, symbols=symbols,
             strategy_ids=strategy_ids, enable_selected=enable_selected,
             next_bar_execution=next_bar_execution, apply_costs=apply_costs,
+            warmup_days=warmup_days, fx_rates=fx_rates,
         )
+        total_ret = test_summary.get("total_return_pct")
         usd_ret = (test_summary.get("return_pct_by_currency") or {}).get("USD")
         results.append({
             "train_start": train_start, "train_end": train_end, "test_end": test_end,
+            "test_total_return_pct": total_ret,
             "test_usd_return_pct": usd_ret,
             "test_max_drawdown_pct": test_summary.get("usd_max_drawdown_pct"),
             "test_fills": test_summary.get("fills"),
@@ -719,9 +885,12 @@ def run_walk_forward(db_path: str, strategies: list[dict], accounts: dict[str, f
             "test_sharpe": test_summary.get("sharpe_ratio"),
             "test_avg_r": test_summary.get("avg_r_multiple"),
         })
-    # 汇总
-    oos_returns = [r["test_usd_return_pct"] for r in results if r["test_usd_return_pct"] is not None]
-    positive_windows = sum(1 for r in oos_returns if r > 0)
+    # 汇总: 优先用 total_return(含 fx),无则用 USD
+    oos_returns = [r.get("test_total_return_pct") or r.get("test_usd_return_pct")
+                   for r in results
+                   if (r.get("test_total_return_pct") is not None
+                       or r.get("test_usd_return_pct") is not None)]
+    positive_windows = sum(1 for r in oos_returns if r > 0) if oos_returns else 0
     summary = {
         "method": "walk-forward",
         "train_months": train_months,
@@ -730,7 +899,7 @@ def run_walk_forward(db_path: str, strategies: list[dict], accounts: dict[str, f
         "windows": results,
         "window_count": len(results),
         "oos_positive_windows": positive_windows,
-        "oos_negative_windows": len(oos_returns) - positive_windows,
+        "oos_negative_windows": len(oos_returns) - positive_windows if oos_returns else 0,
         "oos_avg_return_pct": (sum(oos_returns) / len(oos_returns)) if oos_returns else None,
         "oos_min_return_pct": min(oos_returns) if oos_returns else None,
         "oos_max_return_pct": max(oos_returns) if oos_returns else None,
@@ -793,7 +962,21 @@ def main() -> None:
                         help="walk-forward 训练窗口月数(默认12)")
     parser.add_argument("--test-months", dest="test_months", type=int, default=3,
                         help="walk-forward 样本外窗口月数(默认3)")
+    # P0: 预热 & 汇率
+    parser.add_argument("--warmup-days", dest="warmup_days", type=int, default=0,
+                        help="加载 start 之前 N 天日线预热(仅 daily-bars,建议 60+)")
+    parser.add_argument("--fx-rates", dest="fx_rates", default=None,
+                        help="多币种汇率 JSON: {\"USD\":7.2,\"HKD\":0.92,\"CNY\":1.0}")
     args = parser.parse_args()
+
+    # Parse fx_rates JSON if provided
+    fx_rates: dict[str, float] | None = None
+    if args.fx_rates:
+        try:
+            fx_rates = json.loads(args.fx_rates)
+            fx_rates = {k: float(v) for k, v in fx_rates.items()}
+        except (json.JSONDecodeError, ValueError, TypeError):
+            parser.error("--fx-rates must be valid JSON like {\"USD\":7.2,\"HKD\":0.92,\"CNY\":1.0}")
 
     app_config = load_app_config(str(CONFIG_DIR / "config.yaml"))
     paper = app_config.get("paper_trading", {}) or {}
@@ -811,6 +994,7 @@ def main() -> None:
             strategy_ids=_split_values(args.strategy_id),
             enable_selected=args.enable_selected,
             next_bar_execution=args.next_bar, apply_costs=args.apply_costs,
+            warmup_days=args.warmup_days, fx_rates=fx_rates,
         )
         if args.report:
             write_walk_forward_report(summary, args.report)
@@ -830,6 +1014,8 @@ def main() -> None:
         enable_selected=args.enable_selected,
         next_bar_execution=args.next_bar,
         apply_costs=args.apply_costs,
+        warmup_days=args.warmup_days,
+        fx_rates=fx_rates,
     )
     if args.report:
         write_markdown_report(summary, args.report)

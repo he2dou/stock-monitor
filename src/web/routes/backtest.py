@@ -96,10 +96,10 @@ async def run(
     source: str = Form("daily-bars"),
     next_bar: str = Form("0"),
     apply_costs: str = Form("0"),
+    warmup_days: str = Form("0"),
+    fx_rates_json: str = Form(""),
 ):
     store = get_store(request)
-    # strategy_id and symbol are required: a backtest needs both a strategy
-    # to run and a symbol to scope quotes to.
     if not strategy_id.strip() or not symbol.strip():
         set_flash(request, "请选择策略和代码后再运行回测")
         return RedirectResponse("/backtest", status_code=303)
@@ -110,11 +110,22 @@ async def run(
     db_path = resolve_path(paper.get("db_path", "data/trading.sqlite3"))
     strategy_ids = [strategy_id] if strategy_id else None
     symbols = [symbol] if symbol else None
+
+    warmup = int(warmup_days) if warmup_days.strip().lstrip("-").isdigit() else 0
+    fx_rates = None
+    if fx_rates_json.strip():
+        try:
+            fx_rates = json.loads(fx_rates_json)
+            fx_rates = {k: float(v) for k, v in fx_rates.items()}
+        except (json.JSONDecodeError, ValueError, TypeError):
+            pass
+
     summary = run_backtest(
         db_path, strategies, accounts, start or None, end or None,
         source=source, symbols=symbols, strategy_ids=strategy_ids,
         next_bar_execution=next_bar.lower() in _TRUTHY,
         apply_costs=apply_costs.lower() in _TRUTHY,
+        warmup_days=warmup, fx_rates=fx_rates,
     )
     summary.pop("equity_curve", None)
     store.save_backtest_run(

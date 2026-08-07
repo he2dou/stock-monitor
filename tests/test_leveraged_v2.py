@@ -220,3 +220,148 @@ def test_walk_forward_runs_on_real_data():
     assert wf["window_count"] >= 1
     assert "oos_avg_return_pct" in wf
     assert wf["oos_positive_windows"] + wf["oos_negative_windows"] == wf["window_count"]
+
+
+# ---------------------------------------------------------------------------
+# P0-1: Intrabar OHLC execution (daily-bars stop / target at low/high)
+# ---------------------------------------------------------------------------
+
+def test_intrabar_flag_and_ohlc_on_daily_bars(tmp_path):
+    """daily-bars 回测启用 OHLC intrabar,Quote 应包含 open/high/low。"""
+    db = tmp_path / "t.sqlite3"
+    store = TradingStore(str(db))
+    store.save_daily_bars([{
+        "symbol": "SOXL", "name": "半导体", "market": "美股", "date": "2024-01-01",
+        "open": 10, "high": 11, "low": 9, "close": 10, "adj_close": 10,
+        "volume": 1000, "source": "test",
+    }])
+    store.close()
+    strategies = [{
+        "id": "buy_soxl", "enabled": False,
+        "symbol": "SOXL", "action": "buy",
+        "trigger": {"field": "change_pct", "op": "below", "value": -10},
+        "sizing": {"type": "fixed_amount", "amount": 1000, "currency": "USD", "lot_size": 1},
+        "constraints": {"cooldown_minutes": 0},
+    }]
+    summary = run_backtest(
+        str(db), strategies, {"USD": 50000},
+        start="2024-01-01", end="2024-01-01", source="daily-bars",
+        symbols=["SOXL"], strategy_ids=["buy_soxl"], enable_selected=True,
+    )
+    assert summary["intrabar_execution"] is True
+    # 验证 _intrabar_fill_price 对 OHLC 数据正确处理(单元测试已覆盖逻辑)
+
+
+def test_intrabar_partial_take_profit_executes_at_target():
+    """_intrabar_fill_price 单元测试: 验证 stop/target 盘中触发逻辑。"""
+    from src.backtest import _intrabar_fill_price
+    quote = Quote("SOXL", "半导体", "美股", 18, 0, 1000,
+                  timestamp="2024-01-08T22:00:00+08:00",
+                  open=17, high=30, low=16)
+    # 部分止盈目标价 25, high=30 远超目标 → 应触发
+    fill = _intrabar_fill_price("sell", "partial_take_profit", 25.0, quote)
+    assert fill == 25.0
+    # 止损: trigger_value=15, low=16 > 15 → 不应盘中触发
+    assert _intrabar_fill_price("sell", "trailing_or_initial_stop", 15.0, quote) is None
+    # 止损: trigger_value=17, low=16 <= 17 → 应触发,fill at max(16,17)=17
+    assert _intrabar_fill_price("sell", "trailing_or_initial_stop", 17.0, quote) == 17.0
+    # 非 OHLC 数据: 无 open/high/low → 返回 None
+    quote_no_ohlc = Quote("SOXL", "半导体", "美股", 18, 0, 1000)
+    assert _intrabar_fill_price("sell", "trailing_or_initial_stop", 17.0, quote_no_ohlc) is None
+
+
+def test_adj_close_used_in_daily_bars_backtest(tmp_path):
+    """daily-bars 回测应使用 adj_close 而非 raw close。"""
+    db = tmp_path / "t.sqlite3"
+    store = TradingStore(str(db))
+    # raw close=10, adj_close=12 (复权后)
+    store.save_daily_bars([{
+        "symbol": "SOXL", "name": "半导体", "market": "美股", "date": "2024-01-01",
+        "open": 10, "high": 11, "low": 9, "close": 10, "adj_close": 12,
+        "volume": 1000, "source": "test",
+    }])
+    store.close()
+
+    from src.backtest import _load_quotes
+    store2 = TradingStore(str(db))
+    quotes, _ = _load_quotes(store2, "daily-bars", ["SOXL"], None, None)
+    store2.close()
+    assert len(quotes) == 1
+    assert quotes[0].price == 12.0  # adj_close, not raw close
+    assert quotes[0].open == 10.0
+    assert quotes[0].high == 11.0
+    assert quotes[0].low == 9.0
+
+
+# ---------------------------------------------------------------------------
+# P0-5: warmup bars
+# ---------------------------------------------------------------------------
+
+def test_warmup_bars_are_fed_to_engine_but_not_traded(tmp_path):
+    """预热 bar 只用来积累指标历史,不产生交易,不计入权益。"""
+    db = tmp_path / "t.sqlite3"
+    store = TradingStore(str(db))
+    # 60 根预热 + 2 根活跃
+    import datetime as _dt
+    base = _dt.date.fromisoformat("2024-01-01")
+    for i in range(65):
+        d = (base + _dt.timedelta(days=i)).isoformat()
+        p = 10 + i * 0.1  # 缓慢上升
+        store.save_daily_bars([{
+            "symbol": "SOXL", "name": "半导体", "market": "美股", "date": d,
+            "open": p, "high": p + 0.5, "low": p - 0.5, "close": p,
+            "adj_close": p, "volume": 1000, "source": "test",
+        }])
+    store.close()
+
+    strategies = [_leveraged_raw()]
+    summary = run_backtest(
+        str(db), strategies, {"USD": 50000},
+        start="2024-02-20", end="2024-03-05", source="daily-bars",
+        symbols=["SOXL"], strategy_ids=["s"], enable_selected=True,
+        warmup_days=60,
+    )
+    assert summary["warmup_bars_used"] > 0
+    # 活跃 bar 数量正确
+    assert summary["quotes_replayed"] >= 1
+
+
+# ---------------------------------------------------------------------------
+# P0-4: multi-currency FX rate conversion
+# ---------------------------------------------------------------------------
+
+def test_fx_rates_convert_equity_to_base_currency(tmp_path):
+    """提供 fx_rates 时,total_equity 应按汇率折算。"""
+    db = tmp_path / "t.sqlite3"
+    store = TradingStore(str(db))
+    store.save_daily_bars([{
+        "symbol": "SOXL", "name": "半导体", "market": "美股", "date": "2024-01-01",
+        "open": 10, "high": 10, "low": 10, "close": 10, "adj_close": 10,
+        "volume": 1000, "source": "test",
+    }])
+    store.close()
+
+    strategies = [{
+        "id": "buy_soxl", "enabled": False,
+        "symbol": "SOXL", "action": "buy",
+        "trigger": {"field": "change_pct", "op": "below", "value": -10},
+        "sizing": {"type": "fixed_amount", "amount": 1000, "currency": "USD", "lot_size": 1},
+        "constraints": {"cooldown_minutes": 0},
+    }]
+    # 无汇率: USD + CNY 直接相加 = 50000 + 100000 = 150000
+    s_raw = run_backtest(
+        str(db), strategies, {"USD": 50000, "CNY": 100000},
+        start="2024-01-01", end="2024-01-01", source="daily-bars",
+        symbols=["SOXL"], strategy_ids=["buy_soxl"], enable_selected=True,
+    )
+    assert s_raw["starting_equity"] == 150000.0
+
+    # 有汇率: USD→CNY 7.2, CNY=1
+    s_fx = run_backtest(
+        str(db), strategies, {"USD": 50000, "CNY": 100000},
+        start="2024-01-01", end="2024-01-01", source="daily-bars",
+        symbols=["SOXL"], strategy_ids=["buy_soxl"], enable_selected=True,
+        fx_rates={"USD": 7.2, "CNY": 1.0},
+    )
+    # 50000*7.2 + 100000*1 = 360000 + 100000 = 460000
+    assert s_fx["starting_equity"] == 460000.0

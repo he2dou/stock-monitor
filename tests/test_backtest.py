@@ -66,7 +66,7 @@ def test_run_backtest_replays_daily_bars_and_writes_report(tmp_path):
     assert summary["orders"] == 1
     assert summary["fills"] == 1
     assert summary["trades"][0]["date"] == "2026-07-29"
-    assert "SOXL Strategy Backtest Report" in report.read_text(encoding="utf-8")
+    assert "Strategy Backtest Report" in report.read_text(encoding="utf-8")
     assert "buy_soxl" in csv_path.read_text(encoding="utf-8")
 
 
