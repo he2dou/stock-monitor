@@ -6,7 +6,7 @@ from pathlib import Path
 
 from src.config_loader import load_alerts, load_app_config, load_watchlist
 from src.index_snapshots import load_market_indices
-from src.kline_history import NasdaqDailyBarSource, YahooDailyBarSource
+from src.kline_history import AkshareDailyBarSource, NasdaqDailyBarSource, YahooDailyBarSource
 from src.market_hours import is_market_open
 from src.service import ops
 from src.sources.sinatx_source import SinaTxSource
@@ -116,7 +116,12 @@ def cmd_backfill_index_snapshots(args) -> None:
 def cmd_fetch_kline(args) -> None:
     store = default_store()
     try:
-        source_cls = NasdaqDailyBarSource if args.provider == "nasdaq" else YahooDailyBarSource
+        source_map = {
+            "nasdaq": NasdaqDailyBarSource,
+            "akshare": AkshareDailyBarSource,
+            "yahoo": YahooDailyBarSource,
+        }
+        source_cls = source_map.get(args.provider, YahooDailyBarSource)
         result = ops.fetch_kline(
             store,
             symbol=args.symbol,
@@ -203,7 +208,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("add-stock")
     p.add_argument("--symbol", required=True)
     p.add_argument("--name", required=True)
-    p.add_argument("--market", required=True, choices=["A股", "港股", "美股"])
+    p.add_argument("--market", required=True, choices=["A鑲?, "娓偂", "缇庤偂"])
     p.add_argument("--disabled", action="store_true")
     p.set_defaults(func=cmd_add_stock)
 
@@ -241,7 +246,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--from", dest="start", default=None, help="Start date, YYYY-MM-DD")
     p.add_argument("--to", dest="end", default=None, help="End date, YYYY-MM-DD")
     p.add_argument("--years", type=int, default=3, help="Years to fetch when --from is omitted")
-    p.add_argument("--provider", choices=["nasdaq", "yahoo"], default="nasdaq")
+    p.add_argument("--provider", choices=["nasdaq", "yahoo", "akshare"], default="akshare")
     p.add_argument("--timeout", type=int, default=20)
     p.set_defaults(func=cmd_fetch_kline)
 

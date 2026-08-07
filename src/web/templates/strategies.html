@@ -37,7 +37,7 @@
       <td>{{ s.action }}</td>
       <td>{% if s.enabled %}<span class="badge ok">启用</span>{% else %}<span class="badge off">停用</span>{% endif %}</td>
       <td>{% if s.bindings %}{{ s.bindings|length }} 只{% else %}<span class="hint">未绑定</span>{% endif %}</td>
-      <td class="mono sm">{{ s.updated_at or '-' }}</td>
+      <td class="mono sm">{{ (s.updated_at|fmt_time) or '-' }}</td>
       <td><div class="actions">
         <button class="btn sm" type="button" onclick="toggleStrategyRow('edit-{{ s.id }}')">编辑</button>
         <button class="btn sm" type="button" onclick="toggleStrategyRow('bind-{{ s.id }}')">绑定</button>

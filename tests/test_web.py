@@ -71,6 +71,23 @@ def test_pages_render(tmp_path):
     store.close()
 
 
+def test_pages_format_timestamps(tmp_path):
+    """Rendered pages show timestamps as 'YYYY-MM-DD HH:MM:SS', not raw ISO."""
+    app, store = _make_app(tmp_path)
+    # latest_quotes shows MAX(timestamp); insert one newer than _make_app's.
+    store.save_quote_snapshots([
+        Quote("SOXL", "SOXL", "美股", 100.0, -1.0, 1000,
+              timestamp="2026-12-31T23:59:50.000000+00:00")
+    ])
+    client = TestClient(app)
+
+    r = client.get("/markets", follow_redirects=True)
+    assert r.status_code == 200
+    assert "2026-12-31 23:59:50" in r.text
+    assert "2026-12-31T23:59:50.000000+00:00" not in r.text
+    store.close()
+
+
 def test_watchlist_crud(tmp_path):
     app, store = _make_app(tmp_path)
     client = TestClient(app)
@@ -333,6 +350,138 @@ def test_ops_update_snapshots(tmp_path, monkeypatch):
         "SELECT price FROM quote_snapshots ORDER BY id DESC LIMIT 1"
     ).fetchone()
     assert rows["price"] == 101.0
+    store.close()
+
+
+def test_ops_fetch_kline_uses_date_range(tmp_path, monkeypatch):
+    """The fetch-kline form sends start/end dates, not years."""
+    app, store = _make_app(tmp_path)
+    client = TestClient(app)
+
+    from src.service import ops as ops_mod
+
+    captured = {}
+
+    def fake_fetch_kline(store, *, symbol, name, market, start, end, years,
+                         source, provider):
+        captured.update(symbol=symbol, start=start, end=end, years=years,
+                        provider=provider)
+        return {"ok": True, "fetched": 5, "symbol": symbol, "market": market,
+                "from": start, "to": end, "provider": provider}
+
+    monkeypatch.setattr(ops_mod, "fetch_kline", fake_fetch_kline)
+
+    r = client.post("/ops/fetch-kline", data={
+        "symbol": "SOXL",
+        "market": "美股",
+        "provider": "yahoo",
+        "start": "2024-01-01",
+        "end": "2024-06-30",
+    }, follow_redirects=False)
+
+    assert r.status_code == 303
+    assert captured["symbol"] == "SOXL"
+    assert captured["start"] == "2024-01-01"
+    assert captured["end"] == "2024-06-30"
+    assert captured["provider"] == "yahoo"
+    store.close()
+
+
+def test_ops_fetch_kline_a_share_uses_akshare(tmp_path, monkeypatch):
+    """A-share (159326) routes through the akshare provider end-to-end."""
+    app, store = _make_app(tmp_path)
+    client = TestClient(app)
+
+    from src.service import ops as ops_mod
+
+    captured = {}
+
+    def fake_fetch_kline(store, *, symbol, name, market, start, end, years,
+                         source, provider):
+        captured.update(symbol=symbol, market=market, provider=provider,
+                        start=start, end=end, source_type=type(source).__name__)
+        return {"ok": True, "fetched": 44, "symbol": symbol, "market": market,
+                "from": start, "to": end, "provider": provider, "saved": 44}
+
+    monkeypatch.setattr(ops_mod, "fetch_kline", fake_fetch_kline)
+
+    r = client.post("/ops/fetch-kline", data={
+        "symbol": "159326",
+        "market": "A股",
+        "provider": "akshare",
+        "start": "2026-06-01",
+        "end": "2026-07-31",
+    }, follow_redirects=False)
+
+    assert r.status_code == 303
+    assert captured["symbol"] == "159326"
+    assert captured["market"] == "A股"
+    assert captured["provider"] == "akshare"
+    assert captured["start"] == "2026-06-01"
+    store.close()
+
+
+def test_ops_page_shows_date_inputs_not_years(tmp_path):
+    """The ops page renders date pickers and no longer has the years field."""
+    app, store = _make_app(tmp_path)
+    client = TestClient(app)
+    r = client.get("/ops", follow_redirects=True)
+    assert r.status_code == 200
+    assert 'name="start"' in r.text
+    assert 'name="end"' in r.text
+    assert 'type="date"' in r.text
+    assert 'name="years"' not in r.text
+    store.close()
+
+
+
+def test_backtest_page_symbol_dropdown_from_watchlist(tmp_path):
+    """The backtest form uses a symbol <select> populated from the watchlist."""
+    app, store = _make_app(tmp_path)
+    client = TestClient(app)
+    r = client.get("/backtest", follow_redirects=True)
+    assert r.status_code == 200
+    # SOXL is seeded by _make_app and must appear as a dropdown option.
+    assert 'name="symbol"' in r.text and 'required' in r.text
+    assert '<option value="SOXL">SOXL</option>' in r.text
+    # The old free-text input must be gone.
+    assert 'placeholder="如 SOXL"' not in r.text
+    store.close()
+
+
+def test_backtest_run_requires_strategy_and_symbol(tmp_path):
+    """Submitting /backtest/run without strategy or symbol is rejected."""
+    app, store = _make_app(tmp_path)
+    client = TestClient(app)
+
+    # Missing both -> redirected with a flash, no run saved.
+    r = client.post("/backtest/run", data={"start": "", "end": ""}, follow_redirects=False)
+    assert r.status_code == 303
+    assert store.load_backtest_runs() == []
+
+    # Missing strategy_id only.
+    r = client.post("/backtest/run", data={"symbol": "SOXL", "start": "", "end": ""},
+                    follow_redirects=False)
+    assert r.status_code == 303
+    assert store.load_backtest_runs() == []
+
+    # Missing symbol only.
+    r = client.post("/backtest/run", data={"strategy_id": "x", "start": "", "end": ""},
+                    follow_redirects=False)
+    assert r.status_code == 303
+    assert store.load_backtest_runs() == []
+    store.close()
+
+
+def test_backtest_page_has_date_inputs(tmp_path):
+    """The backtest form renders date pickers with default values."""
+    app, store = _make_app(tmp_path)
+    client = TestClient(app)
+    r = client.get("/backtest", follow_redirects=True)
+    assert r.status_code == 200
+    assert 'name="start"' in r.text and 'type="date"' in r.text
+    assert 'name="end"' in r.text
+    assert 'placeholder="YYYY-MM-DD"' not in r.text
     store.close()
 
 

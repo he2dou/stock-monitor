@@ -9,6 +9,7 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
 from src.web.deps import WEB_DIR, CONFIG_DIR, build_store, load_web_app_config
+from src.web.filters import register_template_filters
 from src.web.auth import router as auth_router, _is_auth_enabled
 from src.web.csrf_middleware import CSRFMiddleware
 from src.web.auth_middleware import AuthMiddleware
@@ -28,6 +29,7 @@ def create_app(store=None, config_dir: Path | None = None):
     app.state.app_config = app_config
     app.state.config_dir = config_dir
     app.state.templates = Jinja2Templates(directory=str(WEB_DIR / "templates"))
+    register_template_filters(app.state.templates.env)
     app.state.monitor = None  # populated by main.py in embedded mode
 
     web_cfg = app_config.get("web", {}) or {}

@@ -7755,3 +7755,1470 @@ sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in
 2026-08-06 18:23:50,116 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
 2026-08-06 18:23:50,117 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
 2026-08-06 18:23:50,118 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 18:33:50 CST)" executed successfully
+2026-08-06 18:33:50,111 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 18:43:50 CST)" (scheduled at 2026-08-06 18:33:50.107483+08:00)
+2026-08-06 18:33:50,115 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 18:33:50,117 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 18:33:50,117 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 18:43:50 CST)" executed successfully
+2026-08-06 18:43:50,108 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 18:53:50 CST)" (scheduled at 2026-08-06 18:43:50.107483+08:00)
+2026-08-06 18:43:50,112 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 18:43:50,113 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 18:43:50,113 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 18:53:50 CST)" executed successfully
+2026-08-06 18:53:50,116 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:03:50 CST)" (scheduled at 2026-08-06 18:53:50.107483+08:00)
+2026-08-06 18:53:50,120 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 18:53:50,122 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 18:53:50,122 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:03:50 CST)" executed successfully
+2026-08-06 19:03:50,109 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:13:50 CST)" (scheduled at 2026-08-06 19:03:50.107483+08:00)
+2026-08-06 19:03:50,113 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 19:03:50,115 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 19:03:50,115 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:13:50 CST)" executed successfully
+2026-08-06 19:13:50,116 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:23:50 CST)" (scheduled at 2026-08-06 19:13:50.107483+08:00)
+2026-08-06 19:13:50,120 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 19:13:50,122 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 19:13:50,122 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:23:50 CST)" executed successfully
+2026-08-06 19:23:50,113 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:33:50 CST)" (scheduled at 2026-08-06 19:23:50.107483+08:00)
+2026-08-06 19:23:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 19:23:50,119 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 19:23:50,119 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:33:50 CST)" executed successfully
+2026-08-06 19:33:50,114 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:43:50 CST)" (scheduled at 2026-08-06 19:33:50.107483+08:00)
+2026-08-06 19:33:50,121 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 19:33:50,123 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 19:33:50,123 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:43:50 CST)" executed successfully
+2026-08-06 19:43:50,111 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:53:50 CST)" (scheduled at 2026-08-06 19:43:50.107483+08:00)
+2026-08-06 19:43:50,114 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 19:43:50,116 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 19:43:50,117 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 19:53:50 CST)" executed successfully
+2026-08-06 19:53:50,110 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:03:50 CST)" (scheduled at 2026-08-06 19:53:50.107483+08:00)
+2026-08-06 19:53:50,114 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 19:53:50,116 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 19:53:50,116 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:03:50 CST)" executed successfully
+2026-08-06 20:03:50,110 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:13:50 CST)" (scheduled at 2026-08-06 20:03:50.107483+08:00)
+2026-08-06 20:03:50,113 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 20:03:50,115 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 20:03:50,116 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:13:50 CST)" executed successfully
+2026-08-06 20:13:50,112 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:23:50 CST)" (scheduled at 2026-08-06 20:13:50.107483+08:00)
+2026-08-06 20:13:50,116 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 20:13:50,118 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 20:13:50,118 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:23:50 CST)" executed successfully
+2026-08-06 20:23:50,109 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:33:50 CST)" (scheduled at 2026-08-06 20:23:50.107483+08:00)
+2026-08-06 20:23:50,112 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 20:23:50,114 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 20:23:50,115 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:33:50 CST)" executed successfully
+2026-08-06 20:33:50,115 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:43:50 CST)" (scheduled at 2026-08-06 20:33:50.107483+08:00)
+2026-08-06 20:33:50,119 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 20:33:50,121 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 20:33:50,121 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:43:50 CST)" executed successfully
+2026-08-06 20:43:50,112 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:53:50 CST)" (scheduled at 2026-08-06 20:43:50.107483+08:00)
+2026-08-06 20:43:50,115 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 20:43:50,117 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 20:43:50,117 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 20:53:50 CST)" executed successfully
+2026-08-06 20:53:50,114 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:03:50 CST)" (scheduled at 2026-08-06 20:53:50.107483+08:00)
+2026-08-06 20:53:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 20:53:50,119 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 20:53:50,119 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:03:50 CST)" executed successfully
+2026-08-06 21:03:50,112 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:13:50 CST)" (scheduled at 2026-08-06 21:03:50.107483+08:00)
+2026-08-06 21:03:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 21:03:50,119 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 21:03:50,119 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:13:50 CST)" executed successfully
+2026-08-06 21:13:50,120 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:23:50 CST)" (scheduled at 2026-08-06 21:13:50.107483+08:00)
+2026-08-06 21:13:50,123 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 21:13:50,125 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 21:13:50,126 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:23:50 CST)" executed successfully
+2026-08-06 21:23:50,117 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:33:50 CST)" (scheduled at 2026-08-06 21:23:50.107483+08:00)
+2026-08-06 21:23:50,120 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 21:23:50,122 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-06 21:23:50,122 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:33:50 CST)" executed successfully
+2026-08-06 21:33:50,117 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:43:50 CST)" (scheduled at 2026-08-06 21:33:50.107483+08:00)
+2026-08-06 21:33:50,121 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 21:33:50,122 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 21:33:50,437 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 21:33:50,438 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 21:33:50,469 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:121.6800 change:-7.87% volume:9241981
+2026-08-06 21:33:50,470 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:70.3600 change:-3.40% volume:8843081
+2026-08-06 21:33:50,470 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:203.8800 change:-6.90% volume:1660454
+2026-08-06 21:33:50,470 [INFO] src.monitor: 美股 | IBM(IBM) price:229.3800 change:-2.77% volume:332818
+2026-08-06 21:33:50,470 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:107.7000 change:-0.53% volume:67958978
+2026-08-06 21:33:50,470 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:73.7500 change:-1.44% volume:1019090
+2026-08-06 21:33:50,470 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:203.4100 change:-3.61% volume:2117696
+2026-08-06 21:33:50,471 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:154.2000 change:-2.67% volume:4755424
+2026-08-06 21:33:50,471 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:212.2400 change:-5.52% volume:232684
+2026-08-06 21:33:50,471 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:313.3800 change:-1.59% volume:215780
+2026-08-06 21:33:50,471 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.0100 change:-1.52% volume:149042
+2026-08-06 21:33:50,471 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:75.8000 change:-0.91% volume:19498
+2026-08-06 21:33:50,471 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:512.2400 change:-4.12% volume:256193
+2026-08-06 21:33:50,471 [INFO] src.monitor: No alerts triggered
+2026-08-06 21:33:50,472 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:43:50 CST)" executed successfully
+2026-08-06 21:43:50,109 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:53:50 CST)" (scheduled at 2026-08-06 21:43:50.107483+08:00)
+2026-08-06 21:43:50,112 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 21:43:50,114 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 21:43:50,399 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 21:43:50,399 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 21:43:50,412 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:128.7100 change:-2.54% volume:13795266
+2026-08-06 21:43:50,412 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:71.6800 change:-1.59% volume:13722072
+2026-08-06 21:43:50,412 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:208.0000 change:-5.02% volume:2804431
+2026-08-06 21:43:50,412 [INFO] src.monitor: 美股 | IBM(IBM) price:232.3200 change:-1.53% volume:510480
+2026-08-06 21:43:50,412 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.2900 change:+0.94% volume:81669423
+2026-08-06 21:43:50,412 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:75.5500 change:+0.98% volume:2058588
+2026-08-06 21:43:50,412 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:208.4900 change:-1.20% volume:2680503
+2026-08-06 21:43:50,412 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:153.3000 change:-3.24% volume:6921326
+2026-08-06 21:43:50,413 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:219.9400 change:-2.09% volume:442303
+2026-08-06 21:43:50,413 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:323.1600 change:+1.48% volume:384512
+2026-08-06 21:43:50,413 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.4300 change:+0.34% volume:269056
+2026-08-06 21:43:50,413 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:75.2700 change:-1.59% volume:34428
+2026-08-06 21:43:50,413 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:524.1600 change:-1.89% volume:424384
+2026-08-06 21:43:50,414 [INFO] src.monitor: No alerts triggered
+2026-08-06 21:43:50,415 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 21:53:50 CST)" executed successfully
+2026-08-06 21:53:50,116 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:03:50 CST)" (scheduled at 2026-08-06 21:53:50.107483+08:00)
+2026-08-06 21:53:50,119 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 21:53:50,121 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 21:53:50,408 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 21:53:50,408 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 21:53:50,422 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:130.9000 change:-0.88% volume:16935937
+2026-08-06 21:53:50,423 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.2300 change:-0.84% volume:17268661
+2026-08-06 21:53:50,423 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:209.7100 change:-4.24% volume:3845635
+2026-08-06 21:53:50,423 [INFO] src.monitor: 美股 | IBM(IBM) price:232.8500 change:-1.30% volume:604069
+2026-08-06 21:53:50,423 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.5400 change:+1.17% volume:88846102
+2026-08-06 21:53:50,423 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:75.4700 change:+0.87% volume:2724521
+2026-08-06 21:53:50,423 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:210.3000 change:-0.34% volume:3310170
+2026-08-06 21:53:50,424 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:153.7500 change:-2.96% volume:9229257
+2026-08-06 21:53:50,424 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:223.6800 change:-0.43% volume:582206
+2026-08-06 21:53:50,424 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:323.2900 change:+1.53% volume:554890
+2026-08-06 21:53:50,424 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.3400 change:-0.07% volume:331919
+2026-08-06 21:53:50,424 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:76.8000 change:+0.41% volume:60229
+2026-08-06 21:53:50,424 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:524.1000 change:-1.90% volume:585457
+2026-08-06 21:53:50,424 [INFO] src.monitor: No alerts triggered
+2026-08-06 21:53:50,425 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:03:50 CST)" executed successfully
+2026-08-06 22:03:50,109 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:13:50 CST)" (scheduled at 2026-08-06 22:03:50.107483+08:00)
+2026-08-06 22:03:50,113 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 22:03:50,115 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 22:03:50,397 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 22:03:50,397 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 22:03:50,409 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:132.4400 change:+0.28% volume:19072116
+2026-08-06 22:03:50,410 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.1800 change:-0.91% volume:20105631
+2026-08-06 22:03:50,410 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:211.4800 change:-3.43% volume:4618207
+2026-08-06 22:03:50,410 [INFO] src.monitor: 美股 | IBM(IBM) price:232.0400 change:-1.64% volume:724508
+2026-08-06 22:03:50,410 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.3600 change:+1.01% volume:94852323
+2026-08-06 22:03:50,410 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:77.1000 change:+3.05% volume:3821097
+2026-08-06 22:03:50,410 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:212.7700 change:+0.83% volume:3792919
+2026-08-06 22:03:50,411 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.4700 change:-1.87% volume:11069334
+2026-08-06 22:03:50,411 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:226.0400 change:+0.63% volume:663067
+2026-08-06 22:03:50,411 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:325.2700 change:+2.15% volume:678859
+2026-08-06 22:03:50,412 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.7600 change:+1.83% volume:436667
+2026-08-06 22:03:50,412 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.4000 change:+2.50% volume:93053
+2026-08-06 22:03:50,412 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:526.6700 change:-1.42% volume:698166
+2026-08-06 22:03:50,412 [INFO] src.monitor: No alerts triggered
+2026-08-06 22:03:50,413 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:13:50 CST)" executed successfully
+2026-08-06 22:13:50,112 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:23:50 CST)" (scheduled at 2026-08-06 22:13:50.107483+08:00)
+2026-08-06 22:13:50,118 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 22:13:50,120 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 22:13:50,410 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 22:13:50,410 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 22:13:50,423 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:138.4100 change:+4.80% volume:22141990
+2026-08-06 22:13:50,423 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.9100 change:+0.10% volume:22743378
+2026-08-06 22:13:50,423 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:214.2700 change:-2.16% volume:5376250
+2026-08-06 22:13:50,423 [INFO] src.monitor: 美股 | IBM(IBM) price:232.3800 change:-1.50% volume:802398
+2026-08-06 22:13:50,424 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.9700 change:+1.57% volume:101248766
+2026-08-06 22:13:50,424 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:79.6300 change:+6.42% volume:5437956
+2026-08-06 22:13:50,424 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:217.2300 change:+2.94% volume:4524803
+2026-08-06 22:13:50,424 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.2500 change:-1.38% volume:12706741
+2026-08-06 22:13:50,424 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.8700 change:+4.11% volume:863544
+2026-08-06 22:13:50,424 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:338.5300 change:+6.31% volume:953651
+2026-08-06 22:13:50,425 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.3300 change:+4.38% volume:705636
+2026-08-06 22:13:50,425 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.5700 change:+4.03% volume:166011
+2026-08-06 22:13:50,425 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:535.5500 change:+0.25% volume:879952
+2026-08-06 22:13:50,425 [INFO] src.monitor: No alerts triggered
+2026-08-06 22:13:50,426 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:23:50 CST)" executed successfully
+2026-08-06 22:23:50,110 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:33:50 CST)" (scheduled at 2026-08-06 22:23:50.107483+08:00)
+2026-08-06 22:23:50,113 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 22:23:50,115 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 22:23:50,399 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 22:23:50,399 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 22:23:50,415 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:139.5600 change:+5.67% volume:24862327
+2026-08-06 22:23:50,415 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.2500 change:+0.56% volume:25296826
+2026-08-06 22:23:50,415 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:214.5200 change:-2.04% volume:5930093
+2026-08-06 22:23:50,416 [INFO] src.monitor: 美股 | IBM(IBM) price:233.1400 change:-1.18% volume:887005
+2026-08-06 22:23:50,416 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:114.6900 change:+5.93% volume:114298654
+2026-08-06 22:23:50,416 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:79.6100 change:+6.40% volume:6639902
+2026-08-06 22:23:50,416 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:219.1400 change:+3.85% volume:5371880
+2026-08-06 22:23:50,416 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:157.3300 change:-0.69% volume:14287360
+2026-08-06 22:23:50,416 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:235.4600 change:+4.82% volume:1001705
+2026-08-06 22:23:50,416 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:339.8500 change:+6.73% volume:1205103
+2026-08-06 22:23:50,416 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.5500 change:+5.35% volume:971147
+2026-08-06 22:23:50,417 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.8600 change:+3.10% volume:201690
+2026-08-06 22:23:50,417 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:536.3000 change:+0.39% volume:1005527
+2026-08-06 22:23:50,417 [INFO] src.monitor: No alerts triggered
+2026-08-06 22:23:50,417 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:33:50 CST)" executed successfully
+2026-08-06 22:33:50,113 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:43:50 CST)" (scheduled at 2026-08-06 22:33:50.107483+08:00)
+2026-08-06 22:33:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 22:33:50,119 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 22:33:50,401 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 22:33:50,401 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 22:33:50,415 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:138.9500 change:+5.21% volume:26997259
+2026-08-06 22:33:50,415 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.9600 change:+0.16% volume:28426452
+2026-08-06 22:33:50,416 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:214.2300 change:-2.17% volume:6358058
+2026-08-06 22:33:50,416 [INFO] src.monitor: 美股 | IBM(IBM) price:233.8300 change:-0.89% volume:1011474
+2026-08-06 22:33:50,416 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:114.5200 change:+5.77% volume:123172920
+2026-08-06 22:33:50,416 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:79.7900 change:+6.64% volume:7720142
+2026-08-06 22:33:50,416 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:218.2100 change:+3.41% volume:5905436
+2026-08-06 22:33:50,416 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:157.4900 change:-0.60% volume:15198076
+2026-08-06 22:33:50,417 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:236.8000 change:+5.42% volume:1169168
+2026-08-06 22:33:50,417 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:338.6900 change:+6.36% volume:1353349
+2026-08-06 22:33:50,417 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.6200 change:+5.68% volume:1137615
+2026-08-06 22:33:50,417 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.3600 change:+2.44% volume:221318
+2026-08-06 22:33:50,417 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:536.9700 change:+0.51% volume:1086764
+2026-08-06 22:33:50,417 [INFO] src.monitor: No alerts triggered
+2026-08-06 22:33:50,418 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:43:50 CST)" executed successfully
+2026-08-06 22:43:50,121 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:53:50 CST)" (scheduled at 2026-08-06 22:43:50.107483+08:00)
+2026-08-06 22:43:50,127 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 22:43:50,129 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 22:43:50,441 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 22:43:50,441 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 22:43:50,455 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:137.6300 change:+4.21% volume:28773018
+2026-08-06 22:43:50,456 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.9000 change:+0.08% volume:30261744
+2026-08-06 22:43:50,456 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:212.1500 change:-3.12% volume:6838145
+2026-08-06 22:43:50,456 [INFO] src.monitor: 美股 | IBM(IBM) price:234.2900 change:-0.69% volume:1091483
+2026-08-06 22:43:50,456 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:112.8100 change:+4.19% volume:129109562
+2026-08-06 22:43:50,456 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:79.2300 change:+5.89% volume:8506717
+2026-08-06 22:43:50,457 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:217.3400 change:+2.99% volume:6368561
+2026-08-06 22:43:50,457 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:157.7100 change:-0.45% volume:15997277
+2026-08-06 22:43:50,457 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:235.5900 change:+4.88% volume:1273753
+2026-08-06 22:43:50,457 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:338.6800 change:+6.36% volume:1541366
+2026-08-06 22:43:50,457 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.5500 change:+5.37% volume:1250228
+2026-08-06 22:43:50,457 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.3400 change:+2.42% volume:237475
+2026-08-06 22:43:50,458 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:534.0400 change:-0.04% volume:1154485
+2026-08-06 22:43:50,458 [INFO] src.monitor: No alerts triggered
+2026-08-06 22:43:50,459 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 22:53:50 CST)" executed successfully
+2026-08-06 22:53:50,123 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:03:50 CST)" (scheduled at 2026-08-06 22:53:50.107483+08:00)
+2026-08-06 22:53:50,127 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 22:53:50,129 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 22:53:50,421 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 22:53:50,421 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 22:53:50,434 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:136.0700 change:+3.03% volume:30431127
+2026-08-06 22:53:50,434 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.6400 change:-0.27% volume:31780624
+2026-08-06 22:53:50,434 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:207.2000 change:-5.39% volume:7534149
+2026-08-06 22:53:50,435 [INFO] src.monitor: 美股 | IBM(IBM) price:233.4400 change:-1.05% volume:1159535
+2026-08-06 22:53:50,435 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.5400 change:+2.10% volume:135714398
+2026-08-06 22:53:50,435 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:78.5600 change:+5.00% volume:9075827
+2026-08-06 22:53:50,435 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:215.4100 change:+2.08% volume:6804452
+2026-08-06 22:53:50,435 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.8900 change:-0.98% volume:16741431
+2026-08-06 22:53:50,435 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:234.3700 change:+4.34% volume:1366534
+2026-08-06 22:53:50,435 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:336.1500 change:+5.56% volume:1665404
+2026-08-06 22:53:50,436 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.3400 change:+4.43% volume:1389147
+2026-08-06 22:53:50,436 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.3900 change:+2.48% volume:253522
+2026-08-06 22:53:50,436 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:532.1500 change:-0.39% volume:1238302
+2026-08-06 22:53:50,436 [INFO] src.monitor: No alerts triggered
+2026-08-06 22:53:50,437 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:03:50 CST)" executed successfully
+2026-08-06 23:03:50,118 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:13:50 CST)" (scheduled at 2026-08-06 23:03:50.107483+08:00)
+2026-08-06 23:03:50,122 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 23:03:50,124 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 23:03:50,457 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 23:03:50,457 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 23:03:50,481 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:137.0100 change:+3.74% volume:31684552
+2026-08-06 23:03:50,482 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.8800 change:+0.05% volume:33445277
+2026-08-06 23:03:50,482 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:208.1800 change:-4.94% volume:8083092
+2026-08-06 23:03:50,483 [INFO] src.monitor: 美股 | IBM(IBM) price:233.5300 change:-1.02% volume:1200878
+2026-08-06 23:03:50,483 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:111.1000 change:+2.61% volume:140623212
+2026-08-06 23:03:50,483 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:78.0000 change:+4.25% volume:9439594
+2026-08-06 23:03:50,483 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:216.0000 change:+2.36% volume:7162489
+2026-08-06 23:03:50,483 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.8600 change:-0.99% volume:17530568
+2026-08-06 23:03:50,483 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:234.9900 change:+4.61% volume:1466137
+2026-08-06 23:03:50,484 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:338.6700 change:+6.36% volume:1793283
+2026-08-06 23:03:50,484 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.2400 change:+3.96% volume:1518700
+2026-08-06 23:03:50,484 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.1000 change:+2.10% volume:270887
+2026-08-06 23:03:50,484 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:532.9100 change:-0.25% volume:1306489
+2026-08-06 23:03:50,484 [INFO] src.monitor: No alerts triggered
+2026-08-06 23:03:50,485 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:13:50 CST)" executed successfully
+2026-08-06 23:13:50,113 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:23:50 CST)" (scheduled at 2026-08-06 23:13:50.107483+08:00)
+2026-08-06 23:13:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 23:13:50,119 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 23:13:50,405 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 23:13:50,405 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 23:13:50,418 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:139.8700 change:+5.90% volume:32881381
+2026-08-06 23:13:50,418 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:73.3100 change:+0.65% volume:34800973
+2026-08-06 23:13:50,418 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:210.9000 change:-3.69% volume:8558534
+2026-08-06 23:13:50,418 [INFO] src.monitor: 美股 | IBM(IBM) price:233.7200 change:-0.93% volume:1260748
+2026-08-06 23:13:50,418 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.6300 change:+2.18% volume:144773456
+2026-08-06 23:13:50,419 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:78.6000 change:+5.05% volume:9848771
+2026-08-06 23:13:50,419 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:218.2600 change:+3.43% volume:7464715
+2026-08-06 23:13:50,419 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.7100 change:-1.09% volume:18096210
+2026-08-06 23:13:50,419 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:237.2000 change:+5.59% volume:1519984
+2026-08-06 23:13:50,419 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:342.0700 change:+7.42% volume:1894439
+2026-08-06 23:13:50,420 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.3700 change:+4.54% volume:1605715
+2026-08-06 23:13:50,420 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.8600 change:+1.79% volume:281632
+2026-08-06 23:13:50,420 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:538.6700 change:+0.83% volume:1368522
+2026-08-06 23:13:50,420 [INFO] src.monitor: No alerts triggered
+2026-08-06 23:13:50,421 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:23:50 CST)" executed successfully
+2026-08-06 23:23:50,123 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:33:50 CST)" (scheduled at 2026-08-06 23:23:50.107483+08:00)
+2026-08-06 23:23:50,125 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 23:23:50,127 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 23:23:50,416 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 23:23:50,416 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 23:23:50,429 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:138.3400 change:+4.75% volume:33927080
+2026-08-06 23:23:50,429 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.7100 change:-0.18% volume:36388261
+2026-08-06 23:23:50,429 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:210.5000 change:-3.88% volume:8888581
+2026-08-06 23:23:50,429 [INFO] src.monitor: 美股 | IBM(IBM) price:233.4300 change:-1.06% volume:1319898
+2026-08-06 23:23:50,430 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.9700 change:+2.49% volume:148390530
+2026-08-06 23:23:50,430 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:78.1000 change:+4.38% volume:10256680
+2026-08-06 23:23:50,430 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:216.8000 change:+2.74% volume:7790112
+2026-08-06 23:23:50,430 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.5700 change:-1.81% volume:18766321
+2026-08-06 23:23:50,430 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:235.8300 change:+4.99% volume:1572792
+2026-08-06 23:23:50,431 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:338.3600 change:+6.26% volume:1978468
+2026-08-06 23:23:50,431 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.3100 change:+4.30% volume:1673050
+2026-08-06 23:23:50,431 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.0000 change:+1.97% volume:303342
+2026-08-06 23:23:50,431 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:535.5600 change:+0.25% volume:1422048
+2026-08-06 23:23:50,431 [INFO] src.monitor: No alerts triggered
+2026-08-06 23:23:50,432 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:33:50 CST)" executed successfully
+2026-08-06 23:33:50,121 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:43:50 CST)" (scheduled at 2026-08-06 23:33:50.107483+08:00)
+2026-08-06 23:33:50,124 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 23:33:50,126 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 23:33:50,416 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 23:33:50,416 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 23:33:50,428 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:137.2900 change:+3.95% volume:34616255
+2026-08-06 23:33:50,429 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.6100 change:-0.32% volume:37469475
+2026-08-06 23:33:50,429 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:209.9500 change:-4.13% volume:9116342
+2026-08-06 23:33:50,429 [INFO] src.monitor: 美股 | IBM(IBM) price:233.5200 change:-1.02% volume:1370922
+2026-08-06 23:33:50,429 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.8900 change:+2.42% volume:153113464
+2026-08-06 23:33:50,429 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:77.9100 change:+4.13% volume:10624216
+2026-08-06 23:33:50,429 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:215.3000 change:+2.03% volume:8057985
+2026-08-06 23:33:50,430 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:157.1100 change:-0.84% volume:19814848
+2026-08-06 23:33:50,430 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:235.3700 change:+4.78% volume:1624208
+2026-08-06 23:33:50,430 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:336.1800 change:+5.57% volume:2041322
+2026-08-06 23:33:50,430 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.2300 change:+3.94% volume:1718368
+2026-08-06 23:33:50,430 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.4200 change:+2.52% volume:325164
+2026-08-06 23:33:50,430 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:534.3000 change:+0.01% volume:1508737
+2026-08-06 23:33:50,431 [INFO] src.monitor: No alerts triggered
+2026-08-06 23:33:50,431 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:43:50 CST)" executed successfully
+2026-08-06 23:43:50,121 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:53:50 CST)" (scheduled at 2026-08-06 23:43:50.107483+08:00)
+2026-08-06 23:43:50,124 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 23:43:50,126 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 23:43:50,480 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 23:43:50,480 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 23:43:50,502 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:136.3800 change:+3.26% volume:35431096
+2026-08-06 23:43:50,502 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.4100 change:-0.60% volume:38664348
+2026-08-06 23:43:50,502 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:208.7700 change:-4.67% volume:9456802
+2026-08-06 23:43:50,502 [INFO] src.monitor: 美股 | IBM(IBM) price:232.4100 change:-1.49% volume:1422348
+2026-08-06 23:43:50,502 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.0500 change:+1.64% volume:158252974
+2026-08-06 23:43:50,503 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:77.4600 change:+3.53% volume:11052372
+2026-08-06 23:43:50,503 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:214.4600 change:+1.63% volume:8305265
+2026-08-06 23:43:50,503 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.9800 change:-0.92% volume:20486804
+2026-08-06 23:43:50,503 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:235.0700 change:+4.65% volume:1679078
+2026-08-06 23:43:50,503 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:336.6500 change:+5.72% volume:2106401
+2026-08-06 23:43:50,503 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.1700 change:+3.65% volume:1778159
+2026-08-06 23:43:50,503 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.0300 change:+2.01% volume:337071
+2026-08-06 23:43:50,504 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:533.7300 change:-0.10% volume:1551500
+2026-08-06 23:43:50,504 [INFO] src.monitor: No alerts triggered
+2026-08-06 23:43:50,505 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-06 23:53:50 CST)" executed successfully
+2026-08-06 23:53:50,119 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:03:50 CST)" (scheduled at 2026-08-06 23:53:50.107483+08:00)
+2026-08-06 23:53:50,122 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-06 23:53:50,124 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-06 23:53:50,407 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-06 23:53:50,407 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-06 23:53:50,422 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:136.6000 change:+3.43% volume:36423059
+2026-08-06 23:53:50,422 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.4800 change:-0.49% volume:40135160
+2026-08-06 23:53:50,422 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:208.2600 change:-4.90% volume:9650718
+2026-08-06 23:53:50,422 [INFO] src.monitor: 美股 | IBM(IBM) price:233.1600 change:-1.17% volume:1466837
+2026-08-06 23:53:50,422 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.7400 change:+2.28% volume:161647065
+2026-08-06 23:53:50,423 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:77.6100 change:+3.73% volume:11347583
+2026-08-06 23:53:50,423 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:214.2700 change:+1.54% volume:8715745
+2026-08-06 23:53:50,423 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.6200 change:-1.15% volume:21820511
+2026-08-06 23:53:50,423 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:234.2800 change:+4.30% volume:1768432
+2026-08-06 23:53:50,423 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:337.0100 change:+5.83% volume:2174952
+2026-08-06 23:53:50,423 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.1600 change:+3.62% volume:1857394
+2026-08-06 23:53:50,424 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.2300 change:+2.27% volume:352613
+2026-08-06 23:53:50,424 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:535.0200 change:+0.15% volume:1622246
+2026-08-06 23:53:50,424 [INFO] src.monitor: No alerts triggered
+2026-08-06 23:53:50,425 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:03:50 CST)" executed successfully
+2026-08-07 00:03:50,118 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:13:50 CST)" (scheduled at 2026-08-07 00:03:50.107483+08:00)
+2026-08-07 00:03:50,121 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 00:03:50,123 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 00:03:50,428 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 00:03:50,428 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 00:03:50,448 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.3200 change:+2.46% volume:37361610
+2026-08-07 00:03:50,448 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.1500 change:-0.95% volume:41784292
+2026-08-07 00:03:50,448 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:205.6100 change:-6.11% volume:10151359
+2026-08-07 00:03:50,448 [INFO] src.monitor: 美股 | IBM(IBM) price:233.2200 change:-1.14% volume:1507066
+2026-08-07 00:03:50,448 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.3900 change:+1.96% volume:164368691
+2026-08-07 00:03:50,448 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:77.0500 change:+2.99% volume:11688596
+2026-08-07 00:03:50,449 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:213.5500 change:+1.20% volume:8956681
+2026-08-07 00:03:50,449 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.2400 change:-1.38% volume:22413494
+2026-08-07 00:03:50,449 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:232.2600 change:+3.40% volume:1810954
+2026-08-07 00:03:50,449 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:333.9900 change:+4.88% volume:2235871
+2026-08-07 00:03:50,449 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:23.0100 change:+2.95% volume:1900723
+2026-08-07 00:03:50,449 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.7800 change:+1.68% volume:370117
+2026-08-07 00:03:50,450 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:532.0900 change:-0.40% volume:1668639
+2026-08-07 00:03:50,450 [INFO] src.monitor: No alerts triggered
+2026-08-07 00:03:50,451 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:13:50 CST)" executed successfully
+2026-08-07 00:13:50,122 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:23:50 CST)" (scheduled at 2026-08-07 00:13:50.107483+08:00)
+2026-08-07 00:13:50,125 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 00:13:50,127 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 00:13:50,417 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 00:13:50,418 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 00:13:50,435 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.5200 change:+2.61% volume:38090124
+2026-08-07 00:13:50,436 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.0900 change:-1.03% volume:42890696
+2026-08-07 00:13:50,436 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:204.4300 change:-6.65% volume:10661152
+2026-08-07 00:13:50,436 [INFO] src.monitor: 美股 | IBM(IBM) price:232.5800 change:-1.42% volume:1556598
+2026-08-07 00:13:50,437 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:108.5900 change:+0.29% volume:169764638
+2026-08-07 00:13:50,437 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.9400 change:+2.83% volume:12048670
+2026-08-07 00:13:50,437 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:213.6100 change:+1.23% volume:9161809
+2026-08-07 00:13:50,438 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.0500 change:-1.50% volume:22834862
+2026-08-07 00:13:50,438 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:232.2400 change:+3.39% volume:1856976
+2026-08-07 00:13:50,439 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:333.5200 change:+4.74% volume:2283014
+2026-08-07 00:13:50,439 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.9500 change:+2.66% volume:1953912
+2026-08-07 00:13:50,439 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.9200 change:+1.86% volume:377246
+2026-08-07 00:13:50,439 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:532.2500 change:-0.37% volume:1725983
+2026-08-07 00:13:50,440 [INFO] src.monitor: No alerts triggered
+2026-08-07 00:13:50,441 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:23:50 CST)" executed successfully
+2026-08-07 00:23:50,121 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:33:50 CST)" (scheduled at 2026-08-07 00:23:50.107483+08:00)
+2026-08-07 00:23:50,124 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 00:23:50,126 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 00:23:50,408 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 00:23:50,409 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 00:23:50,426 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:133.1700 change:+0.83% volume:39185972
+2026-08-07 00:23:50,426 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:71.8300 change:-1.39% volume:44201361
+2026-08-07 00:23:50,426 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:201.4000 change:-8.03% volume:11449473
+2026-08-07 00:23:50,426 [INFO] src.monitor: 美股 | IBM(IBM) price:232.7000 change:-1.36% volume:1601820
+2026-08-07 00:23:50,426 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:108.6600 change:+0.36% volume:173779777
+2026-08-07 00:23:50,427 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.6200 change:+2.41% volume:12309135
+2026-08-07 00:23:50,427 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:211.8500 change:+0.39% volume:9492604
+2026-08-07 00:23:50,427 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.4200 change:-1.90% volume:23339862
+2026-08-07 00:23:50,427 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:229.4600 change:+2.15% volume:1942339
+2026-08-07 00:23:50,427 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:330.8200 change:+3.89% volume:2358664
+2026-08-07 00:23:50,427 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.8100 change:+2.06% volume:2004168
+2026-08-07 00:23:50,428 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.9600 change:+1.92% volume:385203
+2026-08-07 00:23:50,428 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:528.8800 change:-1.00% volume:1784009
+2026-08-07 00:23:50,428 [INFO] src.monitor: No alerts triggered
+2026-08-07 00:23:50,429 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:33:50 CST)" executed successfully
+2026-08-07 00:33:50,113 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:43:50 CST)" (scheduled at 2026-08-07 00:33:50.107483+08:00)
+2026-08-07 00:33:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 00:33:50,119 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 00:33:50,440 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 00:33:50,440 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 00:33:50,459 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:133.3000 change:+0.93% volume:40017949
+2026-08-07 00:33:50,460 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:71.8300 change:-1.39% volume:45361042
+2026-08-07 00:33:50,460 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:200.8900 change:-8.27% volume:12029170
+2026-08-07 00:33:50,461 [INFO] src.monitor: 美股 | IBM(IBM) price:232.9600 change:-1.25% volume:1654902
+2026-08-07 00:33:50,461 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.1800 change:+0.84% volume:177250341
+2026-08-07 00:33:50,461 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.4200 change:+2.14% volume:12581016
+2026-08-07 00:33:50,461 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:211.6400 change:+0.29% volume:9820472
+2026-08-07 00:33:50,461 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.1400 change:-2.08% volume:23790797
+2026-08-07 00:33:50,461 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:229.4000 change:+2.12% volume:2001998
+2026-08-07 00:33:50,461 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:330.0700 change:+3.66% volume:2451992
+2026-08-07 00:33:50,461 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.7700 change:+1.88% volume:2124686
+2026-08-07 00:33:50,461 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.9300 change:+1.88% volume:396051
+2026-08-07 00:33:50,461 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:528.8500 change:-1.01% volume:1844303
+2026-08-07 00:33:50,462 [INFO] src.monitor: No alerts triggered
+2026-08-07 00:33:50,462 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:43:50 CST)" executed successfully
+2026-08-07 00:43:50,109 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:53:50 CST)" (scheduled at 2026-08-07 00:43:50.107483+08:00)
+2026-08-07 00:43:50,113 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 00:43:50,115 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 00:43:50,422 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 00:43:50,423 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 00:43:50,438 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.7900 change:+2.82% volume:40935594
+2026-08-07 00:43:50,438 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.1000 change:-1.02% volume:46182758
+2026-08-07 00:43:50,438 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:200.5900 change:-8.40% volume:12531741
+2026-08-07 00:43:50,438 [INFO] src.monitor: 美股 | IBM(IBM) price:232.6100 change:-1.40% volume:1689793
+2026-08-07 00:43:50,438 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.8900 change:+1.49% volume:180125675
+2026-08-07 00:43:50,439 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:77.1800 change:+3.15% volume:12819739
+2026-08-07 00:43:50,439 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:213.4300 change:+1.14% volume:10067713
+2026-08-07 00:43:50,439 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:154.9500 change:-2.20% volume:24307330
+2026-08-07 00:43:50,439 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:231.5200 change:+3.07% volume:2069309
+2026-08-07 00:43:50,439 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:332.9700 change:+4.57% volume:2515685
+2026-08-07 00:43:50,439 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.9100 change:+2.51% volume:2171924
+2026-08-07 00:43:50,439 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.7900 change:+1.70% volume:403248
+2026-08-07 00:43:50,439 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:532.0900 change:-0.40% volume:1886741
+2026-08-07 00:43:50,439 [INFO] src.monitor: No alerts triggered
+2026-08-07 00:43:50,440 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 00:53:50 CST)" executed successfully
+2026-08-07 00:53:50,114 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:03:50 CST)" (scheduled at 2026-08-07 00:53:50.107483+08:00)
+2026-08-07 00:53:50,118 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 00:53:50,119 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 00:53:50,450 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 00:53:50,450 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 00:53:50,467 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:136.6500 change:+3.47% volume:41683300
+2026-08-07 00:53:50,467 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.2800 change:-0.78% volume:46967310
+2026-08-07 00:53:50,467 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:201.7500 change:-7.87% volume:13609320
+2026-08-07 00:53:50,468 [INFO] src.monitor: 美股 | IBM(IBM) price:232.8800 change:-1.29% volume:1729502
+2026-08-07 00:53:50,468 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.9000 change:+1.50% volume:181741954
+2026-08-07 00:53:50,468 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:77.2600 change:+3.27% volume:13026488
+2026-08-07 00:53:50,468 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:213.6800 change:+1.26% volume:10335777
+2026-08-07 00:53:50,468 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.1700 change:-2.06% volume:24794392
+2026-08-07 00:53:50,468 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.3700 change:+3.89% volume:2128448
+2026-08-07 00:53:50,469 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:333.8000 change:+4.83% volume:2553862
+2026-08-07 00:53:50,469 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.9200 change:+2.55% volume:2197984
+2026-08-07 00:53:50,469 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.8700 change:+1.80% volume:411775
+2026-08-07 00:53:50,469 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:532.8600 change:-0.26% volume:1925209
+2026-08-07 00:53:50,469 [INFO] src.monitor: No alerts triggered
+2026-08-07 00:53:50,470 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:03:50 CST)" executed successfully
+2026-08-07 01:03:50,115 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:13:50 CST)" (scheduled at 2026-08-07 01:03:50.107483+08:00)
+2026-08-07 01:03:50,118 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 01:03:50,120 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 01:03:50,406 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 01:03:50,406 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 01:03:50,418 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:137.0400 change:+3.76% volume:42301225
+2026-08-07 01:03:50,418 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.4900 change:-0.49% volume:47753445
+2026-08-07 01:03:50,418 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:200.4300 change:-8.48% volume:14038233
+2026-08-07 01:03:50,418 [INFO] src.monitor: 美股 | IBM(IBM) price:232.2900 change:-1.54% volume:1774085
+2026-08-07 01:03:50,418 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.1200 change:+1.71% volume:184697367
+2026-08-07 01:03:50,419 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:77.3400 change:+3.36% volume:13254400
+2026-08-07 01:03:50,419 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:214.4200 change:+1.61% volume:10548769
+2026-08-07 01:03:50,419 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.4100 change:-1.91% volume:25227840
+2026-08-07 01:03:50,419 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.1300 change:+3.78% volume:2169314
+2026-08-07 01:03:50,419 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:334.5300 change:+5.06% volume:2607991
+2026-08-07 01:03:50,419 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.9400 change:+2.64% volume:2250290
+2026-08-07 01:03:50,419 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.4700 change:+1.28% volume:425284
+2026-08-07 01:03:50,419 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:531.9400 change:-0.43% volume:1969084
+2026-08-07 01:03:50,419 [INFO] src.monitor: No alerts triggered
+2026-08-07 01:03:50,420 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:13:50 CST)" executed successfully
+2026-08-07 01:13:50,111 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:23:50 CST)" (scheduled at 2026-08-07 01:13:50.107483+08:00)
+2026-08-07 01:13:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 01:13:50,118 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 01:13:50,429 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 01:13:50,429 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 01:13:50,444 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:136.8400 change:+3.61% volume:42720364
+2026-08-07 01:13:50,444 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.3700 change:-0.65% volume:48357348
+2026-08-07 01:13:50,445 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:200.6200 change:-8.39% volume:14372990
+2026-08-07 01:13:50,445 [INFO] src.monitor: 美股 | IBM(IBM) price:232.2900 change:-1.54% volume:1812758
+2026-08-07 01:13:50,445 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:111.2000 change:+2.71% volume:189534039
+2026-08-07 01:13:50,445 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.9500 change:+2.85% volume:13473544
+2026-08-07 01:13:50,445 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:214.2600 change:+1.54% volume:10740817
+2026-08-07 01:13:50,445 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.7200 change:-1.71% volume:25878238
+2026-08-07 01:13:50,446 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.8100 change:+4.09% volume:2200881
+2026-08-07 01:13:50,446 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:335.9000 change:+5.49% volume:2659219
+2026-08-07 01:13:50,446 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.9200 change:+2.55% volume:2308749
+2026-08-07 01:13:50,446 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.4100 change:+1.20% volume:446472
+2026-08-07 01:13:50,447 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:531.8700 change:-0.44% volume:2058616
+2026-08-07 01:13:50,447 [INFO] src.monitor: No alerts triggered
+2026-08-07 01:13:50,448 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:23:50 CST)" executed successfully
+2026-08-07 01:23:50,113 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:33:50 CST)" (scheduled at 2026-08-07 01:23:50.107483+08:00)
+2026-08-07 01:23:50,116 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 01:23:50,118 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 01:23:50,402 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 01:23:50,402 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 01:23:50,414 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:136.2000 change:+3.13% volume:43178954
+2026-08-07 01:23:50,414 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.3100 change:-0.73% volume:48840220
+2026-08-07 01:23:50,414 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:199.8500 change:-8.74% volume:14724532
+2026-08-07 01:23:50,415 [INFO] src.monitor: 美股 | IBM(IBM) price:232.6700 change:-1.38% volume:1846845
+2026-08-07 01:23:50,415 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.6100 change:+2.16% volume:192662994
+2026-08-07 01:23:50,415 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.8500 change:+2.71% volume:13623700
+2026-08-07 01:23:50,415 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:213.4100 change:+1.13% volume:10905910
+2026-08-07 01:23:50,415 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.2200 change:-1.39% volume:26265492
+2026-08-07 01:23:50,415 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:232.9500 change:+3.70% volume:2242764
+2026-08-07 01:23:50,416 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:335.5900 change:+5.39% volume:2705633
+2026-08-07 01:23:50,416 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.8500 change:+2.24% volume:2349768
+2026-08-07 01:23:50,416 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.4300 change:+1.23% volume:462422
+2026-08-07 01:23:50,416 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:530.7700 change:-0.65% volume:2089334
+2026-08-07 01:23:50,416 [INFO] src.monitor: No alerts triggered
+2026-08-07 01:23:50,417 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:33:50 CST)" executed successfully
+2026-08-07 01:33:50,119 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:43:50 CST)" (scheduled at 2026-08-07 01:33:50.107483+08:00)
+2026-08-07 01:33:50,122 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 01:33:50,124 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 01:33:50,414 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 01:33:50,414 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 01:33:50,427 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:136.0800 change:+3.04% volume:43449399
+2026-08-07 01:33:50,427 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.3000 change:-0.75% volume:49301263
+2026-08-07 01:33:50,428 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:199.2600 change:-9.01% volume:14999225
+2026-08-07 01:33:50,428 [INFO] src.monitor: 美股 | IBM(IBM) price:232.5800 change:-1.42% volume:1894740
+2026-08-07 01:33:50,428 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.7200 change:+2.26% volume:195461752
+2026-08-07 01:33:50,428 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.5600 change:+2.33% volume:13798746
+2026-08-07 01:33:50,428 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:213.5300 change:+1.19% volume:11027749
+2026-08-07 01:33:50,428 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.0700 change:-1.49% volume:26696216
+2026-08-07 01:33:50,429 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.2200 change:+3.82% volume:2273598
+2026-08-07 01:33:50,429 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:335.4400 change:+5.34% volume:2749798
+2026-08-07 01:33:50,429 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.7900 change:+1.97% volume:2404478
+2026-08-07 01:33:50,429 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.4300 change:+1.23% volume:475441
+2026-08-07 01:33:50,429 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:530.6700 change:-0.67% volume:2133843
+2026-08-07 01:33:50,429 [INFO] src.monitor: No alerts triggered
+2026-08-07 01:33:50,430 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:43:50 CST)" executed successfully
+2026-08-07 01:43:50,113 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:53:50 CST)" (scheduled at 2026-08-07 01:43:50.107483+08:00)
+2026-08-07 01:43:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 01:43:50,119 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 01:43:50,394 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 01:43:50,394 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 01:43:50,407 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:134.8600 change:+2.11% volume:43887697
+2026-08-07 01:43:50,407 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.0500 change:-1.08% volume:49819834
+2026-08-07 01:43:50,407 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:197.5000 change:-9.81% volume:15414095
+2026-08-07 01:43:50,408 [INFO] src.monitor: 美股 | IBM(IBM) price:232.8600 change:-1.30% volume:1928523
+2026-08-07 01:43:50,408 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.3200 change:+1.89% volume:197793049
+2026-08-07 01:43:50,408 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.3800 change:+2.08% volume:14209312
+2026-08-07 01:43:50,408 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:212.4900 change:+0.70% volume:11145017
+2026-08-07 01:43:50,409 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.7300 change:-1.70% volume:27154963
+2026-08-07 01:43:50,409 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:232.3200 change:+3.42% volume:2317508
+2026-08-07 01:43:50,409 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:334.0400 change:+4.90% volume:2802559
+2026-08-07 01:43:50,409 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.7900 change:+1.95% volume:2456792
+2026-08-07 01:43:50,409 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:77.5500 change:+1.38% volume:497158
+2026-08-07 01:43:50,410 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:528.6900 change:-1.04% volume:2179562
+2026-08-07 01:43:50,410 [INFO] src.monitor: No alerts triggered
+2026-08-07 01:43:50,411 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 01:53:50 CST)" executed successfully
+2026-08-07 01:53:52,041 [WARNING] apscheduler.executors.default: Run time of job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:03:50 CST)" was missed by 0:00:01.933533
+2026-08-07 02:03:50,114 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:13:50 CST)" (scheduled at 2026-08-07 02:03:50.107483+08:00)
+2026-08-07 02:03:50,120 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 02:03:50,122 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 02:03:50,425 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 02:03:50,425 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 02:03:50,438 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.0700 change:+2.27% volume:44522586
+2026-08-07 02:03:50,438 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.1400 change:-0.96% volume:50681140
+2026-08-07 02:03:50,438 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:196.0300 change:-10.48% volume:16227371
+2026-08-07 02:03:50,438 [INFO] src.monitor: 美股 | IBM(IBM) price:232.8700 change:-1.29% volume:2068261
+2026-08-07 02:03:50,438 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.2600 change:+1.84% volume:201694340
+2026-08-07 02:03:50,438 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:75.9600 change:+1.52% volume:14523720
+2026-08-07 02:03:50,438 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:212.7700 change:+0.83% volume:11386889
+2026-08-07 02:03:50,438 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.8000 change:-1.66% volume:27922444
+2026-08-07 02:03:50,439 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.4100 change:+3.91% volume:2393738
+2026-08-07 02:03:50,439 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:335.3800 change:+5.32% volume:2893766
+2026-08-07 02:03:50,439 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.6700 change:+1.43% volume:2597962
+2026-08-07 02:03:50,439 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:78.7400 change:+2.94% volume:573662
+2026-08-07 02:03:50,439 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:528.7300 change:-1.03% volume:2246589
+2026-08-07 02:03:50,440 [INFO] src.monitor: No alerts triggered
+2026-08-07 02:03:50,441 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:13:50 CST)" executed successfully
+2026-08-07 02:13:50,118 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:23:50 CST)" (scheduled at 2026-08-07 02:13:50.107483+08:00)
+2026-08-07 02:13:50,124 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 02:13:50,126 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 02:13:50,476 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 02:13:50,476 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 02:13:50,498 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.2700 change:+2.43% volume:44768095
+2026-08-07 02:13:50,498 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.2000 change:-0.88% volume:51080745
+2026-08-07 02:13:50,498 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:196.7200 change:-10.17% volume:16594457
+2026-08-07 02:13:50,498 [INFO] src.monitor: 美股 | IBM(IBM) price:233.3000 change:-1.11% volume:2122303
+2026-08-07 02:13:50,498 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.6900 change:+1.31% volume:203685776
+2026-08-07 02:13:50,499 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.1300 change:+1.75% volume:14669233
+2026-08-07 02:13:50,499 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:212.8700 change:+0.88% volume:11481685
+2026-08-07 02:13:50,499 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.0900 change:-1.48% volume:28326730
+2026-08-07 02:13:50,499 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.3800 change:+3.89% volume:2424121
+2026-08-07 02:13:50,499 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:335.5400 change:+5.37% volume:2930428
+2026-08-07 02:13:50,499 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.7100 change:+1.61% volume:2646208
+2026-08-07 02:13:50,500 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.0500 change:+3.35% volume:583982
+2026-08-07 02:13:50,500 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:529.6200 change:-0.86% volume:2282455
+2026-08-07 02:13:50,500 [INFO] src.monitor: No alerts triggered
+2026-08-07 02:13:50,501 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:23:50 CST)" executed successfully
+2026-08-07 02:23:50,117 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:33:50 CST)" (scheduled at 2026-08-07 02:23:50.107483+08:00)
+2026-08-07 02:23:50,120 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 02:23:50,123 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 02:23:50,425 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 02:23:50,425 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 02:23:50,439 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:137.5500 change:+4.15% volume:45743771
+2026-08-07 02:23:50,439 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.5900 change:-0.35% volume:52307788
+2026-08-07 02:23:50,439 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:198.6400 change:-9.29% volume:17166510
+2026-08-07 02:23:50,439 [INFO] src.monitor: 美股 | IBM(IBM) price:233.1300 change:-1.18% volume:2165855
+2026-08-07 02:23:50,439 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.1100 change:+1.70% volume:205927298
+2026-08-07 02:23:50,440 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.7600 change:+2.59% volume:14937918
+2026-08-07 02:23:50,440 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:214.3800 change:+1.59% volume:11762160
+2026-08-07 02:23:50,440 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:156.1800 change:-1.42% volume:28748235
+2026-08-07 02:23:50,440 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:235.1700 change:+4.69% volume:2516076
+2026-08-07 02:23:50,440 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:338.5000 change:+6.30% volume:3063498
+2026-08-07 02:23:50,440 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.8600 change:+2.28% volume:2720146
+2026-08-07 02:23:50,440 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.4500 change:+3.87% volume:608482
+2026-08-07 02:23:50,440 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:532.2100 change:-0.38% volume:2414274
+2026-08-07 02:23:50,441 [INFO] src.monitor: No alerts triggered
+2026-08-07 02:23:50,442 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:33:50 CST)" executed successfully
+2026-08-07 02:33:50,122 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:43:50 CST)" (scheduled at 2026-08-07 02:33:50.107483+08:00)
+2026-08-07 02:33:50,125 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 02:33:50,127 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 02:33:50,409 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 02:33:50,409 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 02:33:50,422 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:136.2500 change:+3.16% volume:46166323
+2026-08-07 02:33:50,423 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.3700 change:-0.65% volume:52800720
+2026-08-07 02:33:50,423 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:196.0800 change:-10.46% volume:17609491
+2026-08-07 02:33:50,423 [INFO] src.monitor: 美股 | IBM(IBM) price:233.3400 change:-1.09% volume:2227260
+2026-08-07 02:33:50,423 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.9200 change:+1.52% volume:207768619
+2026-08-07 02:33:50,423 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.5300 change:+2.28% volume:15268830
+2026-08-07 02:33:50,423 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:213.4500 change:+1.15% volume:11907458
+2026-08-07 02:33:50,424 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.9100 change:-1.59% volume:29128423
+2026-08-07 02:33:50,424 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.7500 change:+4.06% volume:2547336
+2026-08-07 02:33:50,424 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:337.4300 change:+5.97% volume:3108275
+2026-08-07 02:33:50,424 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.7600 change:+1.83% volume:2758282
+2026-08-07 02:33:50,424 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.3900 change:+3.79% volume:620848
+2026-08-07 02:33:50,424 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:530.1700 change:-0.76% volume:2452648
+2026-08-07 02:33:50,425 [INFO] src.monitor: No alerts triggered
+2026-08-07 02:33:50,426 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:43:50 CST)" executed successfully
+2026-08-07 02:43:50,118 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:53:50 CST)" (scheduled at 2026-08-07 02:43:50.107483+08:00)
+2026-08-07 02:43:50,122 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 02:43:50,124 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 02:43:50,409 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 02:43:50,410 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 02:43:50,424 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.9200 change:+2.92% volume:46514231
+2026-08-07 02:43:50,424 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.1900 change:-0.89% volume:53178581
+2026-08-07 02:43:50,424 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:195.4200 change:-10.76% volume:18155298
+2026-08-07 02:43:50,425 [INFO] src.monitor: 美股 | IBM(IBM) price:232.6700 change:-1.38% volume:2287134
+2026-08-07 02:43:50,425 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.9300 change:+1.53% volume:209322026
+2026-08-07 02:43:50,425 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.7600 change:+2.59% volume:15619114
+2026-08-07 02:43:50,425 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:213.0900 change:+0.98% volume:12052304
+2026-08-07 02:43:50,425 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.5800 change:-1.80% volume:29481938
+2026-08-07 02:43:50,425 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.1000 change:+3.77% volume:2572021
+2026-08-07 02:43:50,426 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:336.1600 change:+5.57% volume:3160106
+2026-08-07 02:43:50,426 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.8000 change:+1.99% volume:2794150
+2026-08-07 02:43:50,426 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.0500 change:+3.34% volume:639941
+2026-08-07 02:43:50,426 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:529.7100 change:-0.85% volume:2493860
+2026-08-07 02:43:50,426 [INFO] src.monitor: No alerts triggered
+2026-08-07 02:43:50,427 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 02:53:50 CST)" executed successfully
+2026-08-07 02:53:50,122 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:03:50 CST)" (scheduled at 2026-08-07 02:53:50.107483+08:00)
+2026-08-07 02:53:50,125 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 02:53:50,127 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 02:53:50,414 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 02:53:50,415 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 02:53:50,430 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.3900 change:+2.51% volume:46823518
+2026-08-07 02:53:50,430 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.1200 change:-0.99% volume:53484157
+2026-08-07 02:53:50,430 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:193.9000 change:-11.46% volume:18652901
+2026-08-07 02:53:50,431 [INFO] src.monitor: 美股 | IBM(IBM) price:232.6800 change:-1.37% volume:2344021
+2026-08-07 02:53:50,431 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:109.9600 change:+1.56% volume:210831312
+2026-08-07 02:53:50,431 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.3700 change:+2.06% volume:15876764
+2026-08-07 02:53:50,431 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:212.6400 change:+0.77% volume:12214586
+2026-08-07 02:53:50,431 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.2700 change:-1.99% volume:29922934
+2026-08-07 02:53:50,431 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:232.4000 change:+3.46% volume:2599492
+2026-08-07 02:53:50,431 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:334.1900 change:+4.95% volume:3203427
+2026-08-07 02:53:50,431 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.7400 change:+1.74% volume:2837197
+2026-08-07 02:53:50,431 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.1700 change:+3.50% volume:651260
+2026-08-07 02:53:50,432 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:529.9100 change:-0.81% volume:2533613
+2026-08-07 02:53:50,432 [INFO] src.monitor: No alerts triggered
+2026-08-07 02:53:50,433 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:03:50 CST)" executed successfully
+2026-08-07 03:03:50,110 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:13:50 CST)" (scheduled at 2026-08-07 03:03:50.107483+08:00)
+2026-08-07 03:03:50,113 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 03:03:50,116 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 03:03:50,407 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 03:03:50,408 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 03:03:50,423 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:136.7100 change:+3.51% volume:47199822
+2026-08-07 03:03:50,423 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.4100 change:-0.59% volume:53895615
+2026-08-07 03:03:50,423 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:194.3400 change:-11.26% volume:19215413
+2026-08-07 03:03:50,423 [INFO] src.monitor: 美股 | IBM(IBM) price:232.9800 change:-1.25% volume:2400310
+2026-08-07 03:03:50,424 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:110.2600 change:+1.84% volume:212902060
+2026-08-07 03:03:50,424 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.5400 change:+2.30% volume:16093281
+2026-08-07 03:03:50,424 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:213.5800 change:+1.21% volume:12351917
+2026-08-07 03:03:50,424 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.2000 change:-2.04% volume:30345736
+2026-08-07 03:03:50,425 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.4900 change:+3.94% volume:2631857
+2026-08-07 03:03:50,425 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:337.5000 change:+5.99% volume:3264071
+2026-08-07 03:03:50,425 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.8500 change:+2.24% volume:2928610
+2026-08-07 03:03:50,425 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.4400 change:+3.86% volume:664351
+2026-08-07 03:03:50,426 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:531.8400 change:-0.45% volume:2565006
+2026-08-07 03:03:50,426 [INFO] src.monitor: No alerts triggered
+2026-08-07 03:03:50,427 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:13:50 CST)" executed successfully
+2026-08-07 03:13:50,120 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:23:50 CST)" (scheduled at 2026-08-07 03:13:50.107483+08:00)
+2026-08-07 03:13:50,123 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 03:13:50,125 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 03:13:50,403 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 03:13:50,404 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 03:13:50,420 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:136.6100 change:+3.43% volume:47793556
+2026-08-07 03:13:50,420 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.4400 change:-0.55% volume:54448121
+2026-08-07 03:13:50,421 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:193.5800 change:-11.60% volume:19662125
+2026-08-07 03:13:50,421 [INFO] src.monitor: 美股 | IBM(IBM) price:233.0400 change:-1.22% volume:2465461
+2026-08-07 03:13:50,421 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:111.2200 change:+2.72% volume:215880089
+2026-08-07 03:13:50,421 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.6100 change:+2.39% volume:16299180
+2026-08-07 03:13:50,421 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:213.5600 change:+1.20% volume:12541639
+2026-08-07 03:13:50,421 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.4900 change:-1.86% volume:30916242
+2026-08-07 03:13:50,422 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:234.1400 change:+4.23% volume:2668053
+2026-08-07 03:13:50,422 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:344.1600 change:+8.08% volume:3424198
+2026-08-07 03:13:50,422 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.9200 change:+2.55% volume:2992856
+2026-08-07 03:13:50,422 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.1700 change:+3.50% volume:680208
+2026-08-07 03:13:50,422 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:531.7500 change:-0.47% volume:2605983
+2026-08-07 03:13:50,422 [INFO] src.monitor: No alerts triggered
+2026-08-07 03:13:50,423 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:23:50 CST)" executed successfully
+2026-08-07 03:23:50,108 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:33:50 CST)" (scheduled at 2026-08-07 03:23:50.107483+08:00)
+2026-08-07 03:23:50,111 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 03:23:50,113 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 03:23:50,397 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 03:23:50,398 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 03:23:50,425 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.6200 change:+2.68% volume:48390796
+2026-08-07 03:23:50,426 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.3100 change:-0.73% volume:54840999
+2026-08-07 03:23:50,426 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:192.0000 change:-12.32% volume:20539577
+2026-08-07 03:23:50,426 [INFO] src.monitor: 美股 | IBM(IBM) price:233.3300 change:-1.10% volume:2544582
+2026-08-07 03:23:50,426 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:111.3300 change:+2.82% volume:218805600
+2026-08-07 03:23:50,426 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.4700 change:+2.21% volume:16499610
+2026-08-07 03:23:50,427 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:212.8200 change:+0.85% volume:12724896
+2026-08-07 03:23:50,427 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.5700 change:-1.81% volume:31401548
+2026-08-07 03:23:50,427 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.9200 change:+4.13% volume:2721664
+2026-08-07 03:23:50,427 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:341.4600 change:+7.23% volume:3538374
+2026-08-07 03:23:50,427 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.8900 change:+2.41% volume:3071081
+2026-08-07 03:23:50,427 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.0400 change:+3.33% volume:715778
+2026-08-07 03:23:50,427 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:530.5100 change:-0.70% volume:2661721
+2026-08-07 03:23:50,427 [INFO] src.monitor: No alerts triggered
+2026-08-07 03:23:50,429 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:33:50 CST)" executed successfully
+2026-08-07 03:33:50,117 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:43:50 CST)" (scheduled at 2026-08-07 03:33:50.107483+08:00)
+2026-08-07 03:33:50,120 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 03:33:50,122 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 03:33:50,412 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 03:33:50,412 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 03:33:50,426 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:135.3500 change:+2.48% volume:50123572
+2026-08-07 03:33:50,426 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.2600 change:-0.80% volume:55663351
+2026-08-07 03:33:50,426 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:192.5400 change:-12.08% volume:20998857
+2026-08-07 03:33:50,427 [INFO] src.monitor: 美股 | IBM(IBM) price:233.4300 change:-1.06% volume:2633721
+2026-08-07 03:33:50,427 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:111.9200 change:+3.37% volume:222750076
+2026-08-07 03:33:50,427 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.3100 change:+1.99% volume:16769507
+2026-08-07 03:33:50,427 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:212.6400 change:+0.77% volume:12997026
+2026-08-07 03:33:50,427 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.8600 change:-1.63% volume:31911226
+2026-08-07 03:33:50,427 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:234.0000 change:+4.17% volume:2813353
+2026-08-07 03:33:50,427 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:339.4600 change:+6.60% volume:3630924
+2026-08-07 03:33:50,427 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.9400 change:+2.62% volume:3309044
+2026-08-07 03:33:50,427 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.4300 change:+3.84% volume:741111
+2026-08-07 03:33:50,427 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:530.6200 change:-0.68% volume:2735387
+2026-08-07 03:33:50,427 [INFO] src.monitor: No alerts triggered
+2026-08-07 03:33:50,428 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:43:50 CST)" executed successfully
+2026-08-07 03:43:50,118 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:53:50 CST)" (scheduled at 2026-08-07 03:43:50.107483+08:00)
+2026-08-07 03:43:50,120 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 03:43:50,122 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 03:43:50,427 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 03:43:50,428 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 03:43:50,444 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:134.4900 change:+1.83% volume:50673991
+2026-08-07 03:43:50,444 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.0400 change:-1.10% volume:56234423
+2026-08-07 03:43:50,445 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:191.2200 change:-12.68% volume:21690502
+2026-08-07 03:43:50,446 [INFO] src.monitor: 美股 | IBM(IBM) price:233.4200 change:-1.06% volume:2703016
+2026-08-07 03:43:50,447 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:112.4700 change:+3.87% volume:228136424
+2026-08-07 03:43:50,448 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:75.8800 change:+1.41% volume:17010141
+2026-08-07 03:43:50,448 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:211.9700 change:+0.45% volume:13205676
+2026-08-07 03:43:50,449 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.8100 change:-1.65% volume:32404974
+2026-08-07 03:43:50,449 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:232.8900 change:+3.68% volume:2858782
+2026-08-07 03:43:50,450 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:337.2500 change:+5.91% volume:3728201
+2026-08-07 03:43:50,450 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.7900 change:+1.95% volume:3420044
+2026-08-07 03:43:50,451 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.6100 change:+4.07% volume:784035
+2026-08-07 03:43:50,451 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:529.9300 change:-0.81% volume:2841929
+2026-08-07 03:43:50,451 [INFO] src.monitor: No alerts triggered
+2026-08-07 03:43:50,453 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 03:53:50 CST)" executed successfully
+2026-08-07 03:53:50,115 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:03:50 CST)" (scheduled at 2026-08-07 03:53:50.107483+08:00)
+2026-08-07 03:53:50,121 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 03:53:50,123 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 03:53:50,439 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 03:53:50,439 [INFO] src.monitor: Fetching quotes for 13/21 stocks in open markets...
+2026-08-07 03:53:50,454 [INFO] src.monitor: 美股 | 3倍做多半导体ETF-Direxion(SOXL) price:134.5600 change:+1.89% volume:52174230
+2026-08-07 03:53:50,454 [INFO] src.monitor: 美股 | 3倍做多纳斯达克100ETF-ProShares(TQQQ) price:72.0800 change:-1.04% volume:57488922
+2026-08-07 03:53:50,454 [INFO] src.monitor: 美股 | Nebius Group N.V.(NBIS) price:190.4400 change:-13.04% volume:22635094
+2026-08-07 03:53:50,455 [INFO] src.monitor: 美股 | IBM(IBM) price:233.0500 change:-1.22% volume:2833722
+2026-08-07 03:53:50,455 [INFO] src.monitor: 美股 | SpaceX(SPCX) price:113.2800 change:+4.62% volume:235292364
+2026-08-07 03:53:50,455 [INFO] src.monitor: 美股 | Rocket Lab Corporation(RKLB) price:76.0300 change:+1.62% volume:17482028
+2026-08-07 03:53:50,455 [INFO] src.monitor: 美股 | 迈威尔科技(MRVL) price:212.2100 change:+0.56% volume:13514086
+2026-08-07 03:53:50,455 [INFO] src.monitor: 美股 | Palantir Technologies Inc.(PLTR) price:155.5800 change:-1.80% volume:33167721
+2026-08-07 03:53:50,455 [INFO] src.monitor: 美股 | Credo Technology Group Holding Ltd(CRDO) price:233.1000 change:+3.77% volume:2957868
+2026-08-07 03:53:50,455 [INFO] src.monitor: 美股 | Astera Labs, Inc.(ALAB) price:334.2600 change:+4.97% volume:3908299
+2026-08-07 03:53:50,456 [INFO] src.monitor: 美股 | Planet Labs Pbc(PL) price:22.8400 change:+2.19% volume:3575705
+2026-08-07 03:53:50,456 [INFO] src.monitor: 美股 | Transmedics Group, Inc.(TMDX) price:79.5300 change:+3.97% volume:846164
+2026-08-07 03:53:50,456 [INFO] src.monitor: 美股 | 应用材料(AMAT) price:530.3400 change:-0.73% volume:3000047
+2026-08-07 03:53:50,456 [INFO] src.monitor: No alerts triggered
+2026-08-07 03:53:50,457 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:03:50 CST)" executed successfully
+2026-08-07 04:03:50,114 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:13:50 CST)" (scheduled at 2026-08-07 04:03:50.107483+08:00)
+2026-08-07 04:03:50,118 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 04:03:50,120 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 04:03:50,120 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:13:50 CST)" executed successfully
+2026-08-07 04:13:50,121 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:23:50 CST)" (scheduled at 2026-08-07 04:13:50.107483+08:00)
+2026-08-07 04:13:50,124 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 04:13:50,127 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 04:13:50,127 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:23:50 CST)" executed successfully
+2026-08-07 04:23:50,109 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:33:50 CST)" (scheduled at 2026-08-07 04:23:50.107483+08:00)
+2026-08-07 04:23:50,112 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 04:23:50,114 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 04:23:50,114 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:33:50 CST)" executed successfully
+2026-08-07 04:33:50,121 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:43:50 CST)" (scheduled at 2026-08-07 04:33:50.107483+08:00)
+2026-08-07 04:33:50,125 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 04:33:50,127 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 04:33:50,127 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:43:50 CST)" executed successfully
+2026-08-07 04:43:50,116 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:53:50 CST)" (scheduled at 2026-08-07 04:43:50.107483+08:00)
+2026-08-07 04:43:50,120 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 04:43:50,122 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 04:43:50,122 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 04:53:50 CST)" executed successfully
+2026-08-07 04:53:50,112 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:03:50 CST)" (scheduled at 2026-08-07 04:53:50.107483+08:00)
+2026-08-07 04:53:50,115 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 04:53:50,117 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 04:53:50,117 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:03:50 CST)" executed successfully
+2026-08-07 05:03:50,118 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:13:50 CST)" (scheduled at 2026-08-07 05:03:50.107483+08:00)
+2026-08-07 05:03:50,122 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 05:03:50,124 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 05:03:50,124 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:13:50 CST)" executed successfully
+2026-08-07 05:13:50,118 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:23:50 CST)" (scheduled at 2026-08-07 05:13:50.107483+08:00)
+2026-08-07 05:13:50,122 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 05:13:50,124 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 05:13:50,124 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:23:50 CST)" executed successfully
+2026-08-07 05:23:50,115 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:33:50 CST)" (scheduled at 2026-08-07 05:23:50.107483+08:00)
+2026-08-07 05:23:50,123 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 05:23:50,127 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 05:23:50,127 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:33:50 CST)" executed successfully
+2026-08-07 05:33:50,111 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:43:50 CST)" (scheduled at 2026-08-07 05:33:50.107483+08:00)
+2026-08-07 05:33:50,114 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 05:33:50,116 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 05:33:50,116 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:43:50 CST)" executed successfully
+2026-08-07 05:43:50,115 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:53:50 CST)" (scheduled at 2026-08-07 05:43:50.107483+08:00)
+2026-08-07 05:43:50,120 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 05:43:50,122 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 05:43:50,122 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 05:53:50 CST)" executed successfully
+2026-08-07 05:53:50,117 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:03:50 CST)" (scheduled at 2026-08-07 05:53:50.107483+08:00)
+2026-08-07 05:53:50,134 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 05:53:50,139 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 05:53:50,140 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:03:50 CST)" executed successfully
+2026-08-07 06:03:50,119 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:13:50 CST)" (scheduled at 2026-08-07 06:03:50.107483+08:00)
+2026-08-07 06:03:50,122 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 06:03:50,124 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 06:03:50,124 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:13:50 CST)" executed successfully
+2026-08-07 06:13:50,120 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:23:50 CST)" (scheduled at 2026-08-07 06:13:50.107483+08:00)
+2026-08-07 06:13:50,123 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 06:13:50,125 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 06:13:50,125 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:23:50 CST)" executed successfully
+2026-08-07 06:23:50,110 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:33:50 CST)" (scheduled at 2026-08-07 06:23:50.107483+08:00)
+2026-08-07 06:23:50,114 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 06:23:50,116 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 06:23:50,116 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:33:50 CST)" executed successfully
+2026-08-07 06:33:50,112 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:43:50 CST)" (scheduled at 2026-08-07 06:33:50.107483+08:00)
+2026-08-07 06:33:50,115 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 06:33:50,117 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 06:33:50,117 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:43:50 CST)" executed successfully
+2026-08-07 06:43:50,115 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:53:50 CST)" (scheduled at 2026-08-07 06:43:50.107483+08:00)
+2026-08-07 06:43:50,118 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 06:43:50,120 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 06:43:50,120 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 06:53:50 CST)" executed successfully
+2026-08-07 06:53:50,117 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:03:50 CST)" (scheduled at 2026-08-07 06:53:50.107483+08:00)
+2026-08-07 06:53:50,124 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 06:53:50,128 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 06:53:50,128 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:03:50 CST)" executed successfully
+2026-08-07 07:03:50,114 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:13:50 CST)" (scheduled at 2026-08-07 07:03:50.107483+08:00)
+2026-08-07 07:03:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 07:03:50,119 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 07:03:50,119 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:13:50 CST)" executed successfully
+2026-08-07 07:13:50,118 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:23:50 CST)" (scheduled at 2026-08-07 07:13:50.107483+08:00)
+2026-08-07 07:13:50,121 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 07:13:50,123 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 07:13:50,124 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:23:50 CST)" executed successfully
+2026-08-07 07:23:50,113 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:33:50 CST)" (scheduled at 2026-08-07 07:23:50.107483+08:00)
+2026-08-07 07:23:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 07:23:50,119 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 07:23:50,119 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:33:50 CST)" executed successfully
+2026-08-07 07:33:50,110 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:43:50 CST)" (scheduled at 2026-08-07 07:33:50.107483+08:00)
+2026-08-07 07:33:50,113 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 07:33:50,115 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 07:33:50,115 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:43:50 CST)" executed successfully
+2026-08-07 07:43:50,111 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:53:50 CST)" (scheduled at 2026-08-07 07:43:50.107483+08:00)
+2026-08-07 07:43:50,114 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 07:43:50,116 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 07:43:50,116 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 07:53:50 CST)" executed successfully
+2026-08-07 07:53:50,119 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:03:50 CST)" (scheduled at 2026-08-07 07:53:50.107483+08:00)
+2026-08-07 07:53:50,122 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 07:53:50,124 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 07:53:50,125 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:03:50 CST)" executed successfully
+2026-08-07 08:03:50,120 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:13:50 CST)" (scheduled at 2026-08-07 08:03:50.107483+08:00)
+2026-08-07 08:03:50,123 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 08:03:50,125 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 08:03:50,125 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:13:50 CST)" executed successfully
+2026-08-07 08:13:50,122 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:23:50 CST)" (scheduled at 2026-08-07 08:13:50.107483+08:00)
+2026-08-07 08:13:50,125 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 08:13:50,127 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 08:13:50,127 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:23:50 CST)" executed successfully
+2026-08-07 08:23:50,121 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:33:50 CST)" (scheduled at 2026-08-07 08:23:50.107483+08:00)
+2026-08-07 08:23:50,124 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 08:23:50,126 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 08:23:50,126 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:33:50 CST)" executed successfully
+2026-08-07 08:33:50,115 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:43:50 CST)" (scheduled at 2026-08-07 08:33:50.107483+08:00)
+2026-08-07 08:33:50,119 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 08:33:50,120 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 08:33:50,121 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:43:50 CST)" executed successfully
+2026-08-07 08:43:50,112 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:53:50 CST)" (scheduled at 2026-08-07 08:43:50.107483+08:00)
+2026-08-07 08:43:50,116 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 08:43:50,118 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 08:43:50,118 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 08:53:50 CST)" executed successfully
+2026-08-07 08:53:50,108 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:03:50 CST)" (scheduled at 2026-08-07 08:53:50.107483+08:00)
+2026-08-07 08:53:50,112 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 08:53:50,114 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 08:53:50,114 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:03:50 CST)" executed successfully
+2026-08-07 09:03:50,112 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:13:50 CST)" (scheduled at 2026-08-07 09:03:50.107483+08:00)
+2026-08-07 09:03:50,115 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 09:03:50,117 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 09:03:50,117 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:13:50 CST)" executed successfully
+2026-08-07 09:13:50,119 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:23:50 CST)" (scheduled at 2026-08-07 09:13:50.107483+08:00)
+2026-08-07 09:13:50,122 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 09:13:50,124 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 09:13:50,124 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:23:50 CST)" executed successfully
+2026-08-07 09:23:50,111 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:33:50 CST)" (scheduled at 2026-08-07 09:23:50.107483+08:00)
+2026-08-07 09:23:50,114 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 09:23:50,116 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 09:23:50,116 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:33:50 CST)" executed successfully
+2026-08-07 09:33:50,109 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:43:50 CST)" (scheduled at 2026-08-07 09:33:50.107483+08:00)
+2026-08-07 09:33:50,112 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 09:33:50,114 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 09:33:50,573 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 09:33:50,574 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 09:33:50,620 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1840 change:+0.59% volume:462574
+2026-08-07 09:33:50,620 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0120 change:+0.30% volume:511656
+2026-08-07 09:33:50,620 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8600 change:+0.70% volume:810501
+2026-08-07 09:33:50,621 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:476.0000 change:-0.67% volume:8300
+2026-08-07 09:33:50,621 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:124.4000 change:+0.00% volume:993
+2026-08-07 09:33:50,621 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7220 change:+0.56% volume:3447783
+2026-08-07 09:33:50,621 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1590 change:-0.60% volume:326735
+2026-08-07 09:33:50,621 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6710 change:-0.30% volume:398446
+2026-08-07 09:33:50,621 [INFO] src.monitor: No alerts triggered
+2026-08-07 09:33:50,622 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:43:50 CST)" executed successfully
+2026-08-07 09:43:50,114 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:53:50 CST)" (scheduled at 2026-08-07 09:43:50.107483+08:00)
+2026-08-07 09:43:50,117 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 09:43:50,119 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 09:43:51,112 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 09:43:51,112 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 09:43:51,244 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1800 change:+0.25% volume:1233919
+2026-08-07 09:43:51,244 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0050 change:-0.40% volume:1178763
+2026-08-07 09:43:51,244 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8680 change:+1.64% volume:2697559
+2026-08-07 09:43:51,245 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:479.0000 change:-0.04% volume:339200
+2026-08-07 09:43:51,245 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:125.3000 change:+0.72% volume:1018993
+2026-08-07 09:43:51,245 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7160 change:-0.28% volume:8086399
+2026-08-07 09:43:51,245 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1610 change:-0.43% volume:776358
+2026-08-07 09:43:51,245 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6640 change:-0.72% volume:852918
+2026-08-07 09:43:51,245 [INFO] src.monitor: No alerts triggered
+2026-08-07 09:43:51,246 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 09:53:50 CST)" executed successfully
+2026-08-07 09:50:03,422 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 09:50:09,273 [INFO] __main__: ============================================================
+2026-08-07 09:50:09,273 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 09:50:09,273 [INFO] __main__: ============================================================
+2026-08-07 09:50:09,300 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 09:50:09,301 [INFO] __main__: Running initial fetch...
+2026-08-07 09:50:09,306 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 09:50:09,308 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 09:50:09,723 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 09:50:09,723 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 09:50:09,804 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1790 change:+0.17% volume:1698359
+2026-08-07 09:50:09,804 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0000 change:-0.89% volume:1734956
+2026-08-07 09:50:09,804 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8680 change:+1.64% volume:3436662
+2026-08-07 09:50:09,804 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:482.2000 change:+0.63% volume:1446396
+2026-08-07 09:50:09,804 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.6000 change:-0.64% volume:6059386
+2026-08-07 09:50:09,805 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7170 change:-0.14% volume:12005610
+2026-08-07 09:50:09,805 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1650 change:-0.09% volume:1240175
+2026-08-07 09:50:09,805 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6640 change:-0.72% volume:1142145
+2026-08-07 09:50:09,805 [INFO] src.monitor: No alerts triggered
+2026-08-07 09:50:09,811 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 09:50:09,811 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 09:50:09,812 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 09:50:09,813 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 09:50:09,867 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 10:00:09,825 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 10:10:09 CST)" (scheduled at 2026-08-07 10:00:09.811294+08:00)
+2026-08-07 10:00:09,830 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 10:00:09,832 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 10:00:10,610 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 10:00:10,610 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 10:00:10,705 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1880 change:+0.93% volume:2127819
+2026-08-07 10:00:10,705 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0040 change:-0.50% volume:2007736
+2026-08-07 10:00:10,705 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8740 change:+2.34% volume:4956250
+2026-08-07 10:00:10,705 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:479.6000 change:+0.08% volume:2640411
+2026-08-07 10:00:10,705 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:122.7000 change:-1.37% volume:11890313
+2026-08-07 10:00:10,705 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7220 change:+0.56% volume:15887744
+2026-08-07 10:00:10,706 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1600 change:-0.51% volume:1601861
+2026-08-07 10:00:10,706 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6730 change:-0.18% volume:1403208
+2026-08-07 10:00:10,706 [INFO] src.monitor: No alerts triggered
+2026-08-07 10:00:10,707 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 10:10:09 CST)" executed successfully
+2026-08-07 10:10:09,816 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 10:20:09 CST)" (scheduled at 2026-08-07 10:10:09.811294+08:00)
+2026-08-07 10:10:09,820 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 10:10:09,822 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 10:10:10,555 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 10:10:10,555 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 10:10:10,660 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1950 change:+1.53% volume:2550916
+2026-08-07 10:10:10,660 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0070 change:-0.20% volume:2306054
+2026-08-07 10:10:10,660 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8810 change:+3.16% volume:6618844
+2026-08-07 10:10:10,661 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:477.8000 change:-0.29% volume:3453370
+2026-08-07 10:10:10,661 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:121.6000 change:-2.25% volume:16532568
+2026-08-07 10:10:10,661 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7280 change:+1.39% volume:18947980
+2026-08-07 10:10:10,661 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1580 change:-0.69% volume:1900258
+2026-08-07 10:10:10,661 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6790 change:+0.18% volume:1702374
+2026-08-07 10:10:10,661 [INFO] src.monitor: No alerts triggered
+2026-08-07 10:10:10,662 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 10:20:09 CST)" executed successfully
+2026-08-07 10:20:09,869 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 10:30:09 CST)" (scheduled at 2026-08-07 10:20:09.811294+08:00)
+2026-08-07 10:20:09,873 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 10:20:09,874 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 10:20:10,621 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 10:20:10,621 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 10:20:10,713 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2020 change:+2.12% volume:3015389
+2026-08-07 10:20:10,713 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0100 change:+0.10% volume:2648032
+2026-08-07 10:20:10,713 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8820 change:+3.28% volume:7514700
+2026-08-07 10:20:10,713 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:477.8000 change:-0.29% volume:4433418
+2026-08-07 10:20:10,714 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:122.6000 change:-1.45% volume:21586328
+2026-08-07 10:20:10,714 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7350 change:+2.37% volume:22161456
+2026-08-07 10:20:10,714 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1560 change:-0.86% volume:2308484
+2026-08-07 10:20:10,714 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6810 change:+0.30% volume:1880523
+2026-08-07 10:20:10,714 [INFO] src.monitor: No alerts triggered
+2026-08-07 10:20:10,715 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 10:30:09 CST)" executed successfully
+2026-08-07 10:30:09,817 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 10:40:09 CST)" (scheduled at 2026-08-07 10:30:09.811294+08:00)
+2026-08-07 10:30:09,825 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 10:30:09,828 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 10:30:10,306 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 10:30:10,306 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 10:30:10,372 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2060 change:+2.46% volume:3641643
+2026-08-07 10:30:10,373 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0080 change:-0.10% volume:2916766
+2026-08-07 10:30:10,373 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8800 change:+3.04% volume:8130446
+2026-08-07 10:30:10,373 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:478.0000 change:-0.25% volume:4946421
+2026-08-07 10:30:10,373 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:122.9000 change:-1.21% volume:23462536
+2026-08-07 10:30:10,373 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7340 change:+2.23% volume:24998538
+2026-08-07 10:30:10,374 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1570 change:-0.77% volume:2642818
+2026-08-07 10:30:10,374 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6800 change:+0.24% volume:2133321
+2026-08-07 10:30:10,374 [INFO] src.monitor: No alerts triggered
+2026-08-07 10:30:10,375 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 10:40:09 CST)" executed successfully
+2026-08-07 10:40:09,817 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 10:50:09 CST)" (scheduled at 2026-08-07 10:40:09.811294+08:00)
+2026-08-07 10:40:09,821 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 10:40:09,822 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 10:40:10,644 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 10:40:10,644 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 10:40:10,747 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2130 change:+3.06% volume:4081173
+2026-08-07 10:40:10,748 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0110 change:+0.20% volume:3096778
+2026-08-07 10:40:10,748 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8810 change:+3.16% volume:8772881
+2026-08-07 10:40:10,748 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:476.2000 change:-0.63% volume:5741004
+2026-08-07 10:40:10,748 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:122.8000 change:-1.29% volume:26129573
+2026-08-07 10:40:10,748 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7390 change:+2.92% volume:27679964
+2026-08-07 10:40:10,749 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1560 change:-0.86% volume:2922736
+2026-08-07 10:40:10,750 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6890 change:+0.78% volume:2603953
+2026-08-07 10:40:10,750 [INFO] src.monitor: No alerts triggered
+2026-08-07 10:40:10,751 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 10:50:09 CST)" executed successfully
+2026-08-07 10:50:09,822 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:00:09 CST)" (scheduled at 2026-08-07 10:50:09.811294+08:00)
+2026-08-07 10:50:09,825 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 10:50:09,827 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 10:50:10,956 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 10:50:10,957 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 10:50:11,082 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2080 change:+2.63% volume:4403497
+2026-08-07 10:50:11,082 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0110 change:+0.20% volume:3345710
+2026-08-07 10:50:11,082 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8790 change:+2.93% volume:8978748
+2026-08-07 10:50:11,082 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:477.2000 change:-0.42% volume:6376624
+2026-08-07 10:50:11,082 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:122.8000 change:-1.29% volume:27832973
+2026-08-07 10:50:11,083 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7350 change:+2.37% volume:29605623
+2026-08-07 10:50:11,083 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1560 change:-0.86% volume:3171756
+2026-08-07 10:50:11,083 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6840 change:+0.48% volume:2930141
+2026-08-07 10:50:11,083 [INFO] src.monitor: No alerts triggered
+2026-08-07 10:50:11,084 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:00:09 CST)" executed successfully
+2026-08-07 10:51:03,892 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 10:51:09,267 [INFO] __main__: ============================================================
+2026-08-07 10:51:09,267 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 10:51:09,267 [INFO] __main__: ============================================================
+2026-08-07 10:51:09,293 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 10:51:09,295 [INFO] __main__: Running initial fetch...
+2026-08-07 10:51:09,298 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 10:51:09,299 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 10:51:09,947 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 10:51:09,947 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 10:51:10,718 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2100 change:+2.80% volume:4407300
+2026-08-07 10:51:10,718 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0110 change:+0.20% volume:3384299
+2026-08-07 10:51:10,718 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8800 change:+3.04% volume:8988608
+2026-08-07 10:51:10,718 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:477.2000 change:-0.42% volume:6421840
+2026-08-07 10:51:10,718 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.0000 change:-1.13% volume:28102773
+2026-08-07 10:51:10,718 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7370 change:+2.65% volume:29736059
+2026-08-07 10:51:10,718 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1560 change:-0.86% volume:3178906
+2026-08-07 10:51:10,718 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6850 change:+0.54% volume:2957473
+2026-08-07 10:51:10,719 [INFO] src.monitor: No alerts triggered
+2026-08-07 10:51:10,727 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 10:51:10,727 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 10:51:10,727 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 10:51:10,728 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 10:51:10,797 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 11:01:10,738 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:11:10 CST)" (scheduled at 2026-08-07 11:01:10.726594+08:00)
+2026-08-07 11:01:10,742 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:01:10,744 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 11:01:11,759 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 11:01:11,759 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 11:01:11,854 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1990 change:+1.87% volume:4645190
+2026-08-07 11:01:11,854 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0100 change:+0.10% volume:3538640
+2026-08-07 11:01:11,855 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8860 change:+3.75% volume:9903168
+2026-08-07 11:01:11,855 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:477.6000 change:-0.33% volume:6848488
+2026-08-07 11:01:11,855 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.6000 change:-0.64% volume:29882962
+2026-08-07 11:01:11,855 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7320 change:+1.95% volume:31265944
+2026-08-07 11:01:11,856 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1570 change:-0.77% volume:3282333
+2026-08-07 11:01:11,856 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6820 change:+0.36% volume:3202608
+2026-08-07 11:01:11,856 [INFO] src.monitor: No alerts triggered
+2026-08-07 11:01:11,858 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:11:10 CST)" executed successfully
+2026-08-07 11:11:10,741 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:21:10 CST)" (scheduled at 2026-08-07 11:11:10.726594+08:00)
+2026-08-07 11:11:10,746 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:11:10,748 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 11:11:11,463 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 11:11:11,464 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 11:11:11,505 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1930 change:+1.36% volume:5022381
+2026-08-07 11:11:11,506 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0100 change:+0.10% volume:3657744
+2026-08-07 11:11:11,506 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8880 change:+3.98% volume:10803772
+2026-08-07 11:11:11,506 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:478.8000 change:-0.08% volume:7318998
+2026-08-07 11:11:11,506 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:124.0000 change:-0.32% volume:32533445
+2026-08-07 11:11:11,506 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7280 change:+1.39% volume:33138326
+2026-08-07 11:11:11,507 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1590 change:-0.60% volume:3465342
+2026-08-07 11:11:11,507 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6830 change:+0.42% volume:3382816
+2026-08-07 11:11:11,507 [INFO] src.monitor: No alerts triggered
+2026-08-07 11:11:11,508 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:21:10 CST)" executed successfully
+2026-08-07 11:21:10,741 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:31:10 CST)" (scheduled at 2026-08-07 11:21:10.726594+08:00)
+2026-08-07 11:21:10,745 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:21:10,747 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 11:21:11,399 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 11:21:11,400 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 11:21:11,479 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1870 change:+0.85% volume:5266893
+2026-08-07 11:21:11,479 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0130 change:+0.40% volume:3838379
+2026-08-07 11:21:11,479 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8900 change:+4.22% volume:11258301
+2026-08-07 11:21:11,479 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:479.4000 change:+0.04% volume:7705684
+2026-08-07 11:21:11,479 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.8000 change:-0.48% volume:33808257
+2026-08-07 11:21:11,479 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7220 change:+0.56% volume:35381162
+2026-08-07 11:21:11,480 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1590 change:-0.60% volume:3654432
+2026-08-07 11:21:11,480 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6810 change:+0.30% volume:3544114
+2026-08-07 11:21:11,480 [INFO] src.monitor: No alerts triggered
+2026-08-07 11:21:11,481 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:31:10 CST)" executed successfully
+2026-08-07 11:23:42,214 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 11:23:46,022 [INFO] __main__: ============================================================
+2026-08-07 11:23:46,022 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 11:23:46,022 [INFO] __main__: ============================================================
+2026-08-07 11:23:46,047 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:23:46,049 [INFO] __main__: Running initial fetch...
+2026-08-07 11:23:46,052 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:23:46,054 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 11:23:47,038 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 11:23:47,038 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 11:23:47,176 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1870 change:+0.85% volume:5317491
+2026-08-07 11:23:47,177 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0150 change:+0.59% volume:3933379
+2026-08-07 11:23:47,177 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8920 change:+4.45% volume:11389304
+2026-08-07 11:23:47,177 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:478.2000 change:-0.21% volume:7837794
+2026-08-07 11:23:47,178 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.8000 change:-0.48% volume:34513557
+2026-08-07 11:23:47,178 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7230 change:+0.70% volume:36097421
+2026-08-07 11:23:47,179 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1590 change:-0.60% volume:3711448
+2026-08-07 11:23:47,179 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6830 change:+0.42% volume:3572981
+2026-08-07 11:23:47,179 [INFO] src.monitor: No alerts triggered
+2026-08-07 11:23:47,182 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 11:23:47,183 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 11:23:47,183 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 11:23:47,184 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 11:23:47,239 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 11:23:58,296 [WARNING] src.kline_history: Yahoo direct request failed (403 Client Error: Forbidden for url: https://query1.finance.yahoo.com/v8/finance/chart/NBIS?period1=1691366400&period2=1786147200&interval=1d&events=history&includeAdjustedClose=true); retrying via proxy http://127.0.0.1:7890
+2026-08-07 11:29:32,794 [WARNING] src.kline_history: Yahoo direct request failed (403 Client Error: Forbidden for url: https://query1.finance.yahoo.com/v8/finance/chart/RKLB?period1=1691366400&period2=1786147200&interval=1d&events=history&includeAdjustedClose=true); retrying via proxy http://127.0.0.1:7890
+2026-08-07 11:33:47,192 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:33:47 CST)" (scheduled at 2026-08-07 11:33:47.182967+08:00)
+2026-08-07 11:33:47,197 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:33:47,199 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 11:33:55,246 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 11:33:55,246 [INFO] src.monitor: Fetching quotes for 2/21 stocks in open markets...
+2026-08-07 11:33:55,679 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:477.8000 change:-0.29% volume:8129011
+2026-08-07 11:33:55,679 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.7000 change:-0.56% volume:35570147
+2026-08-07 11:33:55,679 [INFO] src.monitor: No alerts triggered
+2026-08-07 11:33:55,681 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:43:47 CST)" executed successfully
+2026-08-07 11:43:47,193 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:53:47 CST)" (scheduled at 2026-08-07 11:43:47.182967+08:00)
+2026-08-07 11:43:47,197 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:43:47,199 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 11:43:48,457 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 11:43:48,457 [INFO] src.monitor: Fetching quotes for 2/21 stocks in open markets...
+2026-08-07 11:43:48,568 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:478.4000 change:-0.17% volume:8422064
+2026-08-07 11:43:48,568 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.8000 change:-0.48% volume:36464460
+2026-08-07 11:43:48,568 [INFO] src.monitor: No alerts triggered
+2026-08-07 11:43:48,569 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 11:53:47 CST)" executed successfully
+2026-08-07 11:46:04,157 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 11:46:07,428 [INFO] __main__: ============================================================
+2026-08-07 11:46:07,428 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 11:46:07,428 [INFO] __main__: ============================================================
+2026-08-07 11:46:07,467 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:46:07,473 [INFO] __main__: Running initial fetch...
+2026-08-07 11:46:07,488 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:46:07,490 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 11:46:08,097 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 11:46:08,098 [INFO] src.monitor: Fetching quotes for 2/21 stocks in open markets...
+2026-08-07 11:46:08,143 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:478.0000 change:-0.25% volume:8450364
+2026-08-07 11:46:08,143 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.6000 change:-0.64% volume:36608760
+2026-08-07 11:46:08,144 [INFO] src.monitor: No alerts triggered
+2026-08-07 11:46:08,156 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 11:46:08,157 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 11:46:08,158 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 11:46:08,159 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 11:46:08,223 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 11:51:26,335 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 11:51:37,539 [INFO] __main__: ============================================================
+2026-08-07 11:51:37,540 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 11:51:37,540 [INFO] __main__: ============================================================
+2026-08-07 11:51:37,571 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:51:37,573 [INFO] __main__: Running initial fetch...
+2026-08-07 11:51:37,581 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 11:51:37,584 [INFO] src.monitor: Fetching 3 market index snapshot(s)...
+2026-08-07 11:51:38,267 [INFO] src.monitor: Saved 3/3 market index daily snapshot update(s)
+2026-08-07 11:51:38,267 [INFO] src.monitor: Fetching quotes for 2/21 stocks in open markets...
+2026-08-07 11:51:38,350 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:478.0000 change:-0.25% volume:8565764
+2026-08-07 11:51:38,351 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:124.0000 change:-0.32% volume:37119180
+2026-08-07 11:51:38,351 [INFO] src.monitor: No alerts triggered
+2026-08-07 11:51:38,353 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 11:51:38,354 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 11:51:38,354 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 11:51:38,354 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 11:51:38,405 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 12:01:38,358 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 12:11:38 CST)" (scheduled at 2026-08-07 12:01:38.353272+08:00)
+2026-08-07 12:01:38,363 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 12:01:38,365 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 12:01:38,365 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 12:11:38 CST)" executed successfully
+2026-08-07 12:03:04,160 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 12:03:07,319 [INFO] __main__: ============================================================
+2026-08-07 12:03:07,319 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 12:03:07,319 [INFO] __main__: ============================================================
+2026-08-07 12:03:07,342 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 12:03:07,344 [INFO] __main__: Running initial fetch...
+2026-08-07 12:03:07,348 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 12:03:07,351 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 12:03:07,354 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 12:03:07,354 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 12:03:07,354 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 12:03:07,355 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 12:03:07,404 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 12:13:07,357 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 12:23:07 CST)" (scheduled at 2026-08-07 12:13:07.354528+08:00)
+2026-08-07 12:13:07,361 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 12:13:07,362 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 12:13:07,363 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 12:23:07 CST)" executed successfully
+2026-08-07 12:16:38,772 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 12:16:41,374 [INFO] __main__: ============================================================
+2026-08-07 12:16:41,375 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 12:16:41,376 [INFO] __main__: ============================================================
+2026-08-07 12:16:41,425 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 12:16:41,431 [INFO] __main__: Running initial fetch...
+2026-08-07 12:16:41,437 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 12:16:41,439 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 12:16:41,442 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 12:16:41,443 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 12:16:41,443 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 12:16:41,445 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 12:16:41,506 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 12:26:41,450 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 12:36:41 CST)" (scheduled at 2026-08-07 12:26:41.442565+08:00)
+2026-08-07 12:26:41,465 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 12:26:41,468 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 12:26:41,468 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 12:36:41 CST)" executed successfully
+2026-08-07 12:36:41,443 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 12:46:41 CST)" (scheduled at 2026-08-07 12:36:41.442565+08:00)
+2026-08-07 12:36:41,447 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 12:36:41,449 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 12:36:41,449 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 12:46:41 CST)" executed successfully
+2026-08-07 12:46:41,455 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 12:56:41 CST)" (scheduled at 2026-08-07 12:46:41.442565+08:00)
+2026-08-07 12:46:41,460 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 12:46:41,462 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 12:46:41,462 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 12:56:41 CST)" executed successfully
+2026-08-07 12:56:41,443 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:06:41 CST)" (scheduled at 2026-08-07 12:56:41.442565+08:00)
+2026-08-07 12:56:41,447 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 12:56:41,449 [INFO] src.monitor: Skipping stock cycle: none of ['A股', '港股', '美股'] is in a trading session
+2026-08-07 12:56:41,449 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:06:41 CST)" executed successfully
+2026-08-07 13:06:41,455 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:16:41 CST)" (scheduled at 2026-08-07 13:06:41.442565+08:00)
+2026-08-07 13:06:41,462 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 13:06:41,464 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 13:06:42,065 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 13:06:42,065 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 13:06:42,111 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2080 change:+2.63% volume:5716420
+2026-08-07 13:06:42,112 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0180 change:+0.89% volume:4415869
+2026-08-07 13:06:42,112 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8900 change:+4.22% volume:12291892
+2026-08-07 13:06:42,113 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:478.6000 change:-0.13% volume:9029749
+2026-08-07 13:06:42,113 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.9000 change:-0.40% volume:38069180
+2026-08-07 13:06:42,113 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7340 change:+2.23% volume:40632789
+2026-08-07 13:06:42,113 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1560 change:-0.86% volume:4139902
+2026-08-07 13:06:42,113 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6940 change:+1.07% volume:3923622
+2026-08-07 13:06:42,113 [INFO] src.monitor: No alerts triggered
+2026-08-07 13:06:42,114 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:16:41 CST)" executed successfully
+2026-08-07 13:16:41,458 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:26:41 CST)" (scheduled at 2026-08-07 13:16:41.442565+08:00)
+2026-08-07 13:16:41,461 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 13:16:41,463 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 13:16:42,157 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 13:16:42,157 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 13:16:42,241 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2010 change:+2.04% volume:6019967
+2026-08-07 13:16:42,242 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0170 change:+0.79% volume:4649419
+2026-08-07 13:16:42,242 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8970 change:+5.04% volume:13255076
+2026-08-07 13:16:42,242 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:477.0000 change:-0.46% volume:9172031
+2026-08-07 13:16:42,242 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.6000 change:-0.64% volume:38461480
+2026-08-07 13:16:42,243 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7310 change:+1.81% volume:42169942
+2026-08-07 13:16:42,243 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1560 change:-0.86% volume:4504588
+2026-08-07 13:16:42,243 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6940 change:+1.07% volume:4148841
+2026-08-07 13:16:42,243 [INFO] src.monitor: No alerts triggered
+2026-08-07 13:16:42,244 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:26:41 CST)" executed successfully
+2026-08-07 13:26:41,452 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:36:41 CST)" (scheduled at 2026-08-07 13:26:41.442565+08:00)
+2026-08-07 13:26:41,456 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 13:26:41,458 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 13:26:41,849 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 13:26:41,849 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 13:26:41,895 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2110 change:+2.89% volume:6252101
+2026-08-07 13:26:41,896 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0180 change:+0.89% volume:4850284
+2026-08-07 13:26:41,897 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8960 change:+4.92% volume:14196864
+2026-08-07 13:26:41,897 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:477.2000 change:-0.42% volume:9697654
+2026-08-07 13:26:41,898 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.7000 change:-0.56% volume:40035380
+2026-08-07 13:26:41,898 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7380 change:+2.79% volume:45354632
+2026-08-07 13:26:41,899 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1530 change:-1.11% volume:5075927
+2026-08-07 13:26:41,900 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6990 change:+1.37% volume:4349741
+2026-08-07 13:26:41,900 [INFO] src.monitor: No alerts triggered
+2026-08-07 13:26:41,901 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:36:41 CST)" executed successfully
+2026-08-07 13:36:41,456 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:46:41 CST)" (scheduled at 2026-08-07 13:36:41.442565+08:00)
+2026-08-07 13:36:41,460 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 13:36:41,461 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 13:36:41,974 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 13:36:41,975 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 13:36:42,000 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2160 change:+3.31% volume:6579333
+2026-08-07 13:36:42,001 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0200 change:+1.09% volume:5163018
+2026-08-07 13:36:42,001 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8970 change:+5.04% volume:14646082
+2026-08-07 13:36:42,001 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:477.2000 change:-0.42% volume:9916227
+2026-08-07 13:36:42,001 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.8000 change:-0.48% volume:41132481
+2026-08-07 13:36:42,001 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7400 change:+3.06% volume:48685193
+2026-08-07 13:36:42,001 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1530 change:-1.11% volume:5321287
+2026-08-07 13:36:42,002 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.7000 change:+1.43% volume:4553832
+2026-08-07 13:36:42,002 [INFO] src.monitor: No alerts triggered
+2026-08-07 13:36:42,003 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:46:41 CST)" executed successfully
+2026-08-07 13:46:41,454 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:56:41 CST)" (scheduled at 2026-08-07 13:46:41.442565+08:00)
+2026-08-07 13:46:41,462 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 13:46:41,464 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 13:46:41,756 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 13:46:41,757 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 13:46:41,808 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2130 change:+3.06% volume:6763424
+2026-08-07 13:46:41,808 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0210 change:+1.19% volume:5402484
+2026-08-07 13:46:41,808 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8960 change:+4.92% volume:15119897
+2026-08-07 13:46:41,808 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:476.8000 change:-0.50% volume:10195899
+2026-08-07 13:46:41,809 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.7000 change:-0.56% volume:41826394
+2026-08-07 13:46:41,809 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7390 change:+2.92% volume:50147928
+2026-08-07 13:46:41,809 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1550 change:-0.94% volume:5517126
+2026-08-07 13:46:41,809 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6990 change:+1.37% volume:4780197
+2026-08-07 13:46:41,809 [INFO] src.monitor: No alerts triggered
+2026-08-07 13:46:41,810 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 13:56:41 CST)" executed successfully
+2026-08-07 13:56:41,454 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 14:06:41 CST)" (scheduled at 2026-08-07 13:56:41.442565+08:00)
+2026-08-07 13:56:41,459 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 13:56:41,461 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 13:56:42,226 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 13:56:42,226 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 13:56:42,322 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2090 change:+2.72% volume:6903545
+2026-08-07 13:56:42,322 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0180 change:+0.89% volume:5636362
+2026-08-07 13:56:42,322 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8990 change:+5.27% volume:15677759
+2026-08-07 13:56:42,322 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:476.6000 change:-0.54% volume:10630995
+2026-08-07 13:56:42,322 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.5000 change:-0.72% volume:43057037
+2026-08-07 13:56:42,322 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7360 change:+2.51% volume:52410148
+2026-08-07 13:56:42,323 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1560 change:-0.86% volume:5673382
+2026-08-07 13:56:42,323 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6960 change:+1.19% volume:4987249
+2026-08-07 13:56:42,323 [INFO] src.monitor: No alerts triggered
+2026-08-07 13:56:42,324 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 14:06:41 CST)" executed successfully
+2026-08-07 13:57:12,382 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-08-07 13:57:17,170 [INFO] __main__: ============================================================
+2026-08-07 13:57:17,170 [INFO] __main__: Stock Price Monitor starting...
+2026-08-07 13:57:17,170 [INFO] __main__: ============================================================
+2026-08-07 13:57:17,194 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 13:57:17,196 [INFO] __main__: Running initial fetch...
+2026-08-07 13:57:17,199 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 13:57:17,200 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 13:57:17,963 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 13:57:17,963 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 13:57:18,031 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2110 change:+2.89% volume:6914790
+2026-08-07 13:57:18,032 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0190 change:+0.99% volume:5653103
+2026-08-07 13:57:18,032 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.8980 change:+5.15% volume:15702794
+2026-08-07 13:57:18,032 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:476.0000 change:-0.67% volume:10647095
+2026-08-07 13:57:18,032 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.5000 change:-0.72% volume:43091637
+2026-08-07 13:57:18,032 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7380 change:+2.79% volume:52484218
+2026-08-07 13:57:18,032 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1550 change:-0.94% volume:5679087
+2026-08-07 13:57:18,033 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6960 change:+1.19% volume:4994669
+2026-08-07 13:57:18,033 [INFO] src.monitor: No alerts triggered
+2026-08-07 13:57:18,037 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-07 13:57:18,037 [INFO] apscheduler.scheduler: Added job "Fetch stock quotes every 10 minutes" to job store "default"
+2026-08-07 13:57:18,038 [INFO] apscheduler.scheduler: Scheduler started
+2026-08-07 13:57:18,039 [INFO] __main__: Scheduler started in background. Next run in 10 minutes.
+2026-08-07 13:57:18,086 [INFO] __main__: Web admin running at http://127.0.0.1:8000
+2026-08-07 14:07:18,042 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 14:17:18 CST)" (scheduled at 2026-08-07 14:07:18.037213+08:00)
+2026-08-07 14:07:18,046 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 14:07:18,047 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 14:07:18,789 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 14:07:18,789 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 14:07:18,813 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.2080 change:+2.63% volume:7069700
+2026-08-07 14:07:18,813 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0180 change:+0.89% volume:5903334
+2026-08-07 14:07:18,813 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.9030 change:+5.74% volume:16671093
+2026-08-07 14:07:18,814 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:476.8000 change:-0.50% volume:11020599
+2026-08-07 14:07:18,814 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.8000 change:-0.48% volume:43869239
+2026-08-07 14:07:18,814 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7360 change:+2.51% volume:54226450
+2026-08-07 14:07:18,814 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1580 change:-0.69% volume:6030744
+2026-08-07 14:07:18,814 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6940 change:+1.07% volume:5164392
+2026-08-07 14:07:18,814 [INFO] src.monitor: No alerts triggered
+2026-08-07 14:07:18,815 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 14:17:18 CST)" executed successfully
+2026-08-07 14:17:18,048 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 14:27:18 CST)" (scheduled at 2026-08-07 14:17:18.037213+08:00)
+2026-08-07 14:17:18,053 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 14:17:18,055 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 14:17:18,616 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 14:17:18,616 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 14:17:18,702 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1980 change:+1.78% volume:7208551
+2026-08-07 14:17:18,703 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0130 change:+0.40% volume:6034336
+2026-08-07 14:17:18,704 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.9040 change:+5.85% volume:17522781
+2026-08-07 14:17:18,704 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:476.6000 change:-0.54% volume:11349612
+2026-08-07 14:17:18,705 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.5000 change:-0.72% volume:45086291
+2026-08-07 14:17:18,705 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7300 change:+1.67% volume:55733473
+2026-08-07 14:17:18,706 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1600 change:-0.51% volume:6469464
+2026-08-07 14:17:18,706 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6870 change:+0.66% volume:5324537
+2026-08-07 14:17:18,706 [INFO] src.monitor: No alerts triggered
+2026-08-07 14:17:18,708 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 14:27:18 CST)" executed successfully
+2026-08-07 14:27:18,048 [INFO] apscheduler.executors.default: Running job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 14:37:18 CST)" (scheduled at 2026-08-07 14:27:18.037213+08:00)
+2026-08-07 14:27:18,053 [INFO] __main__: Webhook notifier enabled from config.yaml/WEBHOOK_URL
+2026-08-07 14:27:18,055 [INFO] src.monitor: Fetching 6 market index snapshot(s)...
+2026-08-07 14:27:18,677 [INFO] src.monitor: Saved 6/6 market index daily snapshot update(s)
+2026-08-07 14:27:18,678 [INFO] src.monitor: Fetching quotes for 8/21 stocks in open markets...
+2026-08-07 14:27:18,757 [INFO] src.monitor: A股 | 芯片ETF华夏(159995) price:1.1960 change:+1.61% volume:7455025
+2026-08-07 14:27:18,757 [INFO] src.monitor: A股 | 机器人ETF华夏(562500) price:1.0130 change:+0.40% volume:6193653
+2026-08-07 14:27:18,757 [INFO] src.monitor: A股 | 创新药ETF银华(159992) price:0.9020 change:+5.62% volume:18012409
+2026-08-07 14:27:18,757 [INFO] src.monitor: 港股 | 腾讯控股(00700) price:476.4000 change:-0.58% volume:11770346
+2026-08-07 14:27:18,758 [INFO] src.monitor: 港股 | 阿里巴巴-W(09988) price:123.8000 change:-0.48% volume:45628091
+2026-08-07 14:27:18,758 [INFO] src.monitor: A股 | 半导体设备ETF国泰(159516) price:0.7280 change:+1.39% volume:58114484
+2026-08-07 14:27:18,758 [INFO] src.monitor: A股 | 红利低波ETF华泰柏瑞(512890) price:1.1590 change:-0.60% volume:6702823
+2026-08-07 14:27:18,758 [INFO] src.monitor: A股 | 电网设备ETF华夏(159326) price:1.6850 change:+0.54% volume:5475779
+2026-08-07 14:27:18,758 [INFO] src.monitor: No alerts triggered
+2026-08-07 14:27:18,759 [INFO] apscheduler.executors.default: Job "Fetch stock quotes every 10 minutes (trigger: interval[0:10:00], next run at: 2026-08-07 14:37:18 CST)" executed successfully

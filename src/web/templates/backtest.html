@@ -4,10 +4,10 @@
   <h2>回测</h2>
   <form class="grid-form" method="post" action="/backtest/run">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-    <label>策略<select name="strategy_id"><option value="">全部</option>{% for id in strategy_ids %}<option>{{ id }}</option>{% endfor %}</select></label>
-    <label>代码（可选）<input name="symbol" placeholder="如 SOXL"></label>
-    <label>开始<input name="start" placeholder="YYYY-MM-DD"></label>
-    <label>结束<input name="end" placeholder="YYYY-MM-DD"></label>
+    <label>策略<select name="strategy_id" required>{% for id in strategy_ids %}<option value="{{ id }}">{{ id }}</option>{% endfor %}</select></label>
+    <label>代码<select name="symbol" required>{% for sym in symbols %}<option value="{{ sym }}">{{ sym }}</option>{% endfor %}</select></label>
+    <label>开始<input name="start" type="date" value="{{ bt_start }}"></label>
+    <label>结束<input name="end" type="date" value="{{ bt_end }}"></label>
     <label>数据源<select name="source"><option value="daily-bars" selected>daily-bars（日线）</option><option value="quote-snapshots">quote-snapshots（快照）</option></select></label>
     <label class="chk"><input type="checkbox" name="next_bar" value="1">下一bar成交</label>
     <label class="chk"><input type="checkbox" name="apply_costs" value="1">应用成本</label>
@@ -40,7 +40,7 @@
     <tr><th>时间</th><th>策略</th><th>代码</th><th>区间</th><th class="num">总收益</th><th class="num">最大回撤</th><th class="num">胜率</th><th class="num">Sharpe</th><th class="num">成交</th><th>操作</th></tr>
     {% for h in history %}
     <tr>
-      <td class="mono sm">{{ h.run_at }}</td>
+      <td class="mono sm">{{ h.run_at|fmt_time }}</td>
       <td class="mono">{{ h.strategy_id or '全部' }}</td>
       <td>{{ h.symbol or '全部' }}</td>
       <td class="sm">{{ h.start_date or '?' }} ~ {{ h.end_date or '?' }}</td>
@@ -70,6 +70,7 @@ function fmtPct(v){return v!=null?(v>=0?'+':'')+v.toFixed(2)+'%':'0.00%'}
 function fmtNum(v,d){d=d||2;return v!=null?v.toFixed(d):'0.'+('0'.repeat(d))}
 function clsUp(v){return (v||0)>=0?'up':'down'}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmtTime(v){if(!v)return '';var d=new Date(v);if(isNaN(d))return v;function p(n){return n<10?'0'+n:n}return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds())}
 function statBox(k,v,cls){return '<div class="stat"><span class="k">'+k+'</span><span class="v '+(cls||'')+'">'+v+'</span></div>'}
 
 function openDetail(runId){
@@ -87,7 +88,7 @@ function openDetail(runId){
 
 function renderDetail(data,body){
   var run=data.run, s=data.summary;
-  var html='<div class="hint">策略：'+esc(run.strategy_id||'全部')+' · 代码：'+esc(run.symbol||'全部')+' · 区间：'+(run.start_date||'?')+' ~ '+(run.end_date||'?')+' · 数据源：'+esc(run.source||'')+(run.next_bar?' · 次bar成交':'')+(run.apply_costs?' · 应用成本':'')+' · 运行：'+esc(run.run_at||'')+'</div>';
+  var html='<div class="hint">策略：'+esc(run.strategy_id||'全部')+' · 代码：'+esc(run.symbol||'全部')+' · 区间：'+(run.start_date||'?')+' ~ '+(run.end_date||'?')+' · 数据源：'+esc(run.source||'')+(run.next_bar?' · 次bar成交':'')+(run.apply_costs?' · 应用成本':'')+' · 运行：'+fmtTime(run.run_at)+'</div>';
   if(!s){body.innerHTML=html+'<div class="flash err">该记录未保存完整报告数据（可能是旧版本记录）。</div>';return}
   html+='<div class="stats">';
   html+=statBox('总收益',fmtPct(s.total_return_pct),clsUp(s.total_return_pct));

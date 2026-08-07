@@ -4,7 +4,11 @@ from datetime import date
 
 from src.index_history import backfill_index_snapshots
 from src.index_snapshots import load_market_indices
-from src.kline_history import NasdaqDailyBarSource, YahooDailyBarSource
+from src.kline_history import (
+    AkshareDailyBarSource,
+    NasdaqDailyBarSource,
+    YahooDailyBarSource,
+)
 from src.market_hours import is_market_open
 from src.sources.sinatx_source import SinaTxSource
 from src.trading_store import snapshot_date_for
@@ -50,8 +54,11 @@ def kline_range(start, end, years):
 
 
 def make_kline_source(provider, timeout=20):
-    cls = NasdaqDailyBarSource if provider == "nasdaq" else YahooDailyBarSource
-    return cls(timeout=timeout)
+    if provider == "nasdaq":
+        return NasdaqDailyBarSource(timeout=timeout)
+    if provider == "akshare":
+        return AkshareDailyBarSource(timeout=timeout)
+    return YahooDailyBarSource(timeout=timeout)
 
 
 def update_snapshots(store, *, app_config, target, symbols=None, markets=None,
@@ -97,7 +104,7 @@ def update_snapshots(store, *, app_config, target, symbols=None, markets=None,
     }
 
 
-def fetch_kline(store, *, symbol, name, market, start, end, years, source, provider="nasdaq"):
+def fetch_kline(store, *, symbol, name, market, start, end, years, source, provider="akshare"):
     """Fetch historical daily OHLCV bars into SQLite daily_bars via an injected source."""
     start_iso, end_iso = kline_range(start, end, years)
     bars = source.fetch_daily_bars(symbol=symbol, name=name, market=market, start=start_iso, end=end_iso)

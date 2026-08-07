@@ -78,7 +78,7 @@ def test_cli_add_and_disable_stock(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(cli, "CONFIG_DIR", tmp_path / "config")
 
     args = cli.build_parser().parse_args([
-        "add-stock", "--symbol", "00700", "--name", "腾讯控股", "--market", "港股"
+        "add-stock", "--symbol", "00700", "--name", "腾讯控股", "--market", "娓偂"
     ])
     args.func(args)
     assert json.loads(capsys.readouterr().out)["ok"] is True
@@ -146,12 +146,12 @@ def test_cli_list_index_snapshots_with_backfill(tmp_path, monkeypatch, capsys):
     df = pd.DataFrame({
         "date": ["2026-06-30", "2026-07-01"],
         "open": [90, 100],
-        "close": [100, 110],
-        "high": [101, 111],
-        "low": [89, 98],
-        "amount": [1000, 2000],
+        "close": [95, 105],
+        "high": [96, 106],
+        "low": [89, 99],
+        "volume": [1000, 2000],
     })
-    with patch("src.index_history.ak.stock_zh_index_daily_tx", return_value=df):
+    with patch("src.index_history.ak.stock_hk_daily", return_value=df):
         args = cli.build_parser().parse_args([
             "list-index-snapshots", "--from", "2026-07-01", "--to", "2026-07-01", "--backfill"
         ])
@@ -166,7 +166,7 @@ def test_cli_update_stock_snapshots(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(cli, "BASE_DIR", tmp_path)
     monkeypatch.setattr(cli, "CONFIG_DIR", tmp_path / "config")
     store = cli.default_store()
-    store.import_watchlist([{"symbol": "SOXL", "name": "半导体ETF", "market": "美股"}], replace=True)
+    store.import_watchlist([{"symbol": "SOXL", "name": "半导悿TF", "market": "缇庤偂"}], replace=True)
     store.close()
 
     source = patch("src.cli.SinaTxSource").start()
@@ -201,7 +201,7 @@ def test_cli_update_index_snapshots(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(cli, "load_market_indices", lambda config: [
         {"symbol": "HSI", "name": "恒生指数", "market": "港股", "sina_symbol": "hkHSI"}
     ])
-    monkeypatch.setattr(cli, "is_market_open", lambda market: market == "港股")
+    monkeypatch.setattr(cli, "is_market_open", lambda market: market == "娓偂")
 
     source = patch("src.cli.SinaTxSource").start()
     source.return_value.fetch_quotes.return_value = [
@@ -209,7 +209,7 @@ def test_cli_update_index_snapshots(tmp_path, monkeypatch, capsys):
     ]
     try:
         args = cli.build_parser().parse_args([
-            "update-snapshots", "--target", "index", "--market", "港股"
+            "update-snapshots", "--target", "index", "--market", "娓偂"
         ])
         args.func(args)
     finally:
@@ -234,7 +234,7 @@ def test_cli_update_snapshots_skips_closed_market(tmp_path, monkeypatch, capsys)
     monkeypatch.setattr(cli, "BASE_DIR", tmp_path)
     monkeypatch.setattr(cli, "CONFIG_DIR", tmp_path / "config")
     store = cli.default_store()
-    store.import_watchlist([{"symbol": "SOXL", "name": "半导体ETF", "market": "美股"}], replace=True)
+    store.import_watchlist([{"symbol": "SOXL", "name": "半导悿TF", "market": "缇庤偂"}], replace=True)
     store.close()
     monkeypatch.setattr(cli, "is_market_open", lambda market: False)
 
@@ -253,11 +253,13 @@ def test_cli_update_snapshots_skips_closed_market(tmp_path, monkeypatch, capsys)
     assert result["skipped_closed"] == ["SOXL"]
     source.return_value.fetch_quotes.assert_not_called()
 
+
 def test_cli_fetch_kline_writes_daily_bars(tmp_path, monkeypatch, capsys):
+    """Default provider is akshare; patch the source at the CLI level."""
     write_configs(tmp_path)
     monkeypatch.setattr(cli, "BASE_DIR", tmp_path)
     monkeypatch.setattr(cli, "CONFIG_DIR", tmp_path / "config")
-    source = patch("src.cli.NasdaqDailyBarSource").start()
+    source = patch("src.cli.AkshareDailyBarSource").start()
     source.return_value.fetch_daily_bars.return_value = [
         DailyBar("SOXL", "SOXL", "美股", "2026-07-28", 20, 21, 19, 20.5, 20.5, 1000)
     ]
@@ -273,6 +275,7 @@ def test_cli_fetch_kline_writes_daily_bars(tmp_path, monkeypatch, capsys):
     result = json.loads(capsys.readouterr().out)
     assert result["fetched"] == 1
     assert result["saved"] == 1
+    assert result["provider"] == "akshare"
     store = cli.default_store()
     rows = store.load_daily_bars(symbols=["SOXL"])
     assert len(rows) == 1

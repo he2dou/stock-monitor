@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import date, timedelta
 
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import JSONResponse, RedirectResponse
@@ -14,10 +15,23 @@ router = APIRouter(prefix="/backtest", dependencies=[Depends(ensure_login)])
 _TRUTHY = {"1", "on", "true", "yes"}
 
 
+def _default_date_range():
+    today = date.today()
+    return {
+        "bt_start": (today - timedelta(days=365 * 3)).isoformat(),
+        "bt_end": today.isoformat(),
+    }
+
+
 def _strategy_ids(request: Request) -> list[str]:
     """Unique strategy template IDs for the dropdown."""
     strategies = get_store(request).load_strategies()
     return sorted({s.get("id") for s in strategies if s.get("id")})
+
+
+def _watchlist_symbols(request: Request) -> list[str]:
+    """Watchlist stock codes for the symbol dropdown (same source as alerts)."""
+    return [s["symbol"] for s in get_store(request).load_watchlist(include_disabled=False)]
 
 
 def _history(request: Request, limit: int = 50):
@@ -28,8 +42,9 @@ def _history(request: Request, limit: int = 50):
 async def page(request: Request):
     return render(
         request, "backtest.html", "回测",
-        strategy_ids=_strategy_ids(request), result=None, trades=None,
-        detail=None, history=_history(request), flash=pop_flash(request),
+        strategy_ids=_strategy_ids(request), symbols=_watchlist_symbols(request),
+        result=None, trades=None, detail=None, history=_history(request),
+        flash=pop_flash(request), **_default_date_range(),
     )
 
 
@@ -48,9 +63,10 @@ async def detail(request: Request, run_id: int):
             parsed = None
     return render(
         request, "backtest.html", "回测",
-        strategy_ids=_strategy_ids(request), result=None, trades=None,
-        detail={"run": run, "summary": parsed},
+        strategy_ids=_strategy_ids(request), symbols=_watchlist_symbols(request),
+        result=None, trades=None, detail={"run": run, "summary": parsed},
         history=_history(request), flash=pop_flash(request),
+        **_default_date_range(),
     )
 
 
@@ -82,6 +98,11 @@ async def run(
     apply_costs: str = Form("0"),
 ):
     store = get_store(request)
+    # strategy_id and symbol are required: a backtest needs both a strategy
+    # to run and a symbol to scope quotes to.
+    if not strategy_id.strip() or not symbol.strip():
+        set_flash(request, "请选择策略和代码后再运行回测")
+        return RedirectResponse("/backtest", status_code=303)
     strategies = store.load_runtime_strategies()
     app_config = request.app.state.app_config
     paper = app_config.get("paper_trading", {}) or {}
@@ -109,10 +130,14 @@ async def run(
         summary,
     )
     trades = (summary.get("trades") or [])[:50]
+    defaults = _default_date_range()
+    defaults["bt_start"] = start or defaults["bt_start"]
+    defaults["bt_end"] = end or defaults["bt_end"]
     return render(
         request, "backtest.html", "回测",
-        strategy_ids=_strategy_ids(request), result=summary, trades=trades,
-        detail=None, history=_history(request), flash=None,
+        strategy_ids=_strategy_ids(request), symbols=_watchlist_symbols(request),
+        result=summary, trades=trades, detail=None, history=_history(request),
+        flash=None, **defaults,
     )
 
 

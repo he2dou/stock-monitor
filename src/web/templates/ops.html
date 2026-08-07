@@ -15,11 +15,34 @@
   <h2>抓取K线</h2>
   <form class="row-form" method="post" action="/ops/fetch-kline">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-    <input name="symbol" placeholder="代码（如 SOXL）" required>
-    <select name="provider"><option value="nasdaq">nasdaq</option><option value="yahoo">yahoo</option></select>
-    <input name="years" type="number" value="3" min="1" max="10">
+    <input name="symbol" placeholder="代码（如 SOXL、09988、159326）" required>
+    <select name="market" id="klineMarket">
+      <option value="美股">美股</option>
+      <option value="港股">港股</option>
+      <option value="A股">A股</option>
+    </select>
+    <select name="provider" id="klineProvider"><option value="akshare">akshare</option><option value="yahoo">yahoo</option><option value="nasdaq">nasdaq</option></select>
+    <input name="start" type="date" value="{{ kline_start }}" required>
+    <input name="end" type="date" value="{{ kline_end }}" required>
     <button class="btn primary" type="submit">抓取</button>
   </form>
+  <script>
+    // A股必须走 akshare（yahoo/nasdaq 不支持），选择 A股时自动切换并锁定 provider。
+    (function () {
+      var market = document.getElementById('klineMarket');
+      var provider = document.getElementById('klineProvider');
+      function syncProvider() {
+        if (market.value === 'A股') {
+          provider.value = 'akshare';
+          provider.disabled = true;
+        } else {
+          provider.disabled = false;
+        }
+      }
+      market.addEventListener('change', syncProvider);
+      syncProvider();
+    })();
+  </script>
 </section>
 <section>
   <h2>日志（最后 200 行）</h2>
